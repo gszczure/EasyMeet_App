@@ -33,7 +33,6 @@ public class MeetingController {
         return meetingService.createMeeting(name, owner);
     }
 
-
     @PostMapping("/join")
     public Optional<Meeting> joinMeeting(@RequestParam String code) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
