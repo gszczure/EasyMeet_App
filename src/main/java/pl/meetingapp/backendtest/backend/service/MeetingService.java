@@ -7,6 +7,7 @@ import pl.meetingapp.backendtest.backend.model.User;
 import pl.meetingapp.backendtest.backend.repository.MeetingRepository;
 import pl.meetingapp.backendtest.backend.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,5 +35,8 @@ public class MeetingService {
             return Optional.of(meeting);
         }
         return Optional.empty();
+    }
+    public List<Meeting> getMeetingsByOwner(User owner) {
+        return meetingRepository.findByOwner(owner);
     }
 }

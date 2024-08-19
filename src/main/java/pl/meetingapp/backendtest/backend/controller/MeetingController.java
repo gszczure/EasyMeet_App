@@ -10,6 +10,7 @@ import pl.meetingapp.backendtest.backend.model.User;
 import pl.meetingapp.backendtest.backend.service.MeetingService;
 import pl.meetingapp.backendtest.backend.service.UserService;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,7 +23,7 @@ public class MeetingController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/create")
+    @PostMapping("/create") // edpoint do tworzenia spotkania
     public Meeting createMeeting(@RequestBody MeetingRequest meetingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -33,10 +34,17 @@ public class MeetingController {
         return meetingService.createMeeting(name, owner);
     }
 
-    @PostMapping("/join")
+    @PostMapping("/join") // edpoint do doalczania do spotkania
     public Optional<Meeting> joinMeeting(@RequestParam String code) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         return meetingService.joinMeeting(code, username);
+    }
+    @GetMapping("/user") // edpoint do pobierania spotkan dla uzytkownika
+    public List<Meeting> getMeetingsForUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userService.findByUsername(username);
+        return meetingService.getMeetingsByOwner(user);
     }
 }
