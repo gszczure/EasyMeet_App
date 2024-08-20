@@ -40,7 +40,7 @@ public class MeetingController {
         String username = authentication.getName();
         return meetingService.joinMeeting(code, username);
     }
-    @GetMapping("/user") // edpoint do pobierania spotkan dla uzytkownika
+    @GetMapping("/for-user") // edpoint do pobierania spotkan dla uzytkownika
     public List<Meeting> getMeetingsForUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
