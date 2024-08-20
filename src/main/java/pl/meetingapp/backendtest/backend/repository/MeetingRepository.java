@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
     Optional<Meeting> findByCode(String code);
     List<Meeting> findByOwner(User owner);
+    List<Meeting> findByParticipantsContaining(User user);
+
 }

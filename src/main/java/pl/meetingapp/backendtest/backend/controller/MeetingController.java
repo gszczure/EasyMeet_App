@@ -1,6 +1,7 @@
 package pl.meetingapp.backendtest.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,6 @@ import pl.meetingapp.backendtest.backend.service.MeetingService;
 import pl.meetingapp.backendtest.backend.service.UserService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/meetings")
@@ -23,7 +23,7 @@ public class MeetingController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/create") // edpoint do tworzenia spotkania
+    @PostMapping("/create") // endpoint do tworzenia spotkania
     public Meeting createMeeting(@RequestBody MeetingRequest meetingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -33,18 +33,18 @@ public class MeetingController {
 
         return meetingService.createMeeting(name, owner);
     }
-
-    @PostMapping("/join") // edpoint do doalczania do spotkania
-    public Optional<Meeting> joinMeeting(@RequestParam String code) {
+    @PostMapping("/join") // endpoint odpoiwadajacy za dodawanie uzytkownikow
+    public ResponseEntity<String> joinMeeting(@RequestBody MeetingRequest meetingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        return meetingService.joinMeeting(code, username);
+        return meetingService.joinMeeting(meetingRequest.getCode(), username);
     }
-    @GetMapping("/for-user") // edpoint do pobierania spotkan dla uzytkownika
+
+    @GetMapping("/for-user") // endpoint odpowiadajacy za pobieranie spotkan w ktorych naleza uczestnicy lub ktore zalozyli
     public List<Meeting> getMeetingsForUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userService.findByUsername(username);
-        return meetingService.getMeetingsByOwner(user);
+        return meetingService.getMeetingsForUser(user);
     }
 }
