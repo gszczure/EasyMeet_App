@@ -47,4 +47,10 @@ public class MeetingController {
         User user = userService.findByUsername(username);
         return meetingService.getMeetingsForUser(user);
     }
+
+    @GetMapping("/{meetingId}/participants") //endpoint pobierajacy liste uczestnikow spotkania razem z wlascicielem
+    public ResponseEntity<List<User>> getParticipants(@PathVariable Long meetingId) {
+        List<User> participants = meetingService.getParticipants(meetingId);
+        return ResponseEntity.ok(participants);
+    }
 }

@@ -7,6 +7,7 @@ import pl.meetingapp.backendtest.backend.model.User;
 import pl.meetingapp.backendtest.backend.repository.MeetingRepository;
 import pl.meetingapp.backendtest.backend.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,5 +49,14 @@ public class MeetingService {
         List<Meeting> meetingsAsParticipant = meetingRepository.findByParticipantsContaining(user);
         meetingsAsOwner.addAll(meetingsAsParticipant);
         return meetingsAsOwner;
+    }
+
+    public List<User> getParticipants(Long meetingId) {
+        List<Long> participantIds = meetingRepository.findParticipantIdsByMeetingId(meetingId);
+        List<User> participants = new ArrayList<>(userRepository.findAllById(participantIds));
+        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new RuntimeException("Meeting witch id: " + meetingId + " not found"));
+        User owner = meeting.getOwner();
+        participants.add(owner);
+        return participants;
     }
 }
