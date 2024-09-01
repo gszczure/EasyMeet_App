@@ -41,6 +41,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 System.out.println("JWT token is expired");
             } catch (Exception e) {
+                //TODO: sprawdzic dalczego caly czas przy poprawnym logowaniu sie wyswietla ten komunikat choc token jest poprawny
                 System.out.println("JWT token is invalid");
             }
         }
