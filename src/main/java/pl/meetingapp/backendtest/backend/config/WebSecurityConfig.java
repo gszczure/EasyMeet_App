@@ -30,6 +30,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 //TODO: upewnic sie czy trzeba tu wpisywac endpointa za kazdym razem
+                //TODO: dodac brakujace endpointy
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
