@@ -59,4 +59,8 @@ public class MeetingService {
         participants.add(owner);
         return participants;
     }
+    public Meeting findById(Long id) {
+        Optional<Meeting> meeting = meetingRepository.findById(id);
+        return meeting.orElse(null);
+    }
 }
