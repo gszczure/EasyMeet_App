@@ -64,6 +64,4 @@ public class DateRangeController {
         dateRangeService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }

@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.meetingapp.backendtest.backend.model.Meeting;
-import pl.meetingapp.backendtest.backend.model.MeetingRequest;
+import pl.meetingapp.backendtest.backend.model.MeetingRequestDTO;
 import pl.meetingapp.backendtest.backend.model.User;
 import pl.meetingapp.backendtest.backend.service.MeetingService;
 import pl.meetingapp.backendtest.backend.service.UserService;
@@ -24,7 +24,7 @@ public class MeetingController {
     private UserService userService;
 
     @PostMapping("/create") // endpoint do tworzenia spotkania
-    public Meeting createMeeting(@RequestBody MeetingRequest meetingRequest) {
+    public Meeting createMeeting(@RequestBody MeetingRequestDTO meetingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User owner = userService.findByUsername(username);
@@ -34,7 +34,7 @@ public class MeetingController {
         return meetingService.createMeeting(name, owner);
     }
     @PostMapping("/join") // endpoint odpoiwadajacy za dodawanie uzytkownikow
-    public ResponseEntity<String> joinMeeting(@RequestBody MeetingRequest meetingRequest) {
+    public ResponseEntity<String> joinMeeting(@RequestBody MeetingRequestDTO meetingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         return meetingService.joinMeeting(meetingRequest.getCode(), username);
