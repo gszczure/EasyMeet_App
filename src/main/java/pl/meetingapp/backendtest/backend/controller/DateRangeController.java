@@ -13,6 +13,7 @@ import pl.meetingapp.backendtest.backend.service.DateRangeService;
 import pl.meetingapp.backendtest.backend.service.MeetingService;
 import pl.meetingapp.backendtest.backend.service.UserService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,4 +66,12 @@ public class DateRangeController {
         dateRangeService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    //Endpoint do pobierania wspolnych dat
+    @GetMapping("/meeting/{meetingId}/common-dates")
+    public ResponseEntity<List<LocalDate>> getCommonDatesForMeeting(@PathVariable Long meetingId) {
+        List<LocalDate> commonDates = dateRangeService.getCommonDatesForMeeting(meetingId);
+        return ResponseEntity.ok(commonDates);
+    }
+
 }
