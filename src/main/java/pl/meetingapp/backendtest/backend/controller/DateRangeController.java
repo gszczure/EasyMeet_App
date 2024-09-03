@@ -51,6 +51,7 @@ public class DateRangeController {
         List<DateRange> savedDateRanges = dateRangeService.saveDateRanges(dateRanges);
         return ResponseEntity.ok(savedDateRanges);
     }
+
     //Endponit do pobierania dat dla danego spotkania
     @GetMapping("/meeting/{meetingId}")
     public ResponseEntity<List<DateRange>> getDateRangesForMeeting(@PathVariable Long meetingId) {
@@ -58,7 +59,7 @@ public class DateRangeController {
         return ResponseEntity.ok(dateRanges);
     }
 
-
+    //Endpoint do usuwania wybranych przedzialow dat (musi miec id przedzialu daty by je usunac)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDateRange(@PathVariable Long id) {
         dateRangeService.deleteById(id);
