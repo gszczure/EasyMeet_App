@@ -37,7 +37,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtTokenUtil.generateToken(user.getUsername());
-        Long userId = userService.getUserIdByUsername(user.getUsername());
+        Long userId = userService.getUserIdByUsername(user.getUsername()); //TODO: sprawdzic czym sie to rozni od tego w daterangecontroller
 
         return ResponseEntity.ok(new JwtResponse(token, userId));
     }

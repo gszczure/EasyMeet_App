@@ -33,6 +33,7 @@ public class DateRangeController {
     @PostMapping
     public ResponseEntity<List<DateRange>> createDateRanges(@RequestBody List<DateRangeDTO> dateRangesDto) {
         // Uzyskanie informacji o aktualnie zalogowanym użytkowniku
+        //TODO: sprawdzic czym sie rozni od tego
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userService.findByUsername(username);
