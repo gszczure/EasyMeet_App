@@ -33,6 +33,9 @@ public class Meeting {
     )
     private List<User> participants = new ArrayList<>();
 
+    @Column(name = "meeting_date")
+    private String meetingDate;
+
     public Meeting() {}
 
     public Meeting(String name, User owner) {
@@ -75,6 +78,14 @@ public class Meeting {
 
     private String generateUniqueCode() {
         return UUID.randomUUID().toString().substring(0, 5);
+    }
+
+    public String getMeetingDate() {
+        return meetingDate;
+    }
+
+    public void setMeetingDate(String meetingDate) {
+        this.meetingDate = meetingDate;
     }
 }
 

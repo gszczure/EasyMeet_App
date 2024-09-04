@@ -28,6 +28,14 @@ public class MeetingService {
         return meetingRepository.save(meeting);
     }
 
+    //TODO: zapisuje sie jako caly obkient json zmienc to
+    public void saveMeetingDate(Long meetingId, String date) throws Exception {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new Exception("Meeting not found"));
+        meeting.setMeetingDate(date);
+        meetingRepository.save(meeting);
+    }
+
     public ResponseEntity<String> joinMeeting(String code, String username) {
         Optional<Meeting> meetingOpt = meetingRepository.findByCode(code);
         if (meetingOpt.isPresent()) {

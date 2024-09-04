@@ -1,6 +1,7 @@
 package pl.meetingapp.backendtest.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,5 +53,22 @@ public class MeetingController {
     public ResponseEntity<List<User>> getParticipants(@PathVariable Long meetingId) {
         List<User> participants = meetingService.getParticipants(meetingId);
         return ResponseEntity.ok(participants);
+    }
+    @GetMapping("/{meetingId}/date") //endpoint do pobierania daty z meetingu (zapisuje ja w accordin)
+    public ResponseEntity<String> getMeetingDate(@PathVariable Long meetingId) {
+        Meeting meeting = meetingService.findById(meetingId);
+        if (meeting == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(meeting.getMeetingDate());
+    }
+    @PostMapping("/{meetingId}/date") //endpoint do zapisywania wybranej daty spotkania w mtabeli meeting
+    public ResponseEntity<?> setMeetingDate(@PathVariable Long meetingId, @RequestBody String date) {
+        try {
+            meetingService.saveMeetingDate(meetingId, date);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }
