@@ -33,6 +33,7 @@ public class Meeting {
     )
     private List<User> participants = new ArrayList<>();
 
+    //TODO: sprawdzic zapisywanie sie w bazie danych daty bo narazie jest jako JSON
     @Column(name = "meeting_date")
     private String meetingDate;
 
