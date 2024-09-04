@@ -1,5 +1,6 @@
 package pl.meetingapp.backendtest.backend.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,6 +37,8 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtTokenUtil.generateToken(user.getUsername());
-        return ResponseEntity.ok(new JwtResponse(token));
+        Long userId = userService.getUserIdByUsername(user.getUsername());
+
+        return ResponseEntity.ok(new JwtResponse(token, userId));
     }
 }
