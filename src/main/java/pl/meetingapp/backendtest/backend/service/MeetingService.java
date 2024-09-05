@@ -3,6 +3,7 @@ package pl.meetingapp.backendtest.backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.meetingapp.backendtest.backend.model.Meeting;
+import pl.meetingapp.backendtest.backend.model.MeetingParticipantsDTO;
 import pl.meetingapp.backendtest.backend.model.User;
 import pl.meetingapp.backendtest.backend.repository.MeetingRepository;
 import pl.meetingapp.backendtest.backend.repository.UserRepository;
@@ -59,14 +60,15 @@ public class MeetingService {
         return meetingsAsOwner;
     }
 
-    public List<User> getParticipants(Long meetingId) {
-        List<Long> participantIds = meetingRepository.findParticipantIdsByMeetingId(meetingId);
-        List<User> participants = new ArrayList<>(userRepository.findAllById(participantIds));
-        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new RuntimeException("Meeting witch id: " + meetingId + " not found"));
-        User owner = meeting.getOwner();
-        participants.add(owner);
-        return participants;
-    }
+//    public List<User> getParticipants(Long meetingId) {
+//        List<Long> participantIds = meetingRepository.findParticipantIdsByMeetingId(meetingId);
+//        List<User> participants = new ArrayList<>(userRepository.findAllById(participantIds));
+//        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new RuntimeException("Meeting witch id: " + meetingId + " not found"));
+//        User owner = meeting.getOwner();
+//        participants.add(owner);
+//        return participants;
+//    }
+
     public Meeting findById(Long id) {
         Optional<Meeting> meeting = meetingRepository.findById(id);
         return meeting.orElse(null);
@@ -85,4 +87,14 @@ public class MeetingService {
         }
     }
 
+    public MeetingParticipantsDTO getParticipants(Long meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new RuntimeException("Meeting with id: " + meetingId + " not found"));
+
+        User owner = meeting.getOwner();
+        List<User> participants = new ArrayList<>(meeting.getParticipants());
+        participants.add(owner);
+
+        return new MeetingParticipantsDTO(owner, participants);
+    }
 }

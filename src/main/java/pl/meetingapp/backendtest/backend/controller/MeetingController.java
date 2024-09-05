@@ -6,10 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import pl.meetingapp.backendtest.backend.model.DateRange;
-import pl.meetingapp.backendtest.backend.model.Meeting;
-import pl.meetingapp.backendtest.backend.model.MeetingRequestDTO;
-import pl.meetingapp.backendtest.backend.model.User;
+import pl.meetingapp.backendtest.backend.model.*;
 import pl.meetingapp.backendtest.backend.service.DateRangeService;
 import pl.meetingapp.backendtest.backend.service.MeetingService;
 import pl.meetingapp.backendtest.backend.service.UserService;
@@ -54,11 +51,16 @@ public class MeetingController {
         return meetingService.getMeetingsForUser(user);
     }
 
-    @GetMapping("/{meetingId}/participants") //endpoint pobierajacy liste uczestnikow spotkania razem z wlascicielem
-    public ResponseEntity<List<User>> getParticipants(@PathVariable Long meetingId) {
-        List<User> participants = meetingService.getParticipants(meetingId);
-        return ResponseEntity.ok(participants);
+    @GetMapping("/{meetingId}/participants") // endpoint do pobieranai ludzi ze spotkania i wlasciciela spotkania
+    public ResponseEntity<MeetingParticipantsDTO> getMeetingParticipants(@PathVariable Long meetingId) {
+        try {
+            MeetingParticipantsDTO participantsDTO = meetingService.getParticipants(meetingId);
+            return ResponseEntity.ok(participantsDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
+
     @DeleteMapping("/{meetingId}/participants/{username}") //endpoint do usuwania urzystkownika ze spotkania oraz wybranych przez niego dat
     public ResponseEntity<String> removeParticipant(@PathVariable Long meetingId, @PathVariable String username) {
         meetingService.removeUserFromMeeting(meetingId, username);
