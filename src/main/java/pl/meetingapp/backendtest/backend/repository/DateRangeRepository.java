@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface DateRangeRepository extends JpaRepository<DateRange, Long> {
     List<DateRange> findByMeetingId(Long meetingId);
+    List<DateRange> findByUserAndMeetingId(User user, Long meetingId);
 
 }

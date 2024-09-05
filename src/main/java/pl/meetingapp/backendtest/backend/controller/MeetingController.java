@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import pl.meetingapp.backendtest.backend.model.DateRange;
 import pl.meetingapp.backendtest.backend.model.Meeting;
 import pl.meetingapp.backendtest.backend.model.MeetingRequestDTO;
 import pl.meetingapp.backendtest.backend.model.User;
+import pl.meetingapp.backendtest.backend.service.DateRangeService;
 import pl.meetingapp.backendtest.backend.service.MeetingService;
 import pl.meetingapp.backendtest.backend.service.UserService;
 
@@ -23,6 +25,9 @@ public class MeetingController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private DateRangeService dateRangeService;
 
     @PostMapping("/create") // endpoint do tworzenia spotkania
     public Meeting createMeeting(@RequestBody MeetingRequestDTO meetingRequest) {
@@ -54,6 +59,15 @@ public class MeetingController {
         List<User> participants = meetingService.getParticipants(meetingId);
         return ResponseEntity.ok(participants);
     }
+    @DeleteMapping("/{meetingId}/participants/{username}") //endpoint do usuwania urzystkownika ze spotkania oraz wybranych przez niego dat
+    public ResponseEntity<String> removeParticipant(@PathVariable Long meetingId, @PathVariable String username) {
+        meetingService.removeUserFromMeeting(meetingId, username);
+        User user = userService.findByUsername(username);
+        List<DateRange> dateRanges = dateRangeService.findByUserAndMeeting(user, meetingId);
+        dateRangeService.deleteAll(dateRanges);
+        return ResponseEntity.ok("User removed successfully");
+    }
+
     @GetMapping("/{meetingId}/date") //endpoint do pobierania daty z meetingu (zapisuje ja w accordin)
     public ResponseEntity<String> getMeetingDate(@PathVariable Long meetingId) {
         Meeting meeting = meetingService.findById(meetingId);
@@ -62,6 +76,7 @@ public class MeetingController {
         }
         return ResponseEntity.ok(meeting.getMeetingDate());
     }
+
     @PostMapping("/{meetingId}/date") //endpoint do zapisywania wybranej daty spotkania w mtabeli meeting
     public ResponseEntity<?> setMeetingDate(@PathVariable Long meetingId, @RequestBody String date) {
         try {

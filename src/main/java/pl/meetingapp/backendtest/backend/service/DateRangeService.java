@@ -1,6 +1,7 @@
 package pl.meetingapp.backendtest.backend.service;
 
 import pl.meetingapp.backendtest.backend.model.DateRange;
+import pl.meetingapp.backendtest.backend.model.User;
 import pl.meetingapp.backendtest.backend.repository.DateRangeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,5 +56,14 @@ public class DateRangeService {
         }
 
         return new ArrayList<>(commonDates);
+    }
+    // Metoda do znalezienia dat dla danego uzytkownika w danym spotkaniu
+    public List<DateRange> findByUserAndMeeting(User user, Long meetingId) {
+        return dateRangeRepository.findByUserAndMeetingId(user, meetingId);
+    }
+
+    // Metoda do usuwania dat spotkania zaznaczonych przez urzytkowników
+    public void deleteAll(List<DateRange> dateRanges) {
+        dateRangeRepository.deleteAll(dateRanges);
     }
 }

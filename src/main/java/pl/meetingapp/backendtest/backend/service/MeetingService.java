@@ -71,4 +71,18 @@ public class MeetingService {
         Optional<Meeting> meeting = meetingRepository.findById(id);
         return meeting.orElse(null);
     }
+    public void removeUserFromMeeting(Long meetingId, String username) {
+        Meeting meeting = findById(meetingId);
+        if (meeting != null) {
+            Optional<User> userOpt = userRepository.findByUsername(username);
+
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                meeting.getParticipants().remove(user);
+
+                meetingRepository.save(meeting);
+            }
+        }
+    }
+
 }
