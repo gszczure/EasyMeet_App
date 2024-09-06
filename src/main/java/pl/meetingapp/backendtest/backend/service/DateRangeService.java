@@ -55,7 +55,7 @@ public class DateRangeService {
         Set<LocalDate> commonDates = new HashSet<>(userAvailableDates.values().iterator().next());
 
         for (Set<LocalDate> availableDates : userAvailableDates.values()) {
-            commonDates.retainAll(availableDates);
+            commonDates.retainAll(availableDates); // wybiera wszystkie wspolne daty ktore sa zarowno w commonDates i availableDates
         }
 
         return new ArrayList<>(commonDates);
