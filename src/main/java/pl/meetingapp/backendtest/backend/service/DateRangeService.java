@@ -30,6 +30,14 @@ public class DateRangeService {
     }
 
     // Metoda do pobierania wspólnych dat
+    /*
+    DZIALNIE:
+    - dateRangeRepository.findByMeetingId(meetingId) pobiera wszystkie przedziały dat dla danego spotkania
+    - tworzymy lub aktualizujemy mapę userAvailableDates
+    - dla każdego użytkownika i każdego przedziału dat dodajemy odpowiednie daty do zbioru
+    - zakładamy, że wszystkie daty dostępne dla pierwszego użytkownika są wspólne, kopiując je do commonDates
+    - przechodzimy przez wszystkie zbiory dostępnych dat dla pozostałych użytkowników i używamy retainAll, aby pozostawić w commonDates tylko te daty, które są wspólne dla wszystkich użytkowników
+     */
     public List<LocalDate> getCommonDatesForMeeting(Long meetingId) {
         List<DateRange> dateRanges = dateRangeRepository.findByMeetingId(meetingId);
 
