@@ -15,6 +15,7 @@ public class DateRangeService {
     @Autowired
     private DateRangeRepository dateRangeRepository;
 
+    // Metoda do zapisywanai przedzialu daty
     public List<DateRange> saveDateRanges(List<DateRange> dateRanges) {
         return dateRangeRepository.saveAll(dateRanges);
     }
@@ -23,6 +24,7 @@ public class DateRangeService {
         return dateRangeRepository.findByMeetingId(meetingId);
     }
 
+    // Metoda do usuwania przedzialu daty
     public void deleteById(Long id) {
         dateRangeRepository.deleteById(id);
     }
