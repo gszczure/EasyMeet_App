@@ -27,6 +27,7 @@ public class DateRangeService {
         dateRangeRepository.deleteById(id);
     }
 
+    // Metoda do pobierania wspólnych dat
     public List<LocalDate> getCommonDatesForMeeting(Long meetingId) {
         List<DateRange> dateRanges = dateRangeRepository.findByMeetingId(meetingId);
 
@@ -34,29 +35,31 @@ public class DateRangeService {
             return new ArrayList<>();
         }
 
-        Set<LocalDate> commonDates = new HashSet<>();
+        Map<Long, Set<LocalDate>> userAvailableDates = new HashMap<>();
 
         for (DateRange dateRange : dateRanges) {
             LocalDate startDate = dateRange.getStartDate();
             LocalDate endDate = dateRange.getEndDate();
 
-            if (commonDates.isEmpty()) {
-                for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-                    commonDates.add(date);
-                }
-            } else {
-                Set<LocalDate> tempDates = new HashSet<>();
-                for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-                    if (commonDates.contains(date)) {
-                        tempDates.add(date);
-                    }
-                }
-                commonDates = tempDates;
+            Long userId = dateRange.getUser().getId();
+            userAvailableDates.putIfAbsent(userId, new HashSet<>());
+
+            Set<LocalDate> availableDates = userAvailableDates.get(userId);
+            for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+                availableDates.add(date);
             }
+        }
+
+        Set<LocalDate> commonDates = new HashSet<>(userAvailableDates.values().iterator().next());
+
+        for (Set<LocalDate> availableDates : userAvailableDates.values()) {
+            commonDates.retainAll(availableDates);
         }
 
         return new ArrayList<>(commonDates);
     }
+
+
     // Metoda do znalezienia dat dla danego uzytkownika w danym spotkaniu
     public List<DateRange> findByUserAndMeeting(User user, Long meetingId) {
         return dateRangeRepository.findByUserAndMeetingId(user, meetingId);

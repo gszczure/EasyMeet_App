@@ -79,7 +79,7 @@ public class MeetingController {
         return ResponseEntity.ok(meeting.getMeetingDate());
     }
 
-    @PostMapping("/{meetingId}/date") //endpoint do zapisywania wybranej daty spotkania w mtabeli meeting
+    @PostMapping("/{meetingId}/date") //endpoint do zapisywania wybranej daty spotkania w tabeli meeting
     public ResponseEntity<?> setMeetingDate(@PathVariable Long meetingId, @RequestBody String date) {
         try {
             meetingService.saveMeetingDate(meetingId, date);
