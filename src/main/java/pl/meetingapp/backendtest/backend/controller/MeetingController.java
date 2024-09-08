@@ -36,6 +36,13 @@ public class MeetingController {
 
         return meetingService.createMeeting(name, owner);
     }
+
+    @DeleteMapping("/{meetingId}") // endpoint do usuwania spotkania
+    public ResponseEntity<String> deleteMeeting(@PathVariable Long meetingId) {
+            meetingService.deleteMeeting(meetingId);
+            return ResponseEntity.ok("The meeting has been successfully deleted.");
+    }
+
     @PostMapping("/join") // endpoint odpoiwadajacy za dodawanie uzytkownikow
     public ResponseEntity<String> joinMeeting(@RequestBody MeetingRequestDTO meetingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
