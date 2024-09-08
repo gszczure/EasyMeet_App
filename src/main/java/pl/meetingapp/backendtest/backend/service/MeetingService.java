@@ -2,9 +2,11 @@ package pl.meetingapp.backendtest.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.meetingapp.backendtest.backend.model.DateRange;
 import pl.meetingapp.backendtest.backend.model.Meeting;
 import pl.meetingapp.backendtest.backend.model.MeetingParticipantsDTO;
 import pl.meetingapp.backendtest.backend.model.User;
+import pl.meetingapp.backendtest.backend.repository.DateRangeRepository;
 import pl.meetingapp.backendtest.backend.repository.MeetingRepository;
 import pl.meetingapp.backendtest.backend.repository.UserRepository;
 
@@ -23,6 +25,9 @@ public class MeetingService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private DateRangeService dateRangeService;
 
     public Meeting createMeeting(String name, User owner) {
         Meeting meeting = new Meeting(name, owner);
@@ -92,7 +97,14 @@ public class MeetingService {
     public void deleteMeeting(Long meetingId) {
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new RuntimeException("Meeting with id: " + meetingId + " not found"));
+
+        // pobieranie wszystkich DateRanges i usuwanie ich
+        List<DateRange> dateRanges = dateRangeService.findByMeetingId(meetingId);
+        dateRangeService.deleteAll(dateRanges);
+
+        // Usuwanie spotkania
         meetingRepository.delete(meeting);
     }
+
 
 }

@@ -36,9 +36,6 @@ public class Meeting {
     @Column(name = "meeting_date")
     private String meetingDate;
 
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DateRange> dateRanges = new ArrayList<>();
-
     public Meeting() {}
 
     public Meeting(String name, User owner) {
@@ -89,19 +86,5 @@ public class Meeting {
 
     public void setMeetingDate(String meetingDate) {
         this.meetingDate = meetingDate;
-    }
-
-    public List<DateRange> getDateRanges() {
-        return dateRanges;
-    }
-
-    public void addDateRange(DateRange dateRange) {
-        dateRanges.add(dateRange);
-        dateRange.setMeeting(this);
-    }
-
-    public void removeDateRange(DateRange dateRange) {
-        dateRanges.remove(dateRange);
-        dateRange.setMeeting(null);
     }
 }
