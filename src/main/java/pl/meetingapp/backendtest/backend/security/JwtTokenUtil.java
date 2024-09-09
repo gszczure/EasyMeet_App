@@ -46,6 +46,7 @@ public class JwtTokenUtil {
 
     private String createToken(Map<String, Object> claims, String subject) {
         long expirationTime = Duration.ofHours(10).toMillis();
+        //DO TESTOW WYGASNIECIE TOKENU PO SEKUNDZIE
 //        long expirationTime = Duration.ofSeconds(1).toMillis();
 
         return Jwts.builder()
