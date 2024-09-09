@@ -22,7 +22,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    //TODO: sprawdzic czym sie rozni te dwie metody
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
