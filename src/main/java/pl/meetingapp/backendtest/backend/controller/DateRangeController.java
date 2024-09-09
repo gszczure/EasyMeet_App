@@ -33,7 +33,6 @@ public class DateRangeController {
     //Endpdoint do zapisywania dat w bazie danych
     @PostMapping
     public ResponseEntity<List<DateRange>> createDateRanges(@RequestBody List<DateRangeDTO> dateRangesDto) {
-        //TODO: sprawdzic czym sie rozni od tego
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userService.findByUsername(username);

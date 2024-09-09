@@ -29,12 +29,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                //TODO: upewnic sie czy trzeba tu wpisywac endpointa za kazdym razem
-                //TODO: dodac brakujace endpointy
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
-                        .requestMatchers("/api/meetings/create", "/api/meetings/join", "/api/meetings/for-user", "/api/meetings/join", "/api/meetings//{meetingId}/participants").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

@@ -29,6 +29,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        // Sprawdzanie, czy endpoint to logowanie, zrobione po to bo wczesniej wyswietlal sie komunitkat JWT token is invalid podczas logowania
+        String requestPath = request.getServletPath();
+        if ("/api/auth/login".equals(requestPath)) {
+            // Pomijanie logowania - nie sprawdzaj JWT przy logowaniu
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         final String authorizationHeader = request.getHeader("Authorization");
 
         String username = null;
@@ -41,7 +49,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 System.out.println("JWT token is expired");
             } catch (Exception e) {
-                //TODO: sprawdzic dalczego caly czas przy poprawnym logowaniu sie wyswietla ten komunikat choc token jest poprawny
                 System.out.println("JWT token is invalid");
             }
         }
@@ -58,4 +65,5 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+
 }
