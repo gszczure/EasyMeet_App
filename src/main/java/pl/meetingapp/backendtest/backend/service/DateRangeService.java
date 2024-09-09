@@ -24,7 +24,7 @@ public class DateRangeService {
         return dateRangeRepository.findByMeetingId(meetingId);
     }
 
-    // Metoda do usuwania przedzialu daty
+    // Metoda do usuwania przedzialu daty w common dates
     public void deleteById(Long id) {
         dateRangeRepository.deleteById(id);
     }
@@ -75,7 +75,7 @@ public class DateRangeService {
         return dateRangeRepository.findByUserAndMeetingId(user, meetingId);
     }
 
-    // Metoda do usuwania dat spotkania zaznaczonych przez urzytkowników
+    // Metoda do usuwania dat spotkania
     public void deleteAll(List<DateRange> dateRanges) {
         dateRangeRepository.deleteAll(dateRanges);
     }
