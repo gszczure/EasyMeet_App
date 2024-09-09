@@ -57,7 +57,7 @@ public class MeetingController {
         User user = userService.findByUsername(username);
         return meetingService.getMeetingsForUser(user);
     }
-@Va
+
     @GetMapping("/{meetingId}/participants") // endpoint do pobieranai ludzi ze spotkania i wlasciciela spotkania
     public ResponseEntity<MeetingParticipantsDTO> getMeetingParticipants(@PathVariable Long meetingId) {
         try {
