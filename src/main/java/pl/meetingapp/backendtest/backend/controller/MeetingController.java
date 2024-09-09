@@ -57,7 +57,7 @@ public class MeetingController {
         User user = userService.findByUsername(username);
         return meetingService.getMeetingsForUser(user);
     }
-
+@Va
     @GetMapping("/{meetingId}/participants") // endpoint do pobieranai ludzi ze spotkania i wlasciciela spotkania
     public ResponseEntity<MeetingParticipantsDTO> getMeetingParticipants(@PathVariable Long meetingId) {
         try {
@@ -68,8 +68,29 @@ public class MeetingController {
         }
     }
 
-    @DeleteMapping("/{meetingId}/participants/{username}") //endpoint do usuwania urzystkownika ze spotkania oraz wybranych przez niego dat
+    @DeleteMapping("/{meetingId}/participants/{username}") // Endpoit do usuwania kogos z spotkania z walidacja czy jest on wlascicielem spotkania
     public ResponseEntity<String> removeParticipant(@PathVariable Long meetingId, @PathVariable String username) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUsername = authentication.getName();
+        User loggedInUser = userService.findByUsername(loggedInUsername);
+        Meeting meeting = meetingService.findById(meetingId);
+
+        if (meeting == null || !meeting.getOwner().equals(loggedInUser)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to remove participants.");
+        }
+
+        meetingService.removeUserFromMeeting(meetingId, username);
+        User user = userService.findByUsername(username);
+        List<DateRange> dateRanges = dateRangeService.findByUserAndMeeting(user, meetingId);
+        dateRangeService.deleteAll(dateRanges);
+        return ResponseEntity.ok("User removed successfully");
+    }
+
+    @DeleteMapping("/{meetingId}/leave") // Endpoint do opuszczania spotkania przez uczestnika
+    public ResponseEntity<String> leaveMeeting(@PathVariable Long meetingId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         meetingService.removeUserFromMeeting(meetingId, username);
         User user = userService.findByUsername(username);
         List<DateRange> dateRanges = dateRangeService.findByUserAndMeeting(user, meetingId);
