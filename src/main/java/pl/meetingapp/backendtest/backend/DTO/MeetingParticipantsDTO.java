@@ -1,4 +1,6 @@
-package pl.meetingapp.backendtest.backend.model;
+package pl.meetingapp.backendtest.backend.DTO;
+
+import pl.meetingapp.backendtest.backend.model.User;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package pl.meetingapp.backendtest.backend.model;
+package pl.meetingapp.backendtest.backend.DTO;
 
 import java.time.LocalDate;
 

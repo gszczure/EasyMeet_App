@@ -19,6 +19,7 @@ public class User {
     @NotBlank
     private String lastName;
     @NotBlank
+    @Column(unique = true)
     private String username;
     @NotBlank
     @Size(min = 6)

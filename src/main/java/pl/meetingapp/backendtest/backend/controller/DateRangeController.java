@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.meetingapp.backendtest.backend.model.DateRange;
-import pl.meetingapp.backendtest.backend.model.DateRangeDTO;
+import pl.meetingapp.backendtest.backend.DTO.DateRangeDTO;
 import pl.meetingapp.backendtest.backend.model.Meeting;
 import pl.meetingapp.backendtest.backend.model.User;
 import pl.meetingapp.backendtest.backend.service.DateRangeService;

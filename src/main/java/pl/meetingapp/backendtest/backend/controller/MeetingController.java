@@ -6,6 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import pl.meetingapp.backendtest.backend.DTO.DateRequestDTO;
+import pl.meetingapp.backendtest.backend.DTO.MeetingParticipantsDTO;
+import pl.meetingapp.backendtest.backend.DTO.MeetingRequestDTO;
 import pl.meetingapp.backendtest.backend.model.*;
 import pl.meetingapp.backendtest.backend.service.DateRangeService;
 import pl.meetingapp.backendtest.backend.service.MeetingService;
@@ -40,10 +43,10 @@ public class MeetingController {
     @DeleteMapping("/{meetingId}") // endpoint do usuwania spotkania
     public ResponseEntity<String> deleteMeeting(@PathVariable Long meetingId) {
             meetingService.deleteMeeting(meetingId);
-            return ResponseEntity.ok("The meeting has been successfully deleted.");
+            return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/join") // endpoint odpoiwadajacy za dodawanie uzytkownikow
+    @PostMapping("/join") // endpoint odpoiwadajacy za dolaczanie uzytkownikow do spotkania
     public ResponseEntity<String> joinMeeting(@RequestBody MeetingRequestDTO meetingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -83,7 +86,7 @@ public class MeetingController {
         User user = userService.findByUsername(username);
         List<DateRange> dateRanges = dateRangeService.findByUserAndMeeting(user, meetingId);
         dateRangeService.deleteAll(dateRanges);
-        return ResponseEntity.ok("User removed successfully");
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{meetingId}/leave") // Endpoint do opuszczania spotkania przez uczestnika
@@ -95,7 +98,7 @@ public class MeetingController {
         User user = userService.findByUsername(username);
         List<DateRange> dateRanges = dateRangeService.findByUserAndMeeting(user, meetingId);
         dateRangeService.deleteAll(dateRanges);
-        return ResponseEntity.ok("User removed successfully");
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{meetingId}/date") //endpoint do pobierania daty z meetingu (zapisuje ja w accordin)
@@ -107,13 +110,15 @@ public class MeetingController {
         return ResponseEntity.ok(meeting.getMeetingDate());
     }
 
-    @PostMapping("/{meetingId}/date") //endpoint do zapisywania wybranej daty spotkania w tabeli meeting
-    public ResponseEntity<?> setMeetingDate(@PathVariable Long meetingId, @RequestBody String date) {
+    @PostMapping("/{meetingId}/date") //endpoint do ustawiania daty dla spotkania
+    public ResponseEntity<?> setMeetingDate(@PathVariable Long meetingId, @RequestBody DateRequestDTO dateRequest) {
         try {
+            String date = dateRequest.getDate();
             meetingService.saveMeetingDate(meetingId, date);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
 }

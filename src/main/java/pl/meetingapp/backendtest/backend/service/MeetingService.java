@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.meetingapp.backendtest.backend.model.DateRange;
 import pl.meetingapp.backendtest.backend.model.Meeting;
-import pl.meetingapp.backendtest.backend.model.MeetingParticipantsDTO;
+import pl.meetingapp.backendtest.backend.DTO.MeetingParticipantsDTO;
 import pl.meetingapp.backendtest.backend.model.User;
-import pl.meetingapp.backendtest.backend.repository.DateRangeRepository;
 import pl.meetingapp.backendtest.backend.repository.MeetingRepository;
 import pl.meetingapp.backendtest.backend.repository.UserRepository;
 
@@ -34,7 +33,6 @@ public class MeetingService {
         return meetingRepository.save(meeting);
     }
 
-    //TODO: zapisuje sie jako caly obkient json zmienc to
     public void saveMeetingDate(Long meetingId, String date) throws Exception {
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new Exception("Meeting not found"));
@@ -43,20 +41,25 @@ public class MeetingService {
     }
 
     public ResponseEntity<String> joinMeeting(String code, String username) {
+        // Znajdź spotkanie na podstawie kodu
         Optional<Meeting> meetingOpt = meetingRepository.findByCode(code);
-        if (meetingOpt.isPresent()) {
-            Meeting meeting = meetingOpt.get();
-            Optional<User> userOpt = userRepository.findByUsername(username);
+        Meeting meeting = meetingOpt.get();
 
-            if (userOpt.isPresent()) {
-                User user = userOpt.get();
-                meeting.addParticipant(user);
-                meetingRepository.save(meeting);
-                return ResponseEntity.ok("Joined the meeting.");
-            }
+        //Znajdz uztykownika na podstawie username
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        User user = userOpt.get();
+
+        if (meeting.getParticipants().contains(user)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to join.");
+
+        // Dodaj użytkownika do spotkania
+        meeting.addParticipant(user);
+        meetingRepository.save(meeting);
+
+        return ResponseEntity.ok().build();
     }
+
 
     public List<Meeting> getMeetingsForUser(User user) {
         List<Meeting> meetingsAsOwner = meetingRepository.findByOwner(user);
