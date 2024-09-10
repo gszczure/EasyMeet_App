@@ -53,7 +53,6 @@ public class MeetingService {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        // Dodaj użytkownika do spotkania
         meeting.addParticipant(user);
         meetingRepository.save(meeting);
 
@@ -108,6 +107,4 @@ public class MeetingService {
         // Usuwanie spotkania
         meetingRepository.delete(meeting);
     }
-
-
 }
