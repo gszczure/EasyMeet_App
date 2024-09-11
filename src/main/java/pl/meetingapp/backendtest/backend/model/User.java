@@ -14,7 +14,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "First name is mandatory")
+    @NotBlank
     private String firstName;
     @NotBlank
     private String lastName;
@@ -25,6 +25,7 @@ public class User {
     @Size(min = 6)
     private String password;
     @NotBlank
+    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     private String email;
     @NotBlank
     @Pattern(regexp = "\\d{9}")

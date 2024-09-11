@@ -1,5 +1,6 @@
 package pl.meetingapp.backendtest.backend.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,7 @@ public class MeetingController {
     }
 
     @PostMapping("/join") // endpoint odpoiwadajacy za dolaczanie uzytkownikow do spotkania
-    public ResponseEntity<String> joinMeeting(@RequestBody MeetingRequestDTO meetingRequest) {
+    public ResponseEntity<String> joinMeeting(@Valid @RequestBody MeetingRequestDTO meetingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         return meetingService.joinMeeting(meetingRequest.getCode(), username);
@@ -79,7 +80,7 @@ public class MeetingController {
         Meeting meeting = meetingService.findById(meetingId);
 
         if (meeting == null || !meeting.getOwner().equals(loggedInUser)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to remove participants.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         meetingService.removeUserFromMeeting(meetingId, username);
@@ -101,7 +102,7 @@ public class MeetingController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{meetingId}/date") //endpoint do pobierania daty z meetingu (zapisuje ja w accordin)
+    @GetMapping("/{meetingId}/date") // endpoint pobiera datę spotkania (czyli odczytuje datę przypisaną do danego spotkania)
     public ResponseEntity<String> getMeetingDate(@PathVariable Long meetingId) {
         Meeting meeting = meetingService.findById(meetingId);
         if (meeting == null) {
@@ -110,14 +111,14 @@ public class MeetingController {
         return ResponseEntity.ok(meeting.getMeetingDate());
     }
 
-    @PostMapping("/{meetingId}/date") //endpoint do ustawiania daty dla spotkania
-    public ResponseEntity<?> setMeetingDate(@PathVariable Long meetingId, @RequestBody DateRequestDTO dateRequest) {
+    @PostMapping("/{meetingId}/date") //endpoint ustawia datę spotkania, czyli umożliwia zaktualizowanie daty przez własciela
+    public ResponseEntity<?> setMeetingDate(@Valid @PathVariable Long meetingId, @RequestBody DateRequestDTO dateRequest) {
         try {
             String date = dateRequest.getDate();
             meetingService.saveMeetingDate(meetingId, date);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
