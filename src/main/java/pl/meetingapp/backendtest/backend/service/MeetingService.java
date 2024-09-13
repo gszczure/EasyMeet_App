@@ -107,4 +107,10 @@ public class MeetingService {
         // Usuwanie spotkania
         meetingRepository.delete(meeting);
     }
+    public void addOrUpdateComment(Long meetingId, String comment) throws Exception {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new Exception("Meeting not found"));
+        meeting.setComment(comment);
+        meetingRepository.save(meeting);
+    }
 }

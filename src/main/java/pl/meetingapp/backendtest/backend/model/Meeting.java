@@ -36,6 +36,9 @@ public class Meeting {
     @Column(name = "meeting_date")
     private String meetingDate;
 
+    @Column(name = "comment")
+    private String comment;
+
     public Meeting() {}
 
     public Meeting(String name, User owner) {
@@ -86,5 +89,13 @@ public class Meeting {
 
     public void setMeetingDate(String meetingDate) {
         this.meetingDate = meetingDate;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

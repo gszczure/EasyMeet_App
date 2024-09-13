@@ -43,8 +43,8 @@ public class MeetingController {
 
     @DeleteMapping("/{meetingId}") // endpoint do usuwania spotkania
     public ResponseEntity<String> deleteMeeting(@PathVariable Long meetingId) {
-            meetingService.deleteMeeting(meetingId);
-            return ResponseEntity.ok().build();
+        meetingService.deleteMeeting(meetingId);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/join") // endpoint odpoiwadajacy za dolaczanie uzytkownikow do spotkania
@@ -72,7 +72,8 @@ public class MeetingController {
         }
     }
 
-    @DeleteMapping("/{meetingId}/participants/{username}") // Endpoit do usuwania kogos z spotkania z walidacja czy jest on wlascicielem spotkania
+    @DeleteMapping("/{meetingId}/participants/{username}")
+    // Endpoit do usuwania kogos z spotkania z walidacja czy jest on wlascicielem spotkania
     public ResponseEntity<String> removeParticipant(@PathVariable Long meetingId, @PathVariable String username) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loggedInUsername = authentication.getName();
@@ -102,7 +103,8 @@ public class MeetingController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{meetingId}/date") // endpoint pobiera datę spotkania (czyli odczytuje datę przypisaną do danego spotkania)
+    @GetMapping("/{meetingId}/date")
+    // endpoint pobiera datę spotkania (czyli odczytuje datę przypisaną do danego spotkania)
     public ResponseEntity<String> getMeetingDate(@PathVariable Long meetingId) {
         Meeting meeting = meetingService.findById(meetingId);
         if (meeting == null) {
@@ -122,4 +124,20 @@ public class MeetingController {
         }
     }
 
+    @PostMapping("/{meetingId}/comment") //ednpoint umozliwia zapisywanie komentarza przez wlasciciela
+    public ResponseEntity<Void> addComment(@PathVariable Long meetingId, @RequestBody String comment) {
+        try {
+            String cleanComment = comment.trim();
+            meetingService.addOrUpdateComment(meetingId, cleanComment);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/{meetingId}/comment") //endpoit do pobierania z bazy danych komentarza do spotkania
+    public ResponseEntity<String> getComment(@PathVariable Long meetingId) {
+        Meeting meeting = meetingService.findById(meetingId);
+        return ResponseEntity.ok(meeting.getComment());
+    }
 }

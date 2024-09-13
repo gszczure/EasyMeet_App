@@ -10,7 +10,6 @@ public class MeetingRequestDTO {
     @NotBlank
     private String code;
 
-
     public String getName() {
         return name;
     }
