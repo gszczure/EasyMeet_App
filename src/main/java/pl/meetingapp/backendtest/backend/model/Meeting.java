@@ -2,6 +2,7 @@ package pl.meetingapp.backendtest.backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,8 @@ public class Meeting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Meeting name is mandatory")
+    @NotBlank
+    @Size(max = 25)
     private String name;
 
     @ManyToOne
