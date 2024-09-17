@@ -21,4 +21,4 @@ COPY . .
 RUN ./mvnw clean package -DskipTests
 
 # Uruchom aplikację Spring Boot (plik jar zostanie wygenerowany w katalogu target po budowie)
-CMD ["java", "-jar", "/app/target/myapp-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "/app/target/BACKENDTEST-0.0.1-SNAPSHOT.jar"]
