@@ -32,6 +32,11 @@ Aby uruchomić aplikację, wymagane jest:
 Sprawdź instalację Javy za pomocą polecenia:
 `java -version`
 
+## Zobacz demonstrację działania pierwszej wersji aplikacji
+
+[Zobacz demonstrację na YouTube](https://youtu.be/fVYEp7d8_mM)
+
+
 ## Instalacja
 
 1. Pobierz i zainstaluj aplikację.
