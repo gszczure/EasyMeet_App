@@ -24,6 +24,10 @@ Poniżej znajdziesz szczegóły dotyczące instalacji, technologii oraz podstawo
   - Backend aplikacji jest uruchomiony na platformie **Render**.
   - Baza danych znajduje się na platformie **Railway**.
 
+## Zobacz demonstrację działania pierwszej wersji aplikacji
+
+[Zobacz demonstrację na YouTube](https://youtu.be/fVYEp7d8_mM)
+
 ## Wymagania systemowe
 
 Aby uruchomić aplikację, wymagane jest:
@@ -31,11 +35,6 @@ Aby uruchomić aplikację, wymagane jest:
 
 Sprawdź instalację Javy za pomocą polecenia:
 `java -version`
-
-## Zobacz demonstrację działania pierwszej wersji aplikacji
-
-[Zobacz demonstrację na YouTube](https://youtu.be/fVYEp7d8_mM)
-
 
 ## Instalacja
 
