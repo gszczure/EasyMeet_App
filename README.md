@@ -16,7 +16,7 @@ Poniżej znajdziesz szczegóły dotyczące instalacji, technologii oraz podstawo
 
 ## Technologie
 
-- **Backend**: Aplikacja oparta jest na technologii **Java** i wymaga minimum wersji 14 (zalecana Oracle Java SDK 19).
+- **Backend**: Aplikacja oparta jest na technologii **Java** z użyciem **Springa** i wymaga minimum wersji 14 (zalecana Oracle Java SDK 19).
 - **Frontend**: Kod frontendu aplikacji jest dostępny na GitHubie: [FRONTENDMEETINGAPP](https://github.com/gszczure/FRONTENDMEETINGAPP). The frontend was developed using JavaFX and Scene Builder with some CSS for styling.
 - **Autentykacja**: Do autentykacji użytkowników wykorzystano **JWT (JSON Web Token)**, co zapewnia bezpieczne zarządzanie sesjami użytkowników.
 - **Baza danych**: Aplikacja korzysta z bazy danych **PostgreSQL**, a hasła użytkowników są **hashowane** przed zapisaniem w bazie danych dla zapewnienia dodatkowej warstwy bezpieczeństwa.
