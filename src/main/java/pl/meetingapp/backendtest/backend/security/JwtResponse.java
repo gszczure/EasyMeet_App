@@ -1,5 +1,10 @@
 package pl.meetingapp.backendtest.backend.security;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class JwtResponse {
     private String tokenType = "Bearer";
     private String token;
@@ -8,17 +13,5 @@ public class JwtResponse {
     public JwtResponse(String token, Long userId) {
         this.token = token;
         this.userId = userId;
-    }
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public Long getUserId() {
-        return userId;
     }
 }
