@@ -3,11 +3,15 @@ package pl.meetingapp.backendtest.backend.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "meeting")
 public class Meeting {
@@ -49,33 +53,13 @@ public class Meeting {
         this.code = generateUniqueCode();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public List<User> getParticipants() {
-        return participants;
-    }
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public void setOwner(User owner) {
+//        this.owner = owner;
+//    }
 
     public void addParticipant(User user) {
         this.participants.add(user);
@@ -85,19 +69,11 @@ public class Meeting {
         return UUID.randomUUID().toString().substring(0, 5);
     }
 
-    public String getMeetingDate() {
-        return meetingDate;
-    }
-
-    public void setMeetingDate(String meetingDate) {
-        this.meetingDate = meetingDate;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+//    public void setMeetingDate(String meetingDate) {
+//        this.meetingDate = meetingDate;
+//    }
+//
+//    public void setComment(String comment) {
+//        this.comment = comment;
+//    }
 }
