@@ -49,6 +49,6 @@ Sprawdź instalację Javy za pomocą polecenia:
 
 ## Testowanie i uwagi
 
-Aplikacja jest w fazie rozwoju. Obecnie pracuje nad drugą wersjom na osobnym branchu. Wszelkie opinie, sugestie dotyczące ulepszeń, zmian lub usunięć funkcji są mile widziane.
+Aplikacja jest w fazie rozwoju. Obecnie pracuje nad drugą wersją na osobnym branchu. Wszelkie opinie, sugestie dotyczące ulepszeń, zmian lub usunięć funkcji są mile widziane.
 
 Dostępne jest testowe spotkanie o kodzie: `af86a`.
