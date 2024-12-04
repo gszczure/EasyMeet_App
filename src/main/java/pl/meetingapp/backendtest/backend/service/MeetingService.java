@@ -1,7 +1,12 @@
 package pl.meetingapp.backendtest.backend.service;
 
+import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import pl.meetingapp.backendtest.backend.DTO.MeetingDTO;
+import pl.meetingapp.backendtest.backend.DTO.ParticipantDTO;
 import pl.meetingapp.backendtest.backend.model.DateRange;
 import pl.meetingapp.backendtest.backend.model.Meeting;
 import pl.meetingapp.backendtest.backend.DTO.MeetingParticipantsDTO;
@@ -12,6 +17,7 @@ import pl.meetingapp.backendtest.backend.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,12 +66,52 @@ public class MeetingService {
     }
 
 
-    public List<Meeting> getMeetingsForUser(User user) {
-        List<Meeting> meetingsAsOwner = meetingRepository.findByOwner(user);
-        List<Meeting> meetingsAsParticipant = meetingRepository.findByParticipantsContaining(user);
-        meetingsAsOwner.addAll(meetingsAsParticipant);
-        return meetingsAsOwner;
+    public List<MeetingDTO> getMeetingsForUser(User user) {
+        List<Meeting> meetings = meetingRepository.findByOwnerOrParticipantsContaining(user, user);
+
+        // Tworzymi liste nowa, przechodzimy po kazdym spotkaniu gdzie uzytkownik jest wlasciceilem lub po prostu nalezy do spotkania
+        List<MeetingDTO> meetingDTOs = new ArrayList<>();
+        for (Meeting meeting : meetings) {
+            // Mapujemy wlasciciela
+            ParticipantDTO ownerDTO = new ParticipantDTO(
+                    meeting.getOwner().getId(),
+                    meeting.getOwner().getFirstName(),
+                    meeting.getOwner().getLastName()
+            );
+
+            // Mapujemy urzytkownikow
+            List<ParticipantDTO> participantDTOs = meeting.getParticipants().stream()
+                    .map(participant -> new ParticipantDTO(
+                            participant.getId(),
+                            participant.getFirstName(),
+                            participant.getLastName()
+                    ))
+                    .collect(Collectors.toList());
+
+            // Mozna tu dodac zeby owner tez byl na liscie participants tak jak w metodzie getParticipants
+
+            // Sprawdzanie czy uzytkownik jest wlasciceilem jesli jest to w JSON Code: bedzie miala code napisany, ale jesli nie jest to Code: bedzie null
+            String code = null;
+            if (meeting.getOwner().equals(user)) {
+                code = meeting.getCode();
+            }
+
+            // tworzeymy obiekt MeetingDTO zawierajacy informacje ktore nas interesuja
+            MeetingDTO meetingDTO = new MeetingDTO(
+                    meeting.getId(),
+                    meeting.getName(),
+                    code,
+                    ownerDTO,
+                    participantDTOs
+            );
+
+            // Dodajemy MeetingDTO do listy MeetingDTOs
+            meetingDTOs.add(meetingDTO);
+        }
+        // Zwracamy liste
+        return meetingDTOs;
     }
+
 
     public Meeting findById(Long id) {
         Optional<Meeting> meeting = meetingRepository.findById(id);
@@ -89,12 +135,29 @@ public class MeetingService {
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new RuntimeException("Meeting with id: " + meetingId + " not found"));
 
-        User owner = meeting.getOwner();
-        List<User> participants = new ArrayList<>(meeting.getParticipants());
-        participants.add(owner);
+        // Mapowanie ownera
+        ParticipantDTO ownerDTO = new ParticipantDTO(
+                meeting.getOwner().getId(),
+                meeting.getOwner().getFirstName(),
+                meeting.getOwner().getLastName()
+        );
 
-        return new MeetingParticipantsDTO(owner, participants);
+        // Mapowanie uzytkowanikow
+        List<ParticipantDTO> participantDTOs = meeting.getParticipants().stream()
+                .map(participant -> new ParticipantDTO(
+                        participant.getId(),
+                        participant.getFirstName(),
+                        participant.getLastName()
+                ))
+                .collect(Collectors.toList());
+
+        // Dodajemy ownera do uzytkownikow tez
+        participantDTOs.add(ownerDTO);
+
+        // Zwracamy nowy MeetingParticipantsDTO
+        return new MeetingParticipantsDTO(ownerDTO, participantDTOs);
     }
+
 
     public void deleteMeeting(Long meetingId) {
         Meeting meeting = meetingRepository.findById(meetingId)

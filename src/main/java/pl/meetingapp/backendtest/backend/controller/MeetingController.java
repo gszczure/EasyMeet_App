@@ -7,15 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import pl.meetingapp.backendtest.backend.DTO.DateRequestDTO;
-import pl.meetingapp.backendtest.backend.DTO.MeetingParticipantsDTO;
-import pl.meetingapp.backendtest.backend.DTO.MeetingRequestDTO;
+import pl.meetingapp.backendtest.backend.DTO.*;
 import pl.meetingapp.backendtest.backend.model.*;
 import pl.meetingapp.backendtest.backend.service.DateRangeService;
 import pl.meetingapp.backendtest.backend.service.MeetingService;
 import pl.meetingapp.backendtest.backend.service.UserService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/meetings")
@@ -30,38 +29,61 @@ public class MeetingController {
     @Autowired
     private DateRangeService dateRangeService;
 
-    @PostMapping("/create") // endpoint do tworzenia spotkania
-    public Meeting createMeeting(@RequestBody MeetingRequestDTO meetingRequest) {
+    //Zrobione
+    @PostMapping("/create")
+    public MeetingDTO createMeeting(@RequestBody MeetingRequestDTO meetingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
+
         User owner = userService.findByUsername(username);
 
         String name = meetingRequest.getName();
 
-        return meetingService.createMeeting(name, owner);
-    }
+        Meeting meeting = meetingService.createMeeting(name, owner);
 
+        return new MeetingDTO(
+                meeting.getId(),
+                meeting.getName(),
+                meeting.getCode(),
+
+                new ParticipantDTO(
+                        meeting.getOwner().getId(),
+                        meeting.getOwner().getFirstName(),
+                        meeting.getOwner().getLastName()
+                ),
+
+                meeting.getParticipants().stream()
+                        .map(p -> new ParticipantDTO(
+                                p.getId(),
+                                p.getFirstName(),
+                                p.getLastName()
+                        ))
+                        .collect(Collectors.toList())
+        );
+    }
+    //Zrobione
     @DeleteMapping("/{meetingId}") // endpoint do usuwania spotkania
     public ResponseEntity<String> deleteMeeting(@PathVariable Long meetingId) {
         meetingService.deleteMeeting(meetingId);
         return ResponseEntity.ok().build();
     }
-
+    //Zrobione
     @PostMapping("/join") // endpoint odpoiwadajacy za dolaczanie uzytkownikow do spotkania
     public ResponseEntity<String> joinMeeting(@Valid @RequestBody MeetingRequestDTO meetingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         return meetingService.joinMeeting(meetingRequest.getCode(), username);
     }
-
-    @GetMapping("/for-user") // endpoint odpowiadajacy za pobieranie spotkan w ktorych naleza uczestnicy lub ktore zalozyli
-    public List<Meeting> getMeetingsForUser() {
+    //Zrobione
+    @GetMapping("/for-user") // endpoint do pobierania spotkan dla uzytkownika zalogowanego
+    public List<MeetingDTO> getMeetingsForUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userService.findByUsername(username);
         return meetingService.getMeetingsForUser(user);
     }
 
+    //Zrobione
     @GetMapping("/{meetingId}/participants") // endpoint do pobieranai ludzi ze spotkania i wlasciciela spotkania
     public ResponseEntity<MeetingParticipantsDTO> getMeetingParticipants(@PathVariable Long meetingId) {
         try {
@@ -91,6 +113,7 @@ public class MeetingController {
         return ResponseEntity.ok().build();
     }
 
+    //Zrobione
     @DeleteMapping("/{meetingId}/leave") // Endpoint do opuszczania spotkania przez uczestnika
     public ResponseEntity<String> leaveMeeting(@PathVariable Long meetingId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

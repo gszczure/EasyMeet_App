@@ -13,8 +13,8 @@ import java.util.Optional;
 @Repository
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
     Optional<Meeting> findByCode(String code);
-    List<Meeting> findByOwner(User owner);
-    List<Meeting> findByParticipantsContaining(User user);
+
+    List<Meeting> findByOwnerOrParticipantsContaining(User owner, User participant);
 
 //    @Query("SELECT mp.id FROM Meeting m JOIN m.participants mp WHERE m.id = :meetingId")
 //    List<Long> findParticipantIdsByMeetingId(@Param("meetingId") Long meetingId);

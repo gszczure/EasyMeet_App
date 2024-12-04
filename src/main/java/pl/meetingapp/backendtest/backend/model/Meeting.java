@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "meeting")
 public class Meeting {
 
@@ -44,8 +46,6 @@ public class Meeting {
 
     @Column(name = "comment")
     private String comment;
-
-    public Meeting() {}
 
     public Meeting(String name, User owner) {
         this.name = name;
