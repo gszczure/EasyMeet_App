@@ -75,18 +75,6 @@ public class MeetingService {
                     meeting.getOwner().getFirstName(),
                     meeting.getOwner().getLastName()
             );
-
-            // Mapujemy urzytkownikow
-            List<ParticipantDTO> participantDTOs = meeting.getParticipants().stream()
-                    .map(participant -> new ParticipantDTO(
-                            participant.getId(),
-                            participant.getFirstName(),
-                            participant.getLastName()
-                    ))
-                    .collect(Collectors.toList());
-
-            // Mozna tu dodac zeby owner tez byl na liscie participants tak jak w metodzie getParticipants
-
             // Sprawdzanie czy uzytkownik jest wlasciceilem jesli jest to w JSON Code: bedzie miala code napisany, ale jesli nie jest to Code: bedzie null
             String code = null;
             if (meeting.getOwner().equals(user)) {
@@ -135,7 +123,8 @@ public class MeetingService {
         ParticipantDTO ownerDTO = new ParticipantDTO(
                 meeting.getOwner().getId(),
                 meeting.getOwner().getFirstName(),
-                meeting.getOwner().getLastName()
+                meeting.getOwner().getLastName(),
+                meeting.getOwner().getUsername()
         );
 
         // Mapowanie uzytkowanikow
@@ -143,7 +132,8 @@ public class MeetingService {
                 .map(participant -> new ParticipantDTO(
                         participant.getId(),
                         participant.getFirstName(),
-                        participant.getLastName()
+                        participant.getLastName(),
+                        participant.getUsername()
                 ))
                 .collect(Collectors.toList());
 

@@ -14,4 +14,12 @@ public class ParticipantDTO {
     private Long id;
     private String firstName;
     private String lastName;
+    private String username;
+
+    // Nie pełny konstruktor poniewaz nie chce by usernema byl wyswietlany w JSON podczas pobierania spotkań dla uzytkownika
+    public ParticipantDTO(Long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

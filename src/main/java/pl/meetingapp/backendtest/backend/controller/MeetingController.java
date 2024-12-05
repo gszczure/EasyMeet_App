@@ -86,6 +86,7 @@ public class MeetingController {
         }
     }
 
+    // Zrobione
     @DeleteMapping("/{meetingId}/participants/{username}")
     // Endpoit do usuwania kogos z spotkania z walidacja czy jest on wlascicielem spotkania
     public ResponseEntity<String> removeParticipant(@PathVariable Long meetingId, @PathVariable String username) {
