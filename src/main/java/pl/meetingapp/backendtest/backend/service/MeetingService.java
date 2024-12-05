@@ -1,9 +1,6 @@
 package pl.meetingapp.backendtest.backend.service;
 
-import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.meetingapp.backendtest.backend.DTO.MeetingDTO;
 import pl.meetingapp.backendtest.backend.DTO.ParticipantDTO;
@@ -101,8 +98,7 @@ public class MeetingService {
                     meeting.getId(),
                     meeting.getName(),
                     code,
-                    ownerDTO,
-                    participantDTOs
+                    ownerDTO
             );
 
             // Dodajemy MeetingDTO do listy MeetingDTOs

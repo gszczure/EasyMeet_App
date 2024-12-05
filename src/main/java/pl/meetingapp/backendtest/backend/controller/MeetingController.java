@@ -50,15 +50,7 @@ public class MeetingController {
                         meeting.getOwner().getId(),
                         meeting.getOwner().getFirstName(),
                         meeting.getOwner().getLastName()
-                ),
-
-                meeting.getParticipants().stream()
-                        .map(p -> new ParticipantDTO(
-                                p.getId(),
-                                p.getFirstName(),
-                                p.getLastName()
-                        ))
-                        .collect(Collectors.toList())
+                )
         );
     }
     //Zrobione
