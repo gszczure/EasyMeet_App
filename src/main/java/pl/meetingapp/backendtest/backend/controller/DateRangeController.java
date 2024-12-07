@@ -30,9 +30,10 @@ public class DateRangeController {
     @Autowired
     private MeetingService meetingService;
 
+    //ZROBIONE
     //Endpdoint do zapisywania dat w bazie danych
     @PostMapping
-    public ResponseEntity<List<DateRange>> createDateRanges(@RequestBody List<DateRangeDTO> dateRangesDto) {
+    public ResponseEntity<Void> createDateRanges(@RequestBody List<DateRangeDTO> dateRangesDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userService.findByUsername(username);
@@ -47,8 +48,9 @@ public class DateRangeController {
             return dateRange;
         }).collect(Collectors.toList());
 
-        List<DateRange> savedDateRanges = dateRangeService.saveDateRanges(dateRanges);
-        return ResponseEntity.ok(savedDateRanges);
+        dateRangeService.saveDateRanges(dateRanges);
+
+        return ResponseEntity.ok().build();
     }
 
     //Endponit do pobierania dat dla danego spotkania

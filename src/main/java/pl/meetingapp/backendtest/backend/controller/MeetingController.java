@@ -60,6 +60,7 @@ public class MeetingController {
         return ResponseEntity.ok().build();
     }
     //Zrobione
+    //TODO sprawdzic czy potrzeba tu cos zwracac w odpowiedzi ale chyba trzeba bo jest validacja i sprawdzanie czy on napewno moze dolaczyc
     @PostMapping("/join") // endpoint odpoiwadajacy za dolaczanie uzytkownikow do spotkania
     public ResponseEntity<String> joinMeeting(@Valid @RequestBody MeetingRequestDTO meetingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
