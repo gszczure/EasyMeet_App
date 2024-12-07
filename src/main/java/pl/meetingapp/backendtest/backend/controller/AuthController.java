@@ -26,6 +26,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+    //TODO Zrobic walidacje wieksza po stronie backendu (na przyklad wpisanie poprawnie tego samego hasla drugi raz)
     @PostMapping("/register")
     public User register(@Valid @RequestBody User user) {
         return userService.registerUser(user);
