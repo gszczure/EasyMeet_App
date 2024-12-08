@@ -79,4 +79,7 @@ public class DateRangeService {
     public void deleteAll(List<DateRange> dateRanges) {
         dateRangeRepository.deleteAll(dateRanges);
     }
+    public List<DateRange> findByUserId(Long userId) {
+        return dateRangeRepository.findByUserId(userId);
+    }
 }

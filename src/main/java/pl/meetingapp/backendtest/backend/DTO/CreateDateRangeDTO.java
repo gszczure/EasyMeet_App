@@ -7,8 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-
-public class DateRangeDTO {
+public class CreateDateRangeDTO {
     private Long meetingId;
     private LocalDate startDate;
     private LocalDate endDate;
