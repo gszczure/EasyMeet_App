@@ -94,6 +94,7 @@ public class DateRangeController {
 
         List<MeetingDateRangeDTO> MeetingDateRangeDTOs = dateRanges.stream()
                 .map(dateRange -> new MeetingDateRangeDTO(
+                        dateRange.getId(),
                         dateRange.getStartDate(),
                         dateRange.getEndDate(),
                         dateRange.getUser().getFirstName() + " " + dateRange.getUser().getLastName(),
@@ -104,6 +105,7 @@ public class DateRangeController {
         return ResponseEntity.ok(MeetingDateRangeDTOs);
     }
 
+    //ZROBIONE
     //Endpoint do usuwania wybranych przedzialow dat (musi miec id przedzialu daty by je usunac)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDateRange(@PathVariable Long id) {
