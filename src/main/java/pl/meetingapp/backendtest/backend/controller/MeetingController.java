@@ -130,6 +130,7 @@ public class MeetingController {
         return ResponseEntity.ok(meeting.getMeetingDate());
     }
 
+    //ZROBIONE
     @PostMapping("/{meetingId}/date") //endpoint ustawia datę spotkania, czyli umożliwia zaktualizowanie daty przez własciela
     public ResponseEntity<?> setMeetingDate(@Valid @PathVariable Long meetingId, @RequestBody DateRequestDTO dateRequest) {
         try {

@@ -113,6 +113,7 @@ public class DateRangeController {
         return ResponseEntity.noContent().build();
     }
 
+    //ZROBIONE
     //Endpoint do pobierania wspolnych dat
     @GetMapping("/meeting/{meetingId}/common-dates")
     public ResponseEntity<List<LocalDate>> getCommonDatesForMeeting(@PathVariable Long meetingId) {
