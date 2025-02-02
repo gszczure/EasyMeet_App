@@ -27,7 +27,10 @@ public class DateRange {
     @Column(name = "start_date")
     private LocalDate startDate;
 
-    @Column(name = "end_date")
-    private LocalDate endDate;
+    @Column(name = "start_time")
+    private String startTime;
+
+    @Column(name = "duration")
+    private String duration;
 
 }

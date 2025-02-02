@@ -38,36 +38,36 @@ public class DateRangeService {
     - zakładamy, że wszystkie daty dostępne dla pierwszego użytkownika są wspólne, kopiując je do commonDates
     - przechodzimy przez wszystkie zbiory dostępnych dat dla pozostałych użytkowników i używamy retainAll, aby pozostawić w commonDates tylko te daty, które są wspólne dla wszystkich użytkowników
      */
-    public List<LocalDate> getCommonDatesForMeeting(Long meetingId) {
-        List<DateRange> dateRanges = dateRangeRepository.findByMeetingId(meetingId);
-
-        if (dateRanges.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        Map<Long, Set<LocalDate>> userAvailableDates = new HashMap<>();
-
-        for (DateRange dateRange : dateRanges) {
-            LocalDate startDate = dateRange.getStartDate();
-            LocalDate endDate = dateRange.getEndDate();
-
-            Long userId = dateRange.getUser().getId();
-            userAvailableDates.putIfAbsent(userId, new HashSet<>());
-
-            Set<LocalDate> availableDates = userAvailableDates.get(userId);
-            for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-                availableDates.add(date);
-            }
-        }
-
-        Set<LocalDate> commonDates = new HashSet<>(userAvailableDates.values().iterator().next());
-
-        for (Set<LocalDate> availableDates : userAvailableDates.values()) {
-            commonDates.retainAll(availableDates); // wybiera wszystkie wspolne daty ktore sa zarowno w commonDates i availableDates
-        }
-
-        return new ArrayList<>(commonDates);
-    }
+//    public List<LocalDate> getCommonDatesForMeeting(Long meetingId) {
+//        List<DateRange> dateRanges = dateRangeRepository.findByMeetingId(meetingId);
+//
+//        if (dateRanges.isEmpty()) {
+//            return new ArrayList<>();
+//        }
+//
+//        Map<Long, Set<LocalDate>> userAvailableDates = new HashMap<>();
+//
+//        for (DateRange dateRange : dateRanges) {
+//            LocalDate startDate = dateRange.getStartDate();
+//            LocalDate endDate = dateRange.getEndDate();
+//
+//            Long userId = dateRange.getUser().getId();
+//            userAvailableDates.putIfAbsent(userId, new HashSet<>());
+//
+//            Set<LocalDate> availableDates = userAvailableDates.get(userId);
+//            for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+//                availableDates.add(date);
+//            }
+//        }
+//
+//        Set<LocalDate> commonDates = new HashSet<>(userAvailableDates.values().iterator().next());
+//
+//        for (Set<LocalDate> availableDates : userAvailableDates.values()) {
+//            commonDates.retainAll(availableDates); // wybiera wszystkie wspolne daty ktore sa zarowno w commonDates i availableDates
+//        }
+//
+//        return new ArrayList<>(commonDates);
+//    }
 
 
     // Metoda do znalezienia dat dla danego uzytkownika w danym spotkaniu

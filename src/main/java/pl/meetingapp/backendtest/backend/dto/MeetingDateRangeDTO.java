@@ -1,4 +1,4 @@
-package pl.meetingapp.backendtest.backend.DTO;
+package pl.meetingapp.backendtest.backend.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,15 +10,16 @@ import java.time.LocalDate;
 public class MeetingDateRangeDTO {
     private long id;
     private LocalDate startDate;
-    private LocalDate endDate;
+    private String startTime;
+    private String duration;
     private String addedBy;
     private long userId;
 
-
-    public MeetingDateRangeDTO(long id, LocalDate startDate, LocalDate endDate, String addedBy, long userId) {
+    public MeetingDateRangeDTO(long id, LocalDate startDate, String startTime, String duration, String addedBy, long userId) {
         this.id = id;
         this.startDate = startDate;
-        this.endDate = endDate;
+        this.startTime = startTime;
+        this.duration = duration;
         this.addedBy = addedBy;
         this.userId = userId;
     }

@@ -1,4 +1,4 @@
-package pl.meetingapp.backendtest.backend.DTO;
+package pl.meetingapp.backendtest.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

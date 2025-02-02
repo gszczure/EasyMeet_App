@@ -2,11 +2,11 @@ package pl.meetingapp.backendtest.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.meetingapp.backendtest.backend.DTO.MeetingDTO;
-import pl.meetingapp.backendtest.backend.DTO.ParticipantDTO;
+import pl.meetingapp.backendtest.backend.dto.MeetingDTO;
+import pl.meetingapp.backendtest.backend.dto.ParticipantDTO;
 import pl.meetingapp.backendtest.backend.model.DateRange;
 import pl.meetingapp.backendtest.backend.model.Meeting;
-import pl.meetingapp.backendtest.backend.DTO.MeetingParticipantsDTO;
+import pl.meetingapp.backendtest.backend.dto.MeetingParticipantsDTO;
 import pl.meetingapp.backendtest.backend.model.User;
 import pl.meetingapp.backendtest.backend.repository.MeetingRepository;
 import pl.meetingapp.backendtest.backend.repository.UserRepository;
@@ -152,6 +152,8 @@ public class MeetingService {
         // pobieranie wszystkich DateRanges i usuwanie ich
         List<DateRange> dateRanges = dateRangeService.findByMeetingId(meetingId);
         dateRangeService.deleteAll(dateRanges);
+
+        // TODO DODAC ZE W SELECTIONS DAL DANEGO METINGID SIE WSZYSTKO USUWA
 
         // Usuwanie spotkania
         meetingRepository.delete(meeting);

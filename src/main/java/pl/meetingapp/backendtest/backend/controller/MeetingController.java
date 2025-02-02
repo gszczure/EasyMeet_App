@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import pl.meetingapp.backendtest.backend.DTO.*;
+import pl.meetingapp.backendtest.backend.dto.*;
 import pl.meetingapp.backendtest.backend.model.*;
 import pl.meetingapp.backendtest.backend.service.DateRangeService;
 import pl.meetingapp.backendtest.backend.service.MeetingService;
@@ -28,6 +28,7 @@ public class MeetingController {
     @Autowired
     private DateRangeService dateRangeService;
 
+    // TODO sprawdzic czy trzeba zwracac ten participantDRO tutaj
     //Zrobione
     @PostMapping("/create")
     public MeetingDTO createMeeting(@RequestBody MeetingRequestDTO meetingRequest) {
@@ -74,16 +75,16 @@ public class MeetingController {
         return meetingService.getMeetingsForUser(user);
     }
 
-    //Zrobione
-    @GetMapping("/{meetingId}/participants") // endpoint do pobieranai ludzi ze spotkania i wlasciciela spotkania
-    public ResponseEntity<MeetingParticipantsDTO> getMeetingParticipants(@PathVariable Long meetingId) {
-        try {
-            MeetingParticipantsDTO participantsDTO = meetingService.getParticipants(meetingId);
-            return ResponseEntity.ok(participantsDTO);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
+//    //Zrobione
+//    @GetMapping("/{meetingId}/participants") // endpoint do pobieranai ludzi ze spotkania i wlasciciela spotkania
+//    public ResponseEntity<MeetingParticipantsDTO> getMeetingParticipants(@PathVariable Long meetingId) {
+//        try {
+//            MeetingParticipantsDTO participantsDTO = meetingService.getParticipants(meetingId);
+//            return ResponseEntity.ok(participantsDTO);
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
+//    }
 
     // Zrobione
     @DeleteMapping("/{meetingId}/participants/{username}")
@@ -118,6 +119,7 @@ public class MeetingController {
         return ResponseEntity.ok().build();
     }
 
+    //ZROBIONE
     @GetMapping("/{meetingId}/date")
     // endpoint pobiera datę spotkania (czyli odczytuje datę przypisaną do danego spotkania)
     public ResponseEntity<String> getMeetingDate(@PathVariable Long meetingId) {

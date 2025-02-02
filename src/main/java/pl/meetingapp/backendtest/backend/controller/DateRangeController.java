@@ -1,14 +1,15 @@
 package pl.meetingapp.backendtest.backend.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import pl.meetingapp.backendtest.backend.DTO.MeetingDateRangeDTO;
+import pl.meetingapp.backendtest.backend.dto.MeetingDateRangeDTO;
 import pl.meetingapp.backendtest.backend.model.DateRange;
-import pl.meetingapp.backendtest.backend.DTO.CreateDateRangeDTO;
+import pl.meetingapp.backendtest.backend.dto.CreateDateRangeDTO;
 import pl.meetingapp.backendtest.backend.model.Meeting;
 import pl.meetingapp.backendtest.backend.model.User;
 import pl.meetingapp.backendtest.backend.service.DateRangeService;
@@ -35,7 +36,7 @@ public class DateRangeController {
     //ZROBIONE
     //Endpdoint do zapisywania dat w bazie danych
     @PostMapping
-    public ResponseEntity<String> createDateRanges(@RequestBody List<CreateDateRangeDTO> dateRangesDto) {
+    public ResponseEntity<String> createDateRanges(@RequestBody @Valid List<CreateDateRangeDTO> dateRangesDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userService.findByUsername(username);
@@ -65,7 +66,8 @@ public class DateRangeController {
             dateRange.setMeeting(meeting);
             dateRange.setUser(user);
             dateRange.setStartDate(dto.getStartDate());
-            dateRange.setEndDate(dto.getEndDate());
+            dateRange.setStartTime(dto.getStartTime());
+            dateRange.setDuration(dto.getDuration());
             return dateRange;
         }).collect(Collectors.toList());
 
@@ -77,18 +79,16 @@ public class DateRangeController {
     // Funkcja sprawdzająca, czy dwa przedziały dat się nakładają
     private boolean isDateRangeConflict(DateRange existingRange, CreateDateRangeDTO newRange) {
         LocalDate existingStart = existingRange.getStartDate();
-        LocalDate existingEnd = existingRange.getEndDate();
         LocalDate newStart = newRange.getStartDate();
-        LocalDate newEnd = newRange.getEndDate();
 
-        // Sprawdzamy, czy nowy przedział dat zachodzi na istniejący
-        return (newStart.isBefore(existingEnd) || newStart.isEqual(existingEnd)) &&
-                (newEnd.isAfter(existingStart) || newEnd.isEqual(existingStart));
+        // Porównujemy tylko startDate
+        return existingStart.isEqual(newStart);
     }
 
+
     //ZROBIONE
-    //Endponit do pobierania dat dla danego spotkania
-    @GetMapping("/meeting/{meetingId}")
+    //Endpoint do wybieranai dat przez uzytkownikow
+    @GetMapping("/meeting/{meetingId}/date")
     public ResponseEntity<List<MeetingDateRangeDTO>> getDateRangesForMeeting(@PathVariable Long meetingId) {
         List<DateRange> dateRanges = dateRangeService.findByMeetingId(meetingId);
 
@@ -96,7 +96,8 @@ public class DateRangeController {
                 .map(dateRange -> new MeetingDateRangeDTO(
                         dateRange.getId(),
                         dateRange.getStartDate(),
-                        dateRange.getEndDate(),
+                        dateRange.getStartTime(),
+                        dateRange.getDuration(),
                         dateRange.getUser().getFirstName() + " " + dateRange.getUser().getLastName(),
                         dateRange.getUser().getId()
                 ))
@@ -104,6 +105,7 @@ public class DateRangeController {
 
         return ResponseEntity.ok(MeetingDateRangeDTOs);
     }
+
 
     //ZROBIONE
     //Endpoint do usuwania wybranych przedzialow dat (musi miec id przedzialu daty by je usunac)
@@ -113,12 +115,12 @@ public class DateRangeController {
         return ResponseEntity.noContent().build();
     }
 
-    //ZROBIONE
-    //Endpoint do pobierania wspolnych dat
-    @GetMapping("/meeting/{meetingId}/common-dates")
-    public ResponseEntity<List<LocalDate>> getCommonDatesForMeeting(@PathVariable Long meetingId) {
-        List<LocalDate> commonDates = dateRangeService.getCommonDatesForMeeting(meetingId);
-        return ResponseEntity.ok(commonDates);
-    }
+//    //ZROBIONE
+//    //Endpoint do pobierania wspolnych dat
+//    @GetMapping("/meeting/{meetingId}/common-dates")
+//    public ResponseEntity<List<LocalDate>> getCommonDatesForMeeting(@PathVariable Long meetingId) {
+//        List<LocalDate> commonDates = dateRangeService.getCommonDatesForMeeting(meetingId);
+//        return ResponseEntity.ok(commonDates);
+//    }
 
 }

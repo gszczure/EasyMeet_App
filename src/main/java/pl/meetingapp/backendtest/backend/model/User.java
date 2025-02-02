@@ -23,16 +23,25 @@ public class User {
     @NotBlank
     private String lastName;
     @NotBlank
+    @Size(min = 3, max = 20,
+            message = "Username must be between 3 and 20 characters long")
+    @Pattern(regexp = "^[^\\s]+$",
+            message = "Username cannot contain spaces")
     @Column(unique = true)
     private String username;
     @NotBlank
-    @Size(min = 6)
+    @Size(min = 6,
+            message = "Password must be v0at least 6 characters long")
     private String password;
     @NotBlank
-    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+            message = "Invalid email format"
+    )
     private String email;
     @NotBlank
-    @Pattern(regexp = "\\d{9}")
+    @Pattern(regexp = "\\d{9}",
+            message = "Phone number must consist of exactly 9 digits"
+    )
     private String phoneNumber;
 
 }

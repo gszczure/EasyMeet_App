@@ -1,4 +1,4 @@
-package pl.meetingapp.backendtest.backend.DTO;
+package pl.meetingapp.backendtest.backend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
