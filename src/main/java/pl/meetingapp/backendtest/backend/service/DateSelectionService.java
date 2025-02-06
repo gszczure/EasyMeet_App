@@ -1,11 +1,11 @@
 package pl.meetingapp.backendtest.backend.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.meetingapp.backendtest.backend.dto.VoteInfo;
 import pl.meetingapp.backendtest.backend.model.Selection;
-import pl.meetingapp.backendtest.backend.repository.SelectionRepository;
+import pl.meetingapp.backendtest.backend.repository.DateSelectionRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class SelectionService {
+public class DateSelectionService {
 
-    private final SelectionRepository selectionRepository;
+    private final DateSelectionRepository selectionRepository;
 
     public Map<String, String> getUserSelections(Long meetingId, Long userId) {
         List<Selection> selections = selectionRepository.findByMeetingIdAndUserId(meetingId, userId);

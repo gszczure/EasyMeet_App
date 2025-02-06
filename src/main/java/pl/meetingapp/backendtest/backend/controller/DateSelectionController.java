@@ -4,18 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.meetingapp.backendtest.backend.model.Selection;
-import pl.meetingapp.backendtest.backend.service.SelectionService;
+import pl.meetingapp.backendtest.backend.service.DateSelectionService;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/selections")
 @RequiredArgsConstructor
-public class SelectionController {
+@RequestMapping("/api/date-selections")
+public class DateSelectionController {
 
-    private final SelectionService selectionService;
+    private final DateSelectionService selectionService;
 
     //ZROBIONE
+    //Endpoit do pobierania jak glosowal uzytkownik
     @GetMapping("/{meetingId}/{userId}/user_selections")
     public ResponseEntity<Map<String, String>> getUserSelections(@PathVariable Long meetingId, @PathVariable Long userId) {
         Map<String, String> selections = selectionService.getUserSelections(meetingId, userId);
@@ -23,6 +24,7 @@ public class SelectionController {
     }
 
     //ZROBIONE
+    //Endpoit do zmiany glosu uzytkownika
     @PostMapping("/{meetingId}/{userId}/{dateRangeId}/update_selection")
     public ResponseEntity<Void> updateUserSelection(
             @PathVariable Long meetingId,
@@ -34,6 +36,7 @@ public class SelectionController {
     }
 
     //ZROBIONE
+    //Endpoit pobiera liste glosaw dla kazdej daty w jakims spotkaniu (YES, IF_NEEDED)
     @GetMapping("/{meetingId}/votes")
     public ResponseEntity<Map<Long, Map<String, Long>>> getVoteCounts(@PathVariable Long meetingId) {
         Map<Long, Map<String, Long>> voteCounts = selectionService.getVoteCounts(meetingId);

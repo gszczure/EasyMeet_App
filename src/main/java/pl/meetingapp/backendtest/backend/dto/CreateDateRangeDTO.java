@@ -13,9 +13,6 @@ public class CreateDateRangeDTO {
     private Long meetingId;
     @NotNull
     private LocalDate startDate;
-    private String yesVotes;
     private String duration;
     private String startTime;
-
-//    private LocalDate endDate;
 }

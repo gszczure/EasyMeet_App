@@ -12,15 +12,11 @@ public class MeetingDateRangeDTO {
     private LocalDate startDate;
     private String startTime;
     private String duration;
-    private String addedBy;
-    private long userId;
 
-    public MeetingDateRangeDTO(long id, LocalDate startDate, String startTime, String duration, String addedBy, long userId) {
+    public MeetingDateRangeDTO(long id, LocalDate startDate, String startTime, String duration) {
         this.id = id;
         this.startDate = startDate;
         this.startTime = startTime;
         this.duration = duration;
-        this.addedBy = addedBy;
-        this.userId = userId;
     }
 }

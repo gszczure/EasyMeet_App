@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SelectionRepository extends JpaRepository<Selection, Long> {
+public interface DateSelectionRepository extends JpaRepository<Selection, Long> {
     List<Selection> findByMeetingIdAndUserId(Long meetingId, Long userId);
     Optional<Selection> findByMeetingIdAndUserIdAndDateRangeId(Long meetingId, Long userId, Long dateRangeId);
 

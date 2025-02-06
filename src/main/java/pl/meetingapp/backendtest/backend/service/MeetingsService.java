@@ -6,7 +6,6 @@ import pl.meetingapp.backendtest.backend.dto.MeetingDTO;
 import pl.meetingapp.backendtest.backend.dto.ParticipantDTO;
 import pl.meetingapp.backendtest.backend.model.DateRange;
 import pl.meetingapp.backendtest.backend.model.Meeting;
-import pl.meetingapp.backendtest.backend.dto.MeetingParticipantsDTO;
 import pl.meetingapp.backendtest.backend.model.User;
 import pl.meetingapp.backendtest.backend.repository.MeetingRepository;
 import pl.meetingapp.backendtest.backend.repository.UserRepository;
@@ -14,13 +13,12 @@ import pl.meetingapp.backendtest.backend.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Service
-public class MeetingService {
+public class MeetingsService {
 
     @Autowired
     private MeetingRepository meetingRepository;
@@ -29,18 +27,11 @@ public class MeetingService {
     private UserRepository userRepository;
 
     @Autowired
-    private DateRangeService dateRangeService;
+    private MeetingDetailsService dateRangeService;
 
     public Meeting createMeeting(String name, User owner) {
         Meeting meeting = new Meeting(name, owner);
         return meetingRepository.save(meeting);
-    }
-
-    public void saveMeetingDate(Long meetingId, String date) throws Exception {
-        Meeting meeting = meetingRepository.findById(meetingId)
-                .orElseThrow(() -> new Exception("Meeting not found"));
-        meeting.setMeetingDate(date);
-        meetingRepository.save(meeting);
     }
 
     public ResponseEntity<String> joinMeeting(String code, String username) {
@@ -115,34 +106,34 @@ public class MeetingService {
         }
     }
 
-    public MeetingParticipantsDTO getParticipants(Long meetingId) {
-        Meeting meeting = meetingRepository.findById(meetingId)
-                .orElseThrow(() -> new RuntimeException("Meeting with id: " + meetingId + " not found"));
-
-        // Mapowanie ownera
-        ParticipantDTO ownerDTO = new ParticipantDTO(
-                meeting.getOwner().getId(),
-                meeting.getOwner().getFirstName(),
-                meeting.getOwner().getLastName(),
-                meeting.getOwner().getUsername()
-        );
-
-        // Mapowanie uzytkowanikow
-        List<ParticipantDTO> participantDTOs = meeting.getParticipants().stream()
-                .map(participant -> new ParticipantDTO(
-                        participant.getId(),
-                        participant.getFirstName(),
-                        participant.getLastName(),
-                        participant.getUsername()
-                ))
-                .collect(Collectors.toList());
-
-        // Dodajemy ownera do uzytkownikow tez
-        participantDTOs.add(ownerDTO);
-
-        // Zwracamy nowy MeetingParticipantsDTO
-        return new MeetingParticipantsDTO(ownerDTO, participantDTOs);
-    }
+//    public MeetingParticipantsDTO getParticipants(Long meetingId) {
+//        Meeting meeting = meetingRepository.findById(meetingId)
+//                .orElseThrow(() -> new RuntimeException("Meeting with id: " + meetingId + " not found"));
+//
+//        // Mapowanie ownera
+//        ParticipantDTO ownerDTO = new ParticipantDTO(
+//                meeting.getOwner().getId(),
+//                meeting.getOwner().getFirstName(),
+//                meeting.getOwner().getLastName(),
+//                meeting.getOwner().getUsername()
+//        );
+//
+//        // Mapowanie uzytkowanikow
+//        List<ParticipantDTO> participantDTOs = meeting.getParticipants().stream()
+//                .map(participant -> new ParticipantDTO(
+//                        participant.getId(),
+//                        participant.getFirstName(),
+//                        participant.getLastName(),
+//                        participant.getUsername()
+//                ))
+//                .collect(Collectors.toList());
+//
+//        // Dodajemy ownera do uzytkownikow tez
+//        participantDTOs.add(ownerDTO);
+//
+//        // Zwracamy nowy MeetingParticipantsDTO
+//        return new MeetingParticipantsDTO(ownerDTO, participantDTOs);
+//    }
 
 
     public void deleteMeeting(Long meetingId) {
@@ -163,5 +154,9 @@ public class MeetingService {
                 .orElseThrow(() -> new Exception("Meeting not found"));
         meeting.setComment(comment);
         meetingRepository.save(meeting);
+    }
+
+    public Optional<Meeting> getMeetingByCode(String code) {
+        return meetingRepository.findByCode(code);
     }
 }
