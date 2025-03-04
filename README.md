@@ -1,3 +1,9 @@
+> [!IMPORTANT]  
+> The `main` branch contains the **first version of the backend** designed to support the desktop application.  
+>  
+> If you want to see the **backend for the web version** of the application, please switch to the `VersionWeb` branch.
+
+
 # MeetMeApp
 
 MeetMeApp to aplikacja do organizowania spotkań, umożliwiająca użytkownikom tworzenie i dołączanie do wydarzeń, takich jak na przykład „BBQ w Pisarach”. Aplikacja powstała z potrzeby znalezienia dogodnej daty spotkania dla większej grupy znajomych, gdzie każdy miał różne preferencje czasowe. Dzięki niej, znalezienie wspólnego na terminu na spotkanie stało się znacznie prostsze.
