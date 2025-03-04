@@ -23,7 +23,7 @@ public class Meeting {
     private Long id;
 
     @NotBlank
-    @Size(max = 25)
+    @Size(max = 35)
     private String name;
 
     @ManyToOne
@@ -53,14 +53,6 @@ public class Meeting {
         this.code = generateUniqueCode();
     }
 
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//
-//    public void setOwner(User owner) {
-//        this.owner = owner;
-//    }
-
     public void addParticipant(User user) {
         this.participants.add(user);
     }
@@ -69,11 +61,4 @@ public class Meeting {
         return UUID.randomUUID().toString().substring(0, 5);
     }
 
-//    public void setMeetingDate(String meetingDate) {
-//        this.meetingDate = meetingDate;
-//    }
-//
-//    public void setComment(String comment) {
-//        this.comment = comment;
-//    }
 }

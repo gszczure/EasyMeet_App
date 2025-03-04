@@ -2,17 +2,24 @@ package pl.meetingapp.backendtest.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.meetingapp.backendtest.backend.dto.MeetingDTO;
+import pl.meetingapp.backendtest.backend.dto.MeetingDetailsDTO;
+import pl.meetingapp.backendtest.backend.dto.MeetingParticipantsDTO;
 import pl.meetingapp.backendtest.backend.dto.ParticipantDTO;
 import pl.meetingapp.backendtest.backend.model.DateRange;
 import pl.meetingapp.backendtest.backend.model.Meeting;
+import pl.meetingapp.backendtest.backend.model.Selection;
 import pl.meetingapp.backendtest.backend.model.User;
+import pl.meetingapp.backendtest.backend.repository.DateRangeRepository;
+import pl.meetingapp.backendtest.backend.repository.DateSelectionRepository;
 import pl.meetingapp.backendtest.backend.repository.MeetingRepository;
 import pl.meetingapp.backendtest.backend.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +32,12 @@ public class MeetingsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private DateRangeRepository dateRangeRepository;
+
+    @Autowired
+    private DateSelectionRepository dateSelectionRepository;
 
     @Autowired
     private MeetingDetailsService dateRangeService;
@@ -43,7 +56,8 @@ public class MeetingsService {
         Optional<User> userOpt = userRepository.findByUsername(username);
         User user = userOpt.get();
 
-        if (meeting.getParticipants().contains(user)) {
+        if (meeting.getParticipants().contains(user) ||
+                (meeting.getOwner() != null && meeting.getOwner().equals(user))) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
@@ -66,11 +80,7 @@ public class MeetingsService {
                     meeting.getOwner().getFirstName(),
                     meeting.getOwner().getLastName()
             );
-            // Sprawdzanie czy uzytkownik jest wlasciceilem jesli jest to w JSON Code: bedzie miala code napisany, ale jesli nie jest to Code: bedzie null
-            String code = null;
-            if (meeting.getOwner().equals(user)) {
-                code = meeting.getCode();
-            }
+            String code = meeting.getCode();
 
             // tworzeymy obiekt MeetingDTO zawierajacy informacje ktore nas interesuja
             MeetingDTO meetingDTO = new MeetingDTO(
@@ -92,63 +102,67 @@ public class MeetingsService {
         Optional<Meeting> meeting = meetingRepository.findById(id);
         return meeting.orElse(null);
     }
-    public void removeUserFromMeeting(Long meetingId, String username) {
-        Meeting meeting = findById(meetingId);
-        if (meeting != null) {
-            Optional<User> userOpt = userRepository.findByUsername(username);
 
-            if (userOpt.isPresent()) {
-                User user = userOpt.get();
-                meeting.getParticipants().remove(user);
+    public MeetingParticipantsDTO getParticipants(Long meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new RuntimeException("Meeting with id: " + meetingId + " not found"));
 
-                meetingRepository.save(meeting);
-            }
-        }
+        // Mapowanie ownera
+        ParticipantDTO ownerDTO = new ParticipantDTO(
+                meeting.getOwner().getId(),
+                meeting.getOwner().getFirstName(),
+                meeting.getOwner().getLastName()
+        );
+
+        // Mapowanie uczestników
+        List<ParticipantDTO> participantDTOs = meeting.getParticipants()
+                .stream()
+                .map(participant -> new ParticipantDTO(
+                        participant.getId(),
+                        participant.getFirstName(),
+                        participant.getLastName()
+                ))
+                .collect(Collectors.toList());
+
+        return new MeetingParticipantsDTO(ownerDTO, participantDTOs);
     }
 
-//    public MeetingParticipantsDTO getParticipants(Long meetingId) {
-//        Meeting meeting = meetingRepository.findById(meetingId)
-//                .orElseThrow(() -> new RuntimeException("Meeting with id: " + meetingId + " not found"));
-//
-//        // Mapowanie ownera
-//        ParticipantDTO ownerDTO = new ParticipantDTO(
-//                meeting.getOwner().getId(),
-//                meeting.getOwner().getFirstName(),
-//                meeting.getOwner().getLastName(),
-//                meeting.getOwner().getUsername()
-//        );
-//
-//        // Mapowanie uzytkowanikow
-//        List<ParticipantDTO> participantDTOs = meeting.getParticipants().stream()
-//                .map(participant -> new ParticipantDTO(
-//                        participant.getId(),
-//                        participant.getFirstName(),
-//                        participant.getLastName(),
-//                        participant.getUsername()
-//                ))
-//                .collect(Collectors.toList());
-//
-//        // Dodajemy ownera do uzytkownikow tez
-//        participantDTOs.add(ownerDTO);
-//
-//        // Zwracamy nowy MeetingParticipantsDTO
-//        return new MeetingParticipantsDTO(ownerDTO, participantDTOs);
-//    }
+    @Transactional
+    public boolean removeUserFromMeeting(Long meetingId, Long userId) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (meeting != null && user != null) {
+            boolean removed = meeting.getParticipants().removeIf(participant -> participant.getId().equals(userId));
+            if (removed) {
+                meetingRepository.save(meeting);
+
+                List<DateRange> dateRanges = dateRangeRepository.findByMeetingIdAndUserId(meetingId, userId);
+                dateRangeRepository.deleteAll(dateRanges);
+
+                List<Selection> selections = dateSelectionRepository.findByMeetingIdAndUserId(meetingId, userId);
+                dateSelectionRepository.deleteAll(selections);
+
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     public void deleteMeeting(Long meetingId) {
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new RuntimeException("Meeting with id: " + meetingId + " not found"));
 
-        // pobieranie wszystkich DateRanges i usuwanie ich
+        List<Selection> selections = dateSelectionRepository.findByMeetingId(meetingId);
+        dateSelectionRepository.deleteAll(selections);
+
         List<DateRange> dateRanges = dateRangeService.findByMeetingId(meetingId);
         dateRangeService.deleteAll(dateRanges);
 
-        // TODO DODAC ZE W SELECTIONS DAL DANEGO METINGID SIE WSZYSTKO USUWA
-
-        // Usuwanie spotkania
         meetingRepository.delete(meeting);
     }
+
     public void addOrUpdateComment(Long meetingId, String comment) throws Exception {
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new Exception("Meeting not found"));

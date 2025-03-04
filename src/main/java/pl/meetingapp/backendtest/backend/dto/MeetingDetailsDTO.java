@@ -14,5 +14,6 @@ public class MeetingDetailsDTO {
     private Long ownerId;
     private String comment;
     private List<MeetingDateRangeDTO> dateRanges;
+    private boolean isGuest;
 }
 

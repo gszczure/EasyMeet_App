@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 @AllArgsConstructor
-public class ParticipantDTO {
-    private Long id;
-    private String firstName;
-    private String lastName;
-
+public class MeetingParticipantsDTO {
+    private ParticipantDTO owner;
+    private List<ParticipantDTO> participants;
 }

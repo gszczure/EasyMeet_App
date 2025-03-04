@@ -42,6 +42,9 @@ public class User {
     @Pattern(regexp = "\\d{9}",
             message = "Phone number must consist of exactly 9 digits"
     )
+    @NotBlank
     private String phoneNumber;
+
+    private boolean isGuest = false;
 
 }

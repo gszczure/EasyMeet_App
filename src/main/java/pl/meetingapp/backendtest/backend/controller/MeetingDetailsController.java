@@ -7,8 +7,11 @@ import pl.meetingapp.backendtest.backend.dto.MeetingDateRangeDTO;
 import pl.meetingapp.backendtest.backend.dto.MeetingDetailsDTO;
 import pl.meetingapp.backendtest.backend.dto.VoteInfo;
 import pl.meetingapp.backendtest.backend.model.Meeting;
+import pl.meetingapp.backendtest.backend.model.User;
+import pl.meetingapp.backendtest.backend.security.JwtTokenUtil;
 import pl.meetingapp.backendtest.backend.service.MeetingDetailsService;
 import pl.meetingapp.backendtest.backend.service.MeetingsService;
+import pl.meetingapp.backendtest.backend.service.UserService;
 import pl.meetingapp.backendtest.backend.service.VoteService;
 
 import java.util.List;
@@ -27,6 +30,10 @@ public class MeetingDetailsController {
 
     private final VoteService voteService;
 
+    private final UserService userService;
+
+    private final JwtTokenUtil jwtTokenUtil;
+
 
 //    //Endpoint do usuwania wybranych przedzialow dat (musi miec id przedzialu daty by je usunac)
 //    @DeleteMapping("/{id}")
@@ -39,22 +46,25 @@ public class MeetingDetailsController {
     //ZROBIONE
     // Endpoit do pobierania wszystkich potrzebnych informacji po wejsciu na strone gdzie uzytkownicy wybieraja daty
     @GetMapping("/details/{code}")
-    public ResponseEntity<MeetingDetailsDTO> getMeetingDetails(@PathVariable String code) {
-        Optional<Meeting> meetingOptional = meetingService.getMeetingByCode(code);
+    public ResponseEntity<MeetingDetailsDTO> getMeetingDetails(
+            @PathVariable String code,
+            @RequestHeader("Authorization") String token) {
 
+        Optional<Meeting> meetingOptional = meetingService.getMeetingByCode(code);
         if (meetingOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
+        // Pobieramy dane spotkania
         Meeting meeting = meetingOptional.get();
         MeetingDetailsDTO detailsDTO = new MeetingDetailsDTO();
-
         detailsDTO.setMeetingId(meeting.getId());
         detailsDTO.setName(meeting.getName());
         detailsDTO.setOwner(meeting.getOwner().getFirstName() + " " + meeting.getOwner().getLastName());
         detailsDTO.setOwnerId(meeting.getOwner().getId());
         detailsDTO.setComment(meeting.getComment());
 
+        // Pobieramy listę dat spotkań
         List<MeetingDateRangeDTO> dateRanges = dateRangeService.findByMeetingId(meeting.getId()).stream()
                 .map(dateRange -> new MeetingDateRangeDTO(
                         dateRange.getId(),
@@ -66,9 +76,15 @@ public class MeetingDetailsController {
 
         detailsDTO.setDateRanges(dateRanges);
 
+        String username = jwtTokenUtil.extractUsername(token.replace("Bearer ", ""));
+        User user = userService.findByUsername(username);
+
+        detailsDTO.setGuest(user.isGuest());
+
         return ResponseEntity.ok(detailsDTO);
     }
 
+    // Endpoit do pobieranai jak ludzie glosowali na dane spotkanie (Sprawdzicz to )
     @GetMapping("/getVotes/{dateRangeId}")
     public List<VoteInfo> getVotes(@PathVariable Long dateRangeId) {
         return voteService.getVotesForDateRange(dateRangeId);
