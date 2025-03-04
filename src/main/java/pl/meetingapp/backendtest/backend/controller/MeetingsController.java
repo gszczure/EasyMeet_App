@@ -101,7 +101,7 @@ public class MeetingsController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        String frontendUrl = "http://localhost:63342/MeetMe_Web_App/apliakcjawww/build/date-chose.html?code=" + code;
+        String frontendUrl = "https://meetme-web-q5ol.onrender.com/date-chose.html?code=" + code;
 
         return ResponseEntity.status(HttpStatus.FOUND)
                 .header("Location", frontendUrl)
