@@ -1,7 +1,8 @@
 > [!IMPORTANT]  
 > The `main` branch contains the **first version of the backend** designed to support the desktop application.  
+> This version will no longer be maintained or improved.  
 >  
-> If you want to see the **backend for the web version** of the application, please switch to the `VersionWeb` branch.
+> If you want to see the **continuously improved backend** for the web version of the application, please switch to the `VersionWeb` branch.
 
 
 # MeetMeApp
