@@ -4,6 +4,9 @@
 > Jeśli chcesz zobaczyć pierwszą wersję backendu, stworzoną na potrzeby aplikacji desktopowej, przejdź do branch `main`. **Pamiętaj jednak, że nie jest ona już od dawna wspierana ani rozwijana**.
 > 
 > W branchu `main` znajdziesz także filmik prezentujący działanie pierwszej wersji aplikacji desktopowej.
+> 
+> > The English version of the README can be found in the [frontend](https://github.com/gszczure/MeetMe_Web_App) repository.
+
 
 
 # MeetMeApp 
