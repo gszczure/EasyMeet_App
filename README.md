@@ -15,7 +15,7 @@ Poniżej znajdziesz szczegóły dotyczące funkcji oraz technologii, które wyko
 
 ## Funkcje
 
-- **Tworzenie wydarzeń**: Tworzący spotkanie musi podać obowiązkową nazwę wydarzenia oraz wybrać co najmniej jedną datę spotkania (organizator może dodać opcjonalny komentarz do spotkania, ale jest to opcja niewymagana do stworzenia wydarzenia). Każda osoba, niezależnie od tego, czy jest zalogowana, czy korzysta z aplikacji jako gość, może tworzyć wydarzenia. Aby stworzyć spotkanie jako gość, wystarczy podać swoje imię i nazwisko — nie jest wymagana rejestracja. Goście mają jednak pewne ograniczenia o ktorych napisałem poniźej.
+- **Tworzenie wydarzeń**: Tworzący spotkanie musi podać obowiązkową nazwę wydarzenia oraz wybrać co najmniej jedną datę spotkania (organizator może dodać opcjonalny komentarz do spotkania, ale jest to opcja niewymagana do stworzenia wydarzenia). Każda osoba, niezależnie od tego, czy jest zalogowana, czy korzysta z aplikacji jako gość, może tworzyć wydarzenia. Aby stworzyć spotkanie jako gość, wystarczy podać swoje imię i nazwisko — nie jest wymagana rejestracja. Goście mają jednak pewne ograniczenia o ktorych napisałem poniżej.
 
 
 - **Unikalne linki do wydarzeń**: Każde spotkanie po utworzeniu ma przypisany unikalny link, który można udostępnić innym. Osoby, które otrzymają ten link, mogą dołączyć do wydarzenia, niezależnie od tego, czy są zalogowane, czy korzystają z aplikacji jako gość. Goście muszą jedynie podać swoje imię i nazwisko, aby dołączyć.
