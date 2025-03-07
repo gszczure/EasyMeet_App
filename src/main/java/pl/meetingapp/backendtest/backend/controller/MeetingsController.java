@@ -55,7 +55,7 @@ public class MeetingsController {
     }
 
     // Endpoit do wchodzenia do doalczenia do spotkania poprzez link
-    @GetMapping("/{code}")
+    @GetMapping("/join/{code}")
     public ResponseEntity<Void> joinMeeting(@PathVariable String code) {
         Optional<Meeting> meetingOpt = meetingRepository.findByCode(code);
 
