@@ -1,6 +1,7 @@
 package pl.meetingapp.backendtest.backend.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,61 +20,23 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/meetings")
+@RequiredArgsConstructor
 public class MeetingsController {
 
-    @Autowired
-    private MeetingsService meetingService;
+    private final MeetingsService meetingService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private MeetingDetailsService dateRangeService;
-
-    @Autowired
-    private MeetingRepository meetingRepository;
+    private final MeetingRepository meetingRepository;
 
     //Zrobione
     //Endpoit do tworzenia spotkania (znajduje sie tu juz zapisywanie koomentarza oraz zapisywanie dat)
     @PostMapping("/create")
     public ResponseEntity<MeetingDTO> createMeeting(@RequestBody CreateMeetingRequestDTO createMeetingRequest) throws Exception {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        User owner = userService.findByUsername(username);
-
-        Meeting meeting = meetingService.createMeeting(createMeetingRequest.getName(), owner);
-
-        if (createMeetingRequest.getComment() != null && !createMeetingRequest.getComment().isEmpty()) {
-            meetingService.addOrUpdateComment(meeting.getId(), createMeetingRequest.getComment().trim());
-        }
-
-        if (createMeetingRequest.getDateRanges() != null && !createMeetingRequest.getDateRanges().isEmpty()) {
-            List<DateRange> dateRanges = createMeetingRequest.getDateRanges().stream()
-                    .map(dto -> {
-                        DateRange dateRange = new DateRange();
-                        dateRange.setMeeting(meeting);
-                        dateRange.setUser(owner);
-                        dateRange.setStartDate(dto.getStartDate());
-                        dateRange.setStartTime(dto.getStartTime());
-                        dateRange.setDuration(dto.getDuration());
-                        return dateRange;
-                    })
-                    .collect(Collectors.toList());
-
-            dateRangeService.saveDateRanges(dateRanges);
-        }
-
-        return ResponseEntity.ok(new MeetingDTO(
-                meeting.getId(),
-                meeting.getName(),
-                meeting.getCode(),
-                new ParticipantDTO(
-                        meeting.getOwner().getId(),
-                        meeting.getOwner().getFirstName(),
-                        meeting.getOwner().getLastName()
-                )
-        ));
+        MeetingDTO meetingDTO = meetingService.createMeeting(createMeetingRequest);
+        return ResponseEntity.ok(meetingDTO);
     }
+
     //Zrobione
     // endpoint do usuwania spotkania
     @DeleteMapping("/{meetingId}")
@@ -82,9 +45,8 @@ public class MeetingsController {
         return ResponseEntity.ok().build();
     }
 
-    // TODO usunac to reczne wpisywanie kodu
     //Zrobione
-    // endpoint odpoiwadajacy za dolaczanie uzytkownikow do spotkanie poprzez reczne wpisanie kodu
+    // endpoint odpoiwadajacy za dolaczanie uzytkownikow do spotkania (autojoin)
     @PostMapping("/join")
     public ResponseEntity<String> joinMeeting(@Valid @RequestBody MeetingRequestDTO meetingRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -92,8 +54,8 @@ public class MeetingsController {
         return meetingService.joinMeeting(meetingRequest.getCode(), username);
     }
 
-    // Endpoit do wchodzenia do spotkania prze link
-    @GetMapping("/join/{code}")
+    // Endpoit do wchodzenia do doalczenia do spotkania poprzez link
+    @GetMapping("/{code}")
     public ResponseEntity<Void> joinMeeting(@PathVariable String code) {
         Optional<Meeting> meetingOpt = meetingRepository.findByCode(code);
 

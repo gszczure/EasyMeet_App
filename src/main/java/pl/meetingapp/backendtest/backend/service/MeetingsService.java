@@ -1,10 +1,12 @@
 package pl.meetingapp.backendtest.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.meetingapp.backendtest.backend.dto.CreateMeetingRequestDTO;
 import pl.meetingapp.backendtest.backend.dto.MeetingDTO;
-import pl.meetingapp.backendtest.backend.dto.MeetingDetailsDTO;
 import pl.meetingapp.backendtest.backend.dto.MeetingParticipantsDTO;
 import pl.meetingapp.backendtest.backend.dto.ParticipantDTO;
 import pl.meetingapp.backendtest.backend.model.DateRange;
@@ -42,10 +44,52 @@ public class MeetingsService {
     @Autowired
     private MeetingDetailsService dateRangeService;
 
-    public Meeting createMeeting(String name, User owner) {
-        Meeting meeting = new Meeting(name, owner);
-        return meetingRepository.save(meeting);
+    @Transactional
+    public MeetingDTO createMeeting(CreateMeetingRequestDTO createMeetingRequest) throws Exception {
+        // Pobranie użytkownika na podstawie kontekstu bezpieczeństwa
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User owner = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Tworzenie spotkania
+        Meeting meeting = new Meeting(createMeetingRequest.getName(), owner);
+        meetingRepository.save(meeting);
+
+        // Dodanie komentarza (jeśli istnieje)
+        if (createMeetingRequest.getComment() != null && !createMeetingRequest.getComment().isEmpty()) {
+            meeting.setComment(createMeetingRequest.getComment().trim());
+        }
+
+        // Zapisywanie przedziałów czasowych
+        if (createMeetingRequest.getDateRanges() != null && !createMeetingRequest.getDateRanges().isEmpty()) {
+            List<DateRange> dateRanges = createMeetingRequest.getDateRanges().stream()
+                    .map(dto -> {
+                        DateRange dateRange = new DateRange();
+                        dateRange.setMeeting(meeting);
+                        dateRange.setUser(owner);
+                        dateRange.setStartDate(dto.getStartDate());
+                        dateRange.setStartTime(dto.getStartTime());
+                        dateRange.setDuration(dto.getDuration());
+                        return dateRange;
+                    })
+                    .collect(Collectors.toList());
+
+            dateRangeRepository.saveAll(dateRanges);
+        }
+
+        return new MeetingDTO(
+                meeting.getId(),
+                meeting.getName(),
+                meeting.getCode(),
+                new ParticipantDTO(
+                        owner.getId(),
+                        owner.getFirstName(),
+                        owner.getLastName()
+                )
+        );
     }
+
 
     public ResponseEntity<String> joinMeeting(String code, String username) {
         // Znajdź spotkanie na podstawie kodu
