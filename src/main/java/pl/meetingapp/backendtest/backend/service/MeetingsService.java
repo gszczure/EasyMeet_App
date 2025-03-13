@@ -1,6 +1,6 @@
 package pl.meetingapp.backendtest.backend.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,22 +27,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Service
+@RequiredArgsConstructor
 public class MeetingsService {
 
-    @Autowired
-    private MeetingRepository meetingRepository;
+    private final MeetingRepository meetingRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private DateRangeRepository dateRangeRepository;
+    private final DateRangeRepository dateRangeRepository;
 
-    @Autowired
-    private DateSelectionRepository dateSelectionRepository;
+    private final DateSelectionRepository dateSelectionRepository;
 
-    @Autowired
-    private MeetingDetailsService dateRangeService;
+    private final MeetingDetailsService dateRangeService;
 
     @Transactional
     public MeetingDTO createMeeting(CreateMeetingRequestDTO createMeetingRequest) throws Exception {
@@ -207,12 +203,12 @@ public class MeetingsService {
         meetingRepository.delete(meeting);
     }
 
-    public void addOrUpdateComment(Long meetingId, String comment) throws Exception {
-        Meeting meeting = meetingRepository.findById(meetingId)
-                .orElseThrow(() -> new Exception("Meeting not found"));
-        meeting.setComment(comment);
-        meetingRepository.save(meeting);
-    }
+//    public void addOrUpdateComment(Long meetingId, String comment) throws Exception {
+//        Meeting meeting = meetingRepository.findById(meetingId)
+//                .orElseThrow(() -> new Exception("Meeting not found"));
+//        meeting.setComment(comment);
+//        meetingRepository.save(meeting);
+//    }
 
     public Optional<Meeting> getMeetingByCode(String code) {
         return meetingRepository.findByCode(code);

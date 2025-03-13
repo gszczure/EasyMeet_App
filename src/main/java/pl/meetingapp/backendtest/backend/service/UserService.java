@@ -1,6 +1,6 @@
 package pl.meetingapp.backendtest.backend.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.meetingapp.backendtest.backend.model.User;
@@ -9,13 +9,12 @@ import pl.meetingapp.backendtest.backend.repository.UserRepository;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public User registerUser(User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {

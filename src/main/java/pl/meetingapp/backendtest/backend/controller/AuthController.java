@@ -1,7 +1,7 @@
 package pl.meetingapp.backendtest.backend.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,16 +18,15 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserService userService;
+    private final JwtTokenUtil jwtTokenUtil;
+
+    private final UserService userService;
 
 
     //TODO Zrobic walidacje wieksza po stronie backendu (na przyklad wpisanie poprawnie tego samego hasla drugi raz)

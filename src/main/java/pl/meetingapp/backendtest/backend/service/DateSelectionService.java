@@ -3,7 +3,6 @@ package pl.meetingapp.backendtest.backend.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.meetingapp.backendtest.backend.dto.VoteInfo;
 import pl.meetingapp.backendtest.backend.model.Selection;
 import pl.meetingapp.backendtest.backend.repository.DateSelectionRepository;
 
