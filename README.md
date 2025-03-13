@@ -5,7 +5,7 @@
 > 
 > W branchu `main` znajdziesz także filmik prezentujący działanie pierwszej wersji aplikacji desktopowej.
 > 
-> > The English version of the README can be found in the [frontend](https://github.com/gszczure/MeetMe_Web_App) repository.
+> > The English version of the README can be found in the [Frontend_MeetMe_App](https://github.com/gszczure/Frontend_MeetMe_Web_App) repository.
 
 
 
@@ -38,7 +38,7 @@ Poniżej znajdziesz szczegóły dotyczące funkcji oraz technologii, które wyko
 ## Technologie
 
 - **Backend**: Aplikacja oparta jest na technologii **Java** z użyciem **Springa**
-- **Frontend**: Kod frontendu aplikacji jest dostępny na GitHubie: [Frontend_MeetMe_App](https://github.com/gszczure/MeetMe_Web_App). Frontend został opracowany przy użyciu **CSS**, **HTML** i **JavaScript**.
+- **Frontend**: Kod frontendu aplikacji jest dostępny na GitHubie: [Frontend_MeetMe_App](https://github.com/gszczure/Frontend_MeetMe_Web_App). Frontend został opracowany przy użyciu **CSS**, **HTML** i **JavaScript**.
 - **Autentykacja**: Do autentykacji użytkowników wykorzystano **JWT (JSON Web Token)**, co zapewnia bezpieczne zarządzanie sesjami użytkowników.
 - **Baza danych**: Aplikacja korzysta z bazy danych **PostgreSQL**, a hasła użytkowników są **hashowane** przed zapisaniem w bazie danych dla zapewnienia dodatkowej warstwy bezpieczeństwa.
 - **Hosting**:
