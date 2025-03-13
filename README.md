@@ -45,6 +45,9 @@ Poniżej znajdziesz szczegóły dotyczące funkcji oraz technologii, które wyko
     - Backend aplikacji jest uruchomiony na platformie **Render**.
     - Baza danych znajduje się na platformie **Railway**.
 
+## Testy
+  - Do pisania testów używam JUnit 5 oraz Mockito. Testy będę dodawać regularnie, ponieważ właśnie pracuję nad ich rozwojem.
+
 ## Uwaga dotycząca wydajności
 
 - Aplikacja może działać **wolno przy pierwszym uruchomieniu**, ponieważ serwer musi się uruchomić. Czas oczekiwania może wynosić nawet 4 minuty podczas logowania lub rejestracji.
