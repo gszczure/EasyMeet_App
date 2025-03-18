@@ -10,7 +10,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
 //                .allowedOrigins("http://localhost:63342")
-                .allowedOrigins("https://meetme-web-q5ol.onrender.com")
+                .allowedOrigins("https://backendmeetmeapp-production.up.railway.app")
+//                .allowedOrigins("https://meetme-web-q5ol.onrender.com")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*");
     }
