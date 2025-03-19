@@ -42,7 +42,7 @@ services:
       - jwt_secret
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.easymeetapp.rule=Host(`mojadomena.pl`)"
+      - "traefik.http.routers.easymeetapp.rule=Host(`easymeetapp.pl`)"
       - "traefik.http.routers.easymeetapp.entrypoints=websecure"
       - "traefik.http.routers.easymeetapp.tls.certresolver=myresolver"
     deploy:
