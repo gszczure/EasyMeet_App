@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  reverse-proxy:
+    image: traefik:v3.1
+    command:
+      - "--providers.docker"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=grzegorz.sz1202@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  easymeetapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: easymeetapp-image
+    container_name: easymeetapp
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_URL_FILE: /run/secrets/db_url
+      DB_USER_FILE: /run/secrets/db_user
+      DB_PASSWORD_FILE: /run/secrets/db_password
+      JWT_SECRET_FILE: /run/secrets/jwt_secret
+    secrets:
+      - db_url
+      - db_user
+      - db_password
+      - jwt_secret
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.easymeetapp.rule=Host(`mojadomena.pl`)"
+      - "traefik.http.routers.easymeetapp.entrypoints=websecure"
+      - "traefik.http.routers.easymeetapp.tls.certresolver=myresolver"
+    deploy:
+      mode: replicated
+      replicas: 3
+    restart: always
+
+secrets:
+  db_url:
+    file: /run/secrets/db_url
+  db_user:
+    file: /run/secrets/db_user
+  db_password:
+    file: /run/secrets/db_password
+  jwt_secret:
+    file: /run/secrets/jwt_secret
+
+volumes:
+  letsencrypt:

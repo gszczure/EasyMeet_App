@@ -1,0 +1,242 @@
+/* General Styles */
+:root {
+    --primary-blue: #1a73e8;
+    --primary-dark-blue: #0d47a1;
+    --primary-light-blue: #4285f4;
+    --secondary-blue: #64b5f6;
+
+    --bg-color: #f4f4f9;
+    --text-color: #333;
+    --header-text: #333;
+    --button-bg: var(--primary-blue);
+    --button-hover: var(--primary-light-blue);
+    --meeting-bg: #f9f9f9;
+    --meeting-border: #ddd;
+    --link-hover: var(--secondary-blue);
+    --delete-button-bg: #f44336;
+    --delete-button-hover: #d32f2f;
+    --text: white;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin: 20px 0;
+}
+
+/* Header styles */
+header {
+    color: var(--header-text);
+    display: flex;
+    z-index: 1000;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    height: 100px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logo span:first-child {
+    color: var(--primary-blue);
+}
+
+.logo span:last-child {
+    color: var(--header-text);
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-action {
+    color: var(--header-text);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.header-action:hover {
+    color: var(--primary-blue);
+}
+
+/* Menu for mobile */
+.hamburger-menu {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.hamburger-menu svg {
+    color: var(--header-text);
+}
+
+/* Mobile menu styles */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 75%;
+    height: 100%;
+    background: white;
+    z-index: 1001;
+    flex-direction: column;
+    padding: 25px 50px;
+    transition: left 0.3s ease-in-out;
+}
+
+.nav-slide-items {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    position: relative;
+}
+
+.mobile-menu-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: left;
+    width: 100%;
+    padding-bottom: 25px;
+}
+
+.mobile-menu-title span:first-child {
+    color: var(--primary-blue);
+}
+
+.mobile-menu-title span:last-child {
+    color: var(--text-color);
+}
+
+.mobile-menu .header-action {
+    width: 100%;
+    text-align: left;
+    padding: 25px 0;
+    font-size: 0.9rem;
+    border-radius: 0;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.mobile-menu .header-action:hover,
+.mobile-menu .header-action.signup:hover {
+    color: var(--primary-blue);
+    background-color: transparent;
+}
+
+.mobile-menu .header-action.signup {
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+body.menu-open .mobile-menu {
+    left: 0;
+}
+
+body.menu-open .overlay {
+    display: block;
+    opacity: 1;
+}
+
+.close-menu {
+    position: absolute;
+    top: 290px;
+    left: calc(100% + 80px);
+    border: none;
+    background-color: #ffffff;
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    color: #000;
+}
+
+.separator {
+    width: 100%;
+    height: 1px;
+    background-color: var(--meeting-border);
+    margin: 20px 0;
+}
+
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: flex;
+    }
+
+    .header-controls {
+        display: none;
+    }
+
+    body.menu-open .mobile-menu {
+        display: flex;
+    }
+
+    header {
+        padding-right: 25px;
+        padding-left: 25px;
+    }
+
+    .logo {
+        font-size: 2rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .header-controls {
+        margin-left: auto;
+    }
+}
+

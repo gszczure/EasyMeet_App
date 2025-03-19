@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create New Meeting</title>
+
+  <link rel="icon" href="../icon/favicon-32x32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../icon/apple-touch-icon.png">
+  <link rel="manifest" href="../icon/site.webmanifest">
+
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/create-meeting.css">
+  <link rel="stylesheet" href="../css/notification.css">
+  <link rel="stylesheet" href="../css/login-form.css">
+  <script src="../js/create-meeting.js" defer></script>
+  <script src="../js/notification.js" defer></script>
+  <script src="../js/include-header.js" defer></script>
+</head>
+
+<body>
+
+<div id="header-container"></div>
+
+<!-- Login -->
+<div id="login-overlay" class="overlayLogin">
+  <div class="login-form">
+    <span id="close-login-overlay" class="close">&times;</span>
+
+    <div id="guest-login-container">
+      <h2>Please enter your name to continue as a guest.</h2>
+      <div class="form-field">
+        <label>First Name</label>
+        <input type="text" id="firstName" placeholder="What's your first name?" required autocomplete="off">
+      </div>
+      <div class="form-field">
+        <label>Last Name</label>
+        <input type="text" id="lastName" placeholder="What's your last name?" required autocomplete="off">
+      </div>
+      <div class="form-actions">
+        <button id="login-button" class="login-button">
+          Continue as Guest
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="switch-form">
+        <div class="has-account">Already have an account?</div>
+        <a href="#" id="show-login-form">Sign in</a>
+      </div>
+    </div>
+
+    <div id="login-form-container" style="display: none;">
+      <h2>Log in</h2>
+      <div class="form-field">
+        <label>Username</label>
+        <input type="text" id="username" placeholder="What's your username?" required autocomplete="off">
+      </div>
+      <div class="form-field">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="What's your password?" required autocomplete="off">
+      </div>
+      <div class="form-actions">
+        <button id="login-button-auth" class="login-button">
+          Log in
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="switch-form">
+        <a href="#" id="show-guest-login">Continue as guest</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="meeting-form">
+    <div class="form-group">
+      <input type="text" id="meeting-name" placeholder="Name your meeting" required autocomplete="off">
+      <label for="meeting-name">Name your meeting</label>
+    </div>
+    <div class="form-group">
+      <input type="text" id="meeting-description" placeholder="What's your meeting about?" required autocomplete="off">
+      <label for="meeting-description">What's your meeting about? (optional)</label>
+    </div>
+  </div>
+
+  <div class="separator"></div>
+
+  <h1>Add your times</h1>
+
+  <div class="view-toggle">
+    <button class="active">Month</button>
+  </div>
+
+  <div class="calendar-container">
+    <div class="calendar">
+      <div class="calendar-header">
+        <div class="month-nav">
+          <button class="nav-button" id="prevMonth">&larr;</button>
+          <h2 id="currentMonth"></h2>
+          <button class="nav-button" id="nextMonth">&rarr;</button>
+        </div>
+      </div>
+
+      <div class="calendar-grid" id="calendarGrid">
+
+      </div>
+    </div>
+
+    <div class="selected-dates">
+      <h2>Selected dates:</h2>
+      <div id="selectedDatesList">
+
+      </div>
+      <button class="apply-all">Apply same time to all dates</button>
+      <button id="save&create-button" class="create-button">Create & Share</button>
+    </div>
+  </div>
+  <div class="mobile-footer">
+    <button class="mobile-footer-button">Create & Share</button>
+  </div>
+
+  <div id="notification" class="notification">
+    <span id="notification-message"></span>
+    <button id="notification-close">&times;</button>
+  </div>
+
+</main>
+
+</body>
+</html>

@@ -2,7 +2,6 @@ package pl.meetingapp.backendtest.backend.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -11,12 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import pl.meetingapp.backendtest.backend.dto.*;
 import pl.meetingapp.backendtest.backend.model.*;
 import pl.meetingapp.backendtest.backend.repository.MeetingRepository;
-import pl.meetingapp.backendtest.backend.service.MeetingDetailsService;
 import pl.meetingapp.backendtest.backend.service.MeetingsService;
 import pl.meetingapp.backendtest.backend.service.UserService;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/meetings")
@@ -63,7 +60,7 @@ public class MeetingsController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        String frontendUrl = "https://meetme-web-q5ol.onrender.com/date-chose.html?code=" + code;
+        String frontendUrl = "/html/date-chose.html?code=" + code;
 
         return ResponseEntity.status(HttpStatus.FOUND)
                 .header("Location", frontendUrl)

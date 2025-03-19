@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" href="../icon/favicon-32x32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../icon/apple-touch-icon.png">
+  <link rel="manifest" href="../icon/site.webmanifest">
+
+  <link rel="stylesheet" href="../css/login.css">
+  <script src="../js/login.js" defer></script>
+
+  <title>Register</title>
+</head>
+<body>
+<div class="container">
+  <h2>Register</h2>
+  <form id="registerForm">
+    <!-- Imię -->
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" autocomplete="off" name="firstName" required >
+
+    <!-- Nazwisko -->
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" autocomplete="off" name="lastName" required >
+
+    <!-- Nazwa użytkownika -->
+    <label for="username">Username:</label>
+    <input type="text" id="username" autocomplete="off" name="username" required >
+
+    <!-- Hasło -->
+    <label for="password">Password:</label>
+    <input type="password" id="password" autocomplete="off" name="password" required >
+
+    <!-- Potwierdzenie hasła -->
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" id="confirmPassword" autocomplete="off" name="confirmPassword" required >
+
+    <!-- Email -->
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required autocomplete="off">
+
+    <!-- Numer telefonu -->
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" id="phoneNumber" autocomplete="off" name="phoneNumber" required>
+
+    <!-- Przycisk wysyłania formularza -->
+    <button type="submit">Register</button>
+  </form>
+  <p id="message"></p>
+  <p>
+    Already have an account? <a href="login.html">Login</a>
+  </p>
+</div>
+</body>
+</html>

@@ -11,14 +11,10 @@ FROM openjdk:17-jdk
 #ENTRYPOINT ["java", "-jar", "/app.jar"]
 
 
-# Ustaw katalog roboczy na /app
 WORKDIR /app
 
-# Skopiuj wszystkie pliki projektu do kontenera
 COPY . .
 
-# Zainstaluj zależności i zbuduj aplikację (skipTests oznacza, że pomijamy testy, aby przyspieszyć proces)
 RUN ./mvnw clean package -DskipTests
 
-# Uruchom aplikację Spring Boot (plik jar zostanie wygenerowany w katalogu target po budowie)
 CMD ["java", "-jar", "/app/target/BACKENDTEST-0.0.1-SNAPSHOT.jar"]

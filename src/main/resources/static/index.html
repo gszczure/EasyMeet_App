@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeetMe App</title>
+
+  <link rel="icon" href="icon/favicon-32x32.png" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
+  <link rel="manifest" href="/icon/site.webmanifest">
+
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/notification.css">
+  <script src="js/index.js" defer></script>
+  <script src="js/notification.js" defer></script>
+  <script src="js/include-header.js" defer></script>
+
+</head>
+<body>
+
+<div id="header-container"></div>
+
+<main>
+  <section class="meetings-list">
+    <div class="meetings-header">
+      <h2>Your Meetings</h2>
+      <button class="create-meeting-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="16"></line>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+        Create Meeting
+      </button>
+    </div>
+    <div id="meeting-container">
+      <!-- Spotkania będą dodawane dynamicznie przez JavaScript -->
+    </div>
+  </section>
+</main>
+
+<div id="notification" class="notification">
+  <span id="notification-message"></span>
+  <button id="notification-close">&times;</button>
+</div>
+
+</body>
+</html>
