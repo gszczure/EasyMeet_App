@@ -4,12 +4,6 @@ let isProcessing = false;
 let cachedMeetingDates = null;
 let cachedVoteCounts = null;
 let guest = false;
-// let url = "http://localhost:8080";
-// let url = "https://backendmeetingapp-1.onrender.com"
-// let url = "https://backendmeetmeapp-production.up.railway.app"
-
-
-
 
 // Enum dla stanów wyboru
 const SelectionState = {

@@ -1,8 +1,4 @@
-// let url = "http://localhost:8080";
-// let url = "https://backendmeetingapp-1.onrender.com"
-
-// let url = "https://backendmeetmeapp-production.up.railway.app"
-
+//TODO USUNAC TO BO JEST DEFER JUZ
 document.addEventListener('DOMContentLoaded', () => {
     // Logowanie
     const loginForm = document.getElementById('loginForm');
