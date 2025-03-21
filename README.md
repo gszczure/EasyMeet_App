@@ -66,6 +66,12 @@ Below, you’ll find details about the features and technologies used in EasyMee
 
 EasyMeetApp is still in development. Any feedback, suggestions for improvements, or bug reports are highly appreciated! 🚀🎉
 
+### 👀 Application Preview
+
+Here are some screenshots of the application in action:
+
+!...
+
 📌 [Visit EasyMeetApp](https://easymeetapp.onrender.com/) and try it out!
 
 ---
