@@ -1,5 +1,4 @@
-> [!IMPORTANT]  
-> Branch `VersionWeb` zawiera ciągle rozwijaną wersję backendu dla webowej wersji aplikacji.
+> [!IMPORTANT]
 > 
 > Jeśli chcesz zobaczyć pierwszą wersję backendu, stworzoną na potrzeby aplikacji desktopowej, przejdź do branch `main`. **Pamiętaj jednak, że nie jest ona już od dawna wspierana ani rozwijana**.
 > 
@@ -9,9 +8,9 @@
 
 
 
-# MeetMeApp 
+# EasyMeetApp 
 
-MeetMeApp ([Strona WWW](https://meetme-web-q5ol.onrender.com/)) to aplikacja, która upraszcza organizowanie spotkań w grupie, umożliwiając łatwe ustalanie dogodnego terminu dla wszystkich uczestników. Dzięki niej, organizowanie wydarzeń, takich jak spotkania towarzyskie czy wyjazdy, staje się prostsze i bardziej efektywne, eliminując konieczność wymiany wielu wiadomości w celu uzgodnienia terminu.
+EasyMeetApp ([Strona WWW](https://easymeetapp.onrender.com/)) to aplikacja, która upraszcza organizowanie spotkań w grupie, umożliwiając łatwe ustalanie dogodnego terminu dla wszystkich uczestników. Dzięki niej, organizowanie wydarzeń, takich jak spotkania towarzyskie czy wyjazdy, staje się prostsze i bardziej efektywne, eliminując konieczność wymiany wielu wiadomości w celu uzgodnienia terminu.
 
 Poniżej znajdziesz szczegóły dotyczące funkcji oraz technologii, które wykorzystuje MeetMeApp.
 
@@ -57,4 +56,4 @@ Poniżej znajdziesz szczegóły dotyczące funkcji oraz technologii, które wyko
 
 Aplikacja jest w fazie rozwoju. Wszelkie opinie, sugestie dotyczące ulepszeń, zmian lub usunięć funkcji są mile widziane.
 
-[StronaWWW](https://meetme-web-q5ol.onrender.com/)
+[StronaWWW](https://easymeetapp.onrender.com/)
