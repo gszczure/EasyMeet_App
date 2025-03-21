@@ -33,8 +33,8 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/html/**", "/icon/**", "/header.html").permitAll()
-                        .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/guest-login", "/api/meeting-details/details/**", "/api/meetings/join/**").permitAll()
-                        .requestMatchers("/join/**").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/guest-login").permitAll()
+                        .requestMatchers("/api/meetings/join/{code}").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
