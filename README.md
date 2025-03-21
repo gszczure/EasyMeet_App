@@ -58,7 +58,7 @@ Below, you’ll find details about the features and technologies used in EasyMee
 
 - The application **may be slow on first startup**, as the server needs to wake up. Logging in or registering may take up to **4 minutes**.
 - Once the server is running, performance improves significantly.
-- I plan to migrate the application to Oracle Cloud to eliminate delays, but for now, this is not possible due to lack of available database space on Oracle for the VM. 🔧
+- I plan to migrate the application to Oracle Cloud to eliminate delays, **but for now, this is not possible due to lack of available database space on Oracle for the VM. 🔧**
 
 ---
 
@@ -118,6 +118,8 @@ Poniżej znajdziesz szczegóły dotyczące funkcji oraz technologii, które wyko
 
 - Aplikacja **może działać wolno przy pierwszym uruchomieniu**, ponieważ serwer musi się uruchomić. Logowanie lub rejestracja może trwać **do 4 minut**.
 - Po uruchomieniu serwera aplikacja działa szybciej.
+- Planuję przenieść aplikację na Oracle Cloud, aby eliminować opóźnienia, ale na razie jest to **niemożliwe z powodu braku dostępnego miejsca w bazie danych Oracle dla maszyny wirtualnej (VM)**. 🔧
+
 
 ---
 
