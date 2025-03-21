@@ -5,9 +5,9 @@
 > If you want to see the **continuously improved backend** for the web version of the application, please switch to the `VersionWeb` branch.
 
 
-# MeetMeApp
+# EasyMeetApp Desktop
 
-MeetMeApp to aplikacja do organizowania spotkań, umożliwiająca użytkownikom tworzenie i dołączanie do wydarzeń, takich jak na przykład „BBQ w Pisarach”. Aplikacja powstała z potrzeby znalezienia dogodnej daty spotkania dla większej grupy znajomych, gdzie każdy miał różne preferencje czasowe. Dzięki niej, znalezienie wspólnego na terminu na spotkanie stało się znacznie prostsze.
+EasyMeetApp Desktop to aplikacja do organizowania spotkań, umożliwiająca użytkownikom tworzenie i dołączanie do wydarzeń, takich jak na przykład „BBQ w Pisarach”. Aplikacja powstała z potrzeby znalezienia dogodnej daty spotkania dla większej grupy znajomych, gdzie każdy miał różne preferencje czasowe. Dzięki niej, znalezienie wspólnego na terminu na spotkanie stało się znacznie prostsze.
 
 Poniżej znajdziesz szczegóły dotyczące instalacji, technologii oraz podstawowych funkcji aplikacji.
 
@@ -24,8 +24,7 @@ Poniżej znajdziesz szczegóły dotyczące instalacji, technologii oraz podstawo
 ## Technologie
 
 - **Backend**: Aplikacja oparta jest na technologii **Java** z użyciem **Springa** i wymaga minimum wersji 14 (zalecana Oracle Java SDK 19).
-- **Frontend**: Kod frontendu aplikacji jest dostępny na GitHubie: [FRONTENDMEETINGAPP](https://github.com/gszczure/FRONTENDMEETINGAPP). Frontend został opracowany za pomocą JavaFX i Scene Builder, z użyciem CSS do stylizacji.
-- **StronaWWW**: Pracuję również nad webową wersją aplikacji. [Strona](https://meetme-web-q5ol.onrender.com/). [Repozytorium](https://github.com/gszczure/MeetMe_Web_App) (Obecnie przy pierwszym wejściu na stronę rejestracja lub logowanie mogą ładować się dłużej.)
+- **Frontend**: Kod frontendu aplikacji jest dostępny na GitHubie: [FRONTEND](https://github.com/gszczure/FRONTENDMEETINGAPP). Frontend został opracowany za pomocą JavaFX i Scene Builder, z użyciem CSS do stylizacji.
 - **Autentykacja**: Do autentykacji użytkowników wykorzystano **JWT (JSON Web Token)**, co zapewnia bezpieczne zarządzanie sesjami użytkowników.
 - **Baza danych**: Aplikacja korzysta z bazy danych **PostgreSQL**, a hasła użytkowników są **hashowane** przed zapisaniem w bazie danych dla zapewnienia dodatkowej warstwy bezpieczeństwa.
 - **Hosting**:
