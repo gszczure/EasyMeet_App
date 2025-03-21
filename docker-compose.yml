@@ -1,3 +1,6 @@
+# Przygotowany docker-compose.yml do wdrozenia na VM Oracla
+# Obecnie jest to nei mozliwe z powodu przelelnionej bazy VM Oracla
+
 version: '3.8'
 
 services:
