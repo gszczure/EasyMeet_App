@@ -1,6 +1,6 @@
 {
-    "name": "MeetMe App",
-    "short_name": "MeetMe",
+    "name": "EasyMeet App",
+    "short_name": "EasyMeet",
     "icons":[
         {
             "src":"/android-chrome-192x192.png",
