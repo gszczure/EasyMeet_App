@@ -1,60 +1,127 @@
-> [!IMPORTANT]  
-> Branch `VersionWeb` zawiera ciągle rozwijaną wersję backendu dla webowej wersji aplikacji.
-> 
-> Jeśli chcesz zobaczyć pierwszą wersję backendu, stworzoną na potrzeby aplikacji desktopowej, przejdź do branch `main`. **Pamiętaj jednak, że nie jest ona już od dawna wspierana ani rozwijana**.
-> 
-> W branchu `main` znajdziesz także filmik prezentujący działanie pierwszej wersji aplikacji desktopowej.
-> 
-> > The English version of the README can be found in the [Frontend_MeetMe_App](https://github.com/gszczure/Frontend_MeetMe_Web_App) repository.
+> [!IMPORTANT]
+>
+> **⚠️ Branch where you won't find HTML, Css, JS files 
+> I use it to host backend separately ⚠️️**
+>
+> > Polska wersja README znajduje się na dole README.
 
+# EasyMeetApp
 
+## 🌍 English Version
 
-# MeetMeApp 
+### 🚀 About EasyMeetApp
 
-MeetMeApp ([Strona WWW](https://meetme-web-q5ol.onrender.com/)) to aplikacja, która upraszcza organizowanie spotkań w grupie, umożliwiając łatwe ustalanie dogodnego terminu dla wszystkich uczestników. Dzięki niej, organizowanie wydarzeń, takich jak spotkania towarzyskie czy wyjazdy, staje się prostsze i bardziej efektywne, eliminując konieczność wymiany wielu wiadomości w celu uzgodnienia terminu.
+[EasyMeetApp](https://easymeetapp.onrender.com/) is an application that simplifies scheduling group meetings by helping participants easily find a convenient time. It eliminates the need for excessive messaging, making event planning (such as social gatherings or trips) much more efficient.
 
-Poniżej znajdziesz szczegóły dotyczące funkcji oraz technologii, które wykorzystuje MeetMeApp.
+Below, you’ll find details about the features and technologies used in EasyMeetApp.
 
+---
 
-## Funkcje
+### ✨ Features
 
-- **Tworzenie wydarzeń**: Tworzący spotkanie musi podać obowiązkową nazwę wydarzenia oraz wybrać co najmniej jedną datę spotkania (organizator może dodać opcjonalny komentarz do spotkania, ale jest to opcja niewymagana do stworzenia wydarzenia). Każda osoba, niezależnie od tego, czy jest zalogowana, czy korzysta z aplikacji jako gość, może tworzyć wydarzenia. Aby stworzyć spotkanie jako gość, wystarczy podać swoje imię i nazwisko — nie jest wymagana rejestracja. Goście mają jednak pewne ograniczenia o ktorych napisałem poniżej.
+- **📅 Create Events**: The event organizer must provide a name for the event and select at least one available date. An optional comment can be added, but it’s not required. Anyone, whether logged in or a guest, can create an event. To create an event as a guest, you only need to enter your name—registration is not required. However, guests have some limitations (explained below).
 
+- **🔗 Unique Event Links**: Every created event gets a unique link, which can be shared with others. People who receive the link can join the event, regardless of whether they are logged in or using the app as a guest. Guests only need to provide their name to join.
 
-- **Unikalne linki do wydarzeń**: Każde spotkanie po utworzeniu ma przypisany unikalny link, który można udostępnić innym. Osoby, które otrzymają ten link, mogą dołączyć do wydarzenia, niezależnie od tego, czy są zalogowane, czy korzystają z aplikacji jako gość. Goście muszą jedynie podać swoje imię i nazwisko, aby dołączyć.
+- **🗳️ Voting on Dates**: Participants can vote on available dates using the following options:
+  - **✅ Yes** – if they are available on that date.
+  - **🤔 If needed** – if they can attend only if necessary.
 
+- **🚫 Guest Limitations**: Users joining as guests have limited functionality:
+  - They **cannot** see the list of participants.
+  - They **cannot** see who voted for which date.
+  - They can access their event list **only for 2 hours** after voting. After this period, they will no longer be able to edit their votes or view their events.
 
-- **Głosowanie na daty**: Uczestnicy wydarzenia, po otrzymaniu linku, mogą głosować na dostępne daty, wybierając jedną z opcji: 
-  - **Yes** (tak) – jeśli mogą się spotkać w danym terminie.
-  - **If needed** (jeśli potrzeba) – jeśli mogą się spotkać tylko wtedy, gdy będzie to konieczne.
+---
 
+### 🛠️ Technologies
 
-- **Ograniczenia dla gości**: Użytkownicy korzystający z aplikacji jako goście mają dostęp do mniej funkcji niż zarejestrowani użytkownicy.
-    - Nie mogą zobaczyć listy uczestników wydarzenia.
-    - Nie widzą, kto i jak głosował na poszczególne daty spotkania (np. kto zaznaczył, że może się spotkać w danym terminie).
-    - Mają dostęp do listy swoich spotkań przez 2 godziny od momentu głosowania, po tym czasie nie będą mogli edytować swoich głosów ani przeglądać listy swoich spotkań.
-
-
-## Technologie
-
-- **Backend**: Aplikacja oparta jest na technologii **Java** z użyciem **Springa**
-- **Frontend**: Kod frontendu aplikacji jest dostępny na GitHubie: [Frontend_MeetMe_App](https://github.com/gszczure/Frontend_MeetMe_Web_App). Frontend został opracowany przy użyciu **CSS**, **HTML** i **JavaScript**.
-- **Autentykacja**: Do autentykacji użytkowników wykorzystano **JWT (JSON Web Token)**, co zapewnia bezpieczne zarządzanie sesjami użytkowników.
-- **Baza danych**: Aplikacja korzysta z bazy danych **PostgreSQL**, a hasła użytkowników są **hashowane** przed zapisaniem w bazie danych dla zapewnienia dodatkowej warstwy bezpieczeństwa.
+- **Backend**: Built with **Java** and **Spring**.
+- **Frontend**: Developed using **HTML**, **CSS**, and **JavaScript**.
+- **Authentication**: Uses **JWT (JSON Web Token)** for secure session management.
+- **Database**: Utilizes **PostgreSQL**, with user passwords securely **hashed** before storage.
 - **Hosting**:
-    - Backend aplikacji jest uruchomiony na platformie **Render**.
-    - Baza danych znajduje się na platformie **Railway**.
+  - Hosted on **Render**.
+  - Database runs on **Railway**.
 
-## Testy
-  - Do pisania testów używam JUnit 5 oraz Mockito. Testy będę dodawać regularnie, ponieważ właśnie pracuję nad ich rozwojem.
+---
 
-## Uwaga dotycząca wydajności
+### 🧪 Testing
+- The application uses **JUnit 5** and **Mockito** for testing. Tests are regularly added as development progresses.
 
-- Aplikacja może działać **wolno przy pierwszym uruchomieniu**, ponieważ serwer musi się uruchomić. Czas oczekiwania może wynosić nawet 4 minuty podczas logowania lub rejestracji.
-- Po uruchomieniu serwera aplikacja powinna działać szybciej.
+---
 
-## Testowanie i uwagi
+### ⚠️ Performance Notice
 
-Aplikacja jest w fazie rozwoju. Wszelkie opinie, sugestie dotyczące ulepszeń, zmian lub usunięć funkcji są mile widziane.
+- The application **may be slow on first startup**, as the server needs to wake up. Logging in or registering may take up to **4 minutes**.
+- Once the server is running, performance improves significantly.
+- I plan to migrate the application to Oracle Cloud to eliminate delays, **but for now, this is not possible due to lack of available database space on Oracle for the VM. 🔧**
 
-[StronaWWW](https://meetme-web-q5ol.onrender.com/)
+---
+
+### 💡 Feedback & Contributions
+
+EasyMeetApp is still in development. Any feedback, suggestions for improvements, or bug reports are highly appreciated! 🚀🎉
+
+📌 [Visit EasyMeetApp](https://easymeetapp.onrender.com/) and try it out!
+
+---
+
+## 🇵🇱 Polska Wersja
+
+### 🚀 O EasyMeetApp
+
+[EasyMeetApp](https://easymeetapp.onrender.com/) to aplikacja, która upraszcza organizowanie spotkań w grupie, umożliwiając łatwe ustalanie dogodnego terminu dla wszystkich uczestników. Dzięki niej organizowanie wydarzeń, takich jak spotkania towarzyskie czy wyjazdy, staje się prostsze i bardziej efektywne, eliminując konieczność wymiany wielu wiadomości.
+
+Poniżej znajdziesz szczegóły dotyczące funkcji oraz technologii, które wykorzystuje EasyMeetApp.
+
+---
+
+### ✨ Funkcje
+
+- **📅 Tworzenie wydarzeń**: Organizator wydarzenia musi podać nazwę oraz wybrać co najmniej jedną datę spotkania. Może dodać opcjonalny komentarz, ale nie jest to wymagane. Każdy może tworzyć wydarzenia, niezależnie od tego, czy jest zalogowany, czy działa jako gość. Aby utworzyć spotkanie jako gość, wystarczy podać imię i nazwisko – rejestracja nie jest wymagana. Jednak goście mają pewne ograniczenia (opisane poniżej).
+
+- **🔗 Unikalne linki do wydarzeń**: Każde utworzone wydarzenie ma przypisany unikalny link, który można udostępnić innym. Osoby, które otrzymają ten link, mogą dołączyć do wydarzenia bez konieczności logowania. Goście muszą jedynie podać swoje imię i nazwisko.
+
+- **🗳️ Głosowanie na daty**: Uczestnicy wydarzenia mogą głosować na dostępne daty, wybierając jedną z opcji:
+  - **✅ Tak** – jeśli mogą się spotkać w danym terminie.
+  - **🤔 Jeśli potrzeba** – jeśli mogą się spotkać tylko w razie konieczności.
+
+- **🚫 Ograniczenia dla gości**:
+  - Nie mogą zobaczyć listy uczestników.
+  - Nie widzą, kto jak głosował.
+  - Mają dostęp do listy swoich spotkań przez **2 godziny** po głosowaniu, po czym tracą możliwość edycji głosów i przeglądania listy wydarzeń.
+
+---
+
+### 🛠️ Technologie
+
+- **Backend**: Aplikacja oparta na **Java + Spring**.
+- **Frontend**: Wykorzystuje **HTML, CSS, JavaScript**.
+- **Autentykacja**: Bezpieczne zarządzanie sesjami dzięki **JWT (JSON Web Token)**.
+- **Baza danych**: **PostgreSQL**, z hasłami użytkowników **hashowanymi** przed zapisaniem.
+- **Hosting**:
+  - Aplikacja działa na **Render**.
+  - Baza danych znajduje się na **Railway**.
+
+---
+
+### 🧪 Testy
+- Testowanie przy użyciu **JUnit 5** i **Mockito**. Testy będą regularnie dodawane.
+
+---
+
+### ⚠️ Uwaga dotycząca wydajności
+
+- Aplikacja **może działać wolno przy pierwszym uruchomieniu**, ponieważ serwer musi się uruchomić. Logowanie lub rejestracja może trwać **do 4 minut**.
+- Po uruchomieniu serwera aplikacja działa szybciej.
+- Planuję przenieść aplikację na Oracle Cloud, aby eliminować opóźnienia, ale na razie jest to **niemożliwe z powodu braku dostępnego miejsca w bazie danych Oracle dla maszyny wirtualnej (VM)**. 🔧
+
+
+---
+
+### 💡 Opinie i wsparcie
+
+Aplikacja jest w fazie rozwoju. Wszelkie opinie, sugestie dotyczące ulepszeń lub raporty o błędach są mile widziane! 🚀🎉
+
+📌 [Sprawdź EasyMeetApp](https://easymeetapp.onrender.com/)!
