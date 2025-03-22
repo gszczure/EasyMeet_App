@@ -13,12 +13,27 @@ body {
     border-radius: 8px;
 }
 
+#help-heading {
+    color: #000000;
+    font-size: 25px;
+    font-weight: bold;
+    padding: 20px;
+}
+
+span:first-child {
+    color: var(--primary-blue);
+}
+
+span:last-child {
+    color: #000000;
+}
+
 .step {
     display: flex;
     align-items: center;
     gap: 40px;
-    margin: 60px 0;
-    padding: 30px;
+    margin: 20px 0;
+    padding: 20px;
     border-radius: 10px;
 }
 
@@ -28,10 +43,6 @@ body {
 
 .text-container, .image-container {
     flex: 1;
-}
-
-.step-content {
-    padding: 20px;
 }
 
 .step-image {
@@ -69,6 +80,10 @@ body {
     .step-description {
         font-size: 14px;
         color: #000000;
+    }
+
+    #help-heading {
+        font-size: 18px;
     }
 
     .help-wrapper {
