@@ -6,7 +6,7 @@
 >
 > In the `main` branch, you will also find a video demonstrating the first version of the desktop application.
 >
-> > Polska wersja README znajduje się na dole README.
+> > Polska wersja README znajduje się na dole.
 
 # EasyMeetApp
 
