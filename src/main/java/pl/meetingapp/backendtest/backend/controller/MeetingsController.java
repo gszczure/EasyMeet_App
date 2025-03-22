@@ -71,11 +71,17 @@ public class MeetingsController {
     //Zrobione
     // endpoint do pobierania spotkan dla uzytkownika zalogowanego
     @GetMapping("/for-user")
-    public List<MeetingDTO> getMeetingsForUser() {
+    public ResponseEntity<?> getMeetingsForUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userService.findByUsername(username);
-        return meetingService.getMeetingsForUser(user);
+
+        if (user.isGuest()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Guest users cannot access this endpoint.");
+        }
+
+        List<MeetingDTO> meetings = meetingService.getMeetingsForUser(user);
+        return ResponseEntity.ok(meetings);
     }
 
     // TODO przeniesc te endpoity dwa do MeetingDatailsController

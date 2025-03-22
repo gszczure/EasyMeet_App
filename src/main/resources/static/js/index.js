@@ -104,6 +104,8 @@ async function loadMeetings() {
             } else {
                 meetings.forEach((meeting) => addMeetingToUI(meeting))
             }
+        } else if(response.status === 403) {
+            showAlert("Meeting list is available only for registered users.")
         } else {
             showAlert("Failed to load meetings.")
         }
