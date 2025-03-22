@@ -2,20 +2,80 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How it works</title>
 
-    <link rel="icon" href="../icon/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="apple-touch-icon" href="../icon/apple-touch-icon.png">
-    <link rel="manifest" href="../icon/site.webmanifest">
+    <link rel="icon" href="/icon/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="/icon/apple-touch-icon.png">
+    <link rel="manifest" href="/icon/site.webmanifest">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/how-it-works.css">
 
-    <script src="../js/include-header.js" defer></script>
-    <link rel="stylesheet" href="../css/global.css">
-
-
+    <script src="/js/include-header.js" defer></script>
 </head>
 <body>
 
 <div id="header-container"></div>
+
+<div class="help-wrapper">
+    <div class="step">
+        <div class="text-container">
+            <div class="step-content">
+                <div class="step-number"></div>
+                <h2 class="step-title">1) Choose your meeting details</h2>
+                <p class="step-description">
+                    Start by selecting a name for your meeting and choosing dates that work for you.
+                    You can select multiple dates to give your participants options to choose from.
+                    This flexibility helps ensure you find a time that works for everyone.
+                </p>
+            </div>
+        </div>
+        <div class="image-container">
+            <div class="step-image">
+                <img src="/images/ChosenDate.png" alt="Calendar date selection interface showing selectable dates">
+            </div>
+        </div>
+    </div>
+
+    <div class="step step-reverse">
+        <div class="text-container">
+            <div class="step-content">
+                <div class="step-number"></div>
+                <h2 class="step-title">2) Share with participants</h2>
+                <p class="step-description">
+                    Send a link to your meeting to other participants. They can indicate their availability
+                    by selecting either "Yes" or "If needed" for each proposed date. This helps you understand
+                    who can definitely attend and who has flexibility in their schedule.
+                </p>
+            </div>
+        </div>
+        <div class="image-container">
+            <div class="step-image">
+                <img src="/images/Availability.png" alt="Meeting date options with vote counts showing participant availability">
+            </div>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="text-container">
+            <div class="step-content">
+                <div class="step-number"></div>
+                <h2 class="step-title">3) Select the best time and meet</h2>
+                <p class="step-description">
+                    From the three most popular dates chosen by participants, select the optimal
+                    time that works for everyone. Once you've made your decision, you're all set
+                    to proceed with your meeting. The app makes it easy to see which dates have
+                    the most availability.
+                </p>
+            </div>
+        </div>
+        <div class="image-container">
+            <div class="step-image">
+                <img src="/images/FinalDate.png" alt="Final meeting date selection showing vote counts and view votes option">
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
