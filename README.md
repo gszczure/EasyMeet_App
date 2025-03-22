@@ -6,6 +6,8 @@
 >
 > In the `main` branch, you will also find a video demonstrating the first version of the desktop application.
 >
+> The application **may be slow on first startup**, as the server needs to wake up. This may take up to **4 minutes**.
+>
 > > Polska wersja README znajduje się na dole.
 
 # EasyMeetApp
@@ -56,7 +58,7 @@ Below, you’ll find details about the features and technologies used in EasyMee
 
 ### ⚠️ Performance Notice
 
-- The application **may be slow on first startup**, as the server needs to wake up. Logging in or registering may take up to **4 minutes**.
+- The application **may be slow on first startup**, as the server needs to wake up. This may take up to **4 minutes**.
 - Once the server is running, performance improves significantly.
 - I plan to migrate the application to Oracle Cloud to eliminate delays, **but for now, this is not possible due to lack of available database space on Oracle for the VM. 🔧**
 
