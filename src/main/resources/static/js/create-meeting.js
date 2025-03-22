@@ -335,7 +335,6 @@ class Calendar {
                 }),
             })
 
-            //TODO NAPRAWIC TU PROBLEM PRZUY TWORZENIU SPOTKANIA
             if (response.ok) {
                 const data = await response.json();
                 const meetingLink = `/api/meetings/join/${data.code}`

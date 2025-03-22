@@ -753,4 +753,3 @@ if (token) {
 // TODO zrobic is processing w kazdym guziku (viev votes i participants) bo w tych brakuje
 // TODO zrobi w participants X czerwonego jak przy usuwaniu ludzi
 //TODO naprawic blad ze jak spamie participants to sie wysweitli po wczytaniu wszystkiego (zrobic zeby te guziki byly disabled na poczatku albo zeby funckjie odpowiadajace endpoitom dobrym byly dopiero mozliwe zeby wysylac dane po jakims czasie)
-// TODO zrobic na telefonei inaczej guziki edit share oraz participants
