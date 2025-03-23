@@ -44,10 +44,10 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = jwtTokenUtil.generateToken(user.getUsername());
+        String token = jwtTokenUtil.generateToken(user.getUsername(), user.isGuest());
         Long userId = userService.getUserIdByUsername(user.getUsername());
 
-        return ResponseEntity.ok(new JwtResponse(token, userId));
+        return ResponseEntity.ok(new JwtResponse(token, userId, user.isGuest()));
     }
 
     // Pseudo logowanie dla gości
@@ -65,8 +65,8 @@ public class AuthController {
         userService.registerUser(guest);
         Long userId = userService.getUserIdByUsername(guest.getUsername());
 
-        String token = jwtTokenUtil.generateToken(guest.getUsername());
-        return ResponseEntity.ok(new JwtResponse(token, userId));
+        String token = jwtTokenUtil.generateToken(guest.getUsername(), true);
+        return ResponseEntity.ok(new JwtResponse(token, userId, true));
     }
 
 }

@@ -1,6 +1,7 @@
 package pl.meetingapp.backendtest.backend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.meetingapp.backendtest.backend.dto.MeetingDateRangeDTO;
@@ -86,7 +87,18 @@ public class MeetingDetailsController {
 
     // Endpoit do pobieranai jak ludzie glosowali na dane spotkanie (Sprawdzicz to )
     @GetMapping("/getVotes/{dateRangeId}")
-    public List<VoteInfo> getVotes(@PathVariable Long dateRangeId) {
-        return voteService.getVotesForDateRange(dateRangeId);
+    public ResponseEntity<?> getVotes(@PathVariable Long dateRangeId,
+                                      @RequestHeader(value = "Authorization") String authHeader) {
+
+        String token = jwtTokenUtil.removeBearerPrefix(authHeader);
+
+        if (jwtTokenUtil.isGuest(token)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Guest users cannot access vote data.");
+        }
+
+        List<VoteInfo> votes = voteService.getVotesForDateRange(dateRangeId);
+
+        return ResponseEntity.ok(votes);
     }
+
 }

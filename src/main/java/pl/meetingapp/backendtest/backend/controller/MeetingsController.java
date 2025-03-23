@@ -1,5 +1,6 @@
 package pl.meetingapp.backendtest.backend.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.meetingapp.backendtest.backend.dto.*;
 import pl.meetingapp.backendtest.backend.model.*;
 import pl.meetingapp.backendtest.backend.repository.MeetingRepository;
+import pl.meetingapp.backendtest.backend.security.JwtTokenUtil;
 import pl.meetingapp.backendtest.backend.service.MeetingsService;
 import pl.meetingapp.backendtest.backend.service.UserService;
 
@@ -25,6 +27,8 @@ public class MeetingsController {
     private final UserService userService;
 
     private final MeetingRepository meetingRepository;
+
+    private final JwtTokenUtil jwtTokenUtil;
 
     //Zrobione
     //Endpoit do tworzenia spotkania (znajduje sie tu juz zapisywanie koomentarza oraz zapisywanie dat)
@@ -67,18 +71,20 @@ public class MeetingsController {
                 .build();
     }
 
-
     //Zrobione
     // endpoint do pobierania spotkan dla uzytkownika zalogowanego
     @GetMapping("/for-user")
-    public ResponseEntity<?> getMeetingsForUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        User user = userService.findByUsername(username);
+    public ResponseEntity<?> getMeetingsForUser(@RequestHeader(value = "Authorization", required = false) String authHeader) {
 
-        if (user.isGuest()) {
+        String token = jwtTokenUtil.removeBearerPrefix(authHeader);
+
+        if (jwtTokenUtil.isGuest(token)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Guest users cannot access this endpoint.");
         }
+
+        String username = jwtTokenUtil.extractUsername(token);
+
+        User user = userService.findByUsername(username);
 
         List<MeetingDTO> meetings = meetingService.getMeetingsForUser(user);
         return ResponseEntity.ok(meetings);
@@ -88,12 +94,21 @@ public class MeetingsController {
     //ZROBIONE
     // Endpoit do pobierania ludzi dla jakiesgos spotkania
     @GetMapping("/{meetingId}/participants")
-    public ResponseEntity<MeetingParticipantsDTO> getMeetingParticipants(@PathVariable Long meetingId) {
+    public ResponseEntity<?> getMeetingParticipants(
+            @PathVariable Long meetingId,
+            @RequestHeader(value = "Authorization") String authHeader) {
+
+        String token = jwtTokenUtil.removeBearerPrefix(authHeader);
+
+        if (jwtTokenUtil.isGuest(token)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Guest users cannot access this endpoint.");
+        }
+
         try {
             MeetingParticipantsDTO participantsDTO = meetingService.getParticipants(meetingId);
             return ResponseEntity.ok(participantsDTO);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Meeting not found");
         }
     }
 
