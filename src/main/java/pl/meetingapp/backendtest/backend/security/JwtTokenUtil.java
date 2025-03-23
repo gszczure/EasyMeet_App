@@ -40,8 +40,9 @@ public class JwtTokenUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, boolean isGuest) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("isGuest", isGuest);
         return createToken(claims, username);
     }
 
@@ -54,7 +55,7 @@ public class JwtTokenUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // 10 godzin
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // 2 h
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
@@ -62,5 +63,16 @@ public class JwtTokenUtil {
     public Boolean validateToken(String token, String username) {
         final String extractedUsername = extractUsername(token);
         return (extractedUsername.equals(username) && !isTokenExpired(token));
+    }
+
+    public Boolean isGuest(String token) {
+        return extractClaim(token, claims -> claims.get("isGuest", Boolean.class));
+    }
+
+    public String removeBearerPrefix(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+        return token;
     }
 }
