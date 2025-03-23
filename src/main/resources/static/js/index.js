@@ -105,7 +105,11 @@ async function loadMeetings() {
                 meetings.forEach((meeting) => addMeetingToUI(meeting))
             }
         } else if(response.status === 403) {
-            showAlert("Meeting list is available only for registered users.")
+            const emptyState = document.createElement("div")
+            emptyState.classList.add("empty-state")
+            emptyState.innerHTML = `The list of meetings is available only for logged-in users. <br> 
+                          I encourage you to <a href="/html/login.html">Log in</a>!`;
+            meetingContainer.appendChild(emptyState)
         } else {
             showAlert("Failed to load meetings.")
         }

@@ -23,14 +23,36 @@ function initMenu() {
 
 function checkToken() {
     const token = localStorage.getItem("token");
+    const userData = token ? parseJwt(token) : null;
 
-    const logoutButtons = document.querySelectorAll(".logout");
+    const logoutButtons = document.querySelectorAll(".logout")
+    const loginLinks = document.querySelectorAll(".login")
+    const signupLinks = document.querySelectorAll(".signup")
 
-    if (token) {
-        logoutButtons.forEach(btn => {
-            btn.style.display = "block";
-            btn.addEventListener("click", logout);
-        });
+
+    if (!userData?.isGuest && token) {
+        loginLinks.forEach((link) => {
+            link.style.display = "none"
+        })
+
+        logoutButtons.forEach((btn) => {
+            btn.style.display = "block"
+            btn.addEventListener("click", logout)
+        })
+
+        signupLinks.forEach((link) => {
+            link.style.display = "none"
+        })
+    }
+}
+
+function parseJwt(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        return JSON.parse(atob(base64));
+    } catch (error) {
+        return null;
     }
 }
 

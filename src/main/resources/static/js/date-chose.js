@@ -21,7 +21,7 @@ function disableButtonsIfGuest(guest) {
         function blockClick(e) {
             e.preventDefault();
             e.stopImmediatePropagation();
-            showNotification("The meeting participants list can only be viewed by registered users.");
+            showAlert("The meeting participants list can only be viewed by registered users.");
         }
 
         // Najpierw usuwamy stare eventy, żeby nie dodawać wielu
@@ -452,7 +452,7 @@ async function renderPopularTimeSlots() {
                 function blockClick(e) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
-                    showNotification("The view votes list can only be viewed by registered users.");
+                    showAlert("The view votes list can only be viewed by registered users.");
                 }
 
                 // Zamieniamy guzik na klon, żeby usunąć stare eventy
@@ -567,7 +567,6 @@ function closeModal(modalId) {
     document.getElementById(modalId).style.display = "none";
 }
 
-
 // Główna funkcja renderująca
 async function renderAll() {
     const data = await fetchAllData();
@@ -608,7 +607,6 @@ async function handleLogin() {
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("userId", data.userId);
                 userId = data.userId;
-                localStorage.setItem("isAuthenticated", "true");
 
                 document.getElementById("login-overlay").style.display = "none";
                 await handleAutoJoinMeeting();
@@ -646,7 +644,6 @@ async function handleGuestLogin() {
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("userId", data.userId);
                 userId = data.userId;
-                localStorage.setItem("isGuest", "true");
 
                 document.getElementById("login-overlay").style.display = "none";
                 await handleAutoJoinMeeting();

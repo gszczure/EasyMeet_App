@@ -430,7 +430,6 @@ async function handleGuestLogin() {
                 const data = await response.json()
                 localStorage.setItem("token", data.token)
                 localStorage.setItem("userId", data.userId)
-                localStorage.setItem("isGuest", "true")
 
                 document.getElementById("login-overlay").style.display = "none";
 
