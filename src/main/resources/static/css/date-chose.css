@@ -165,6 +165,10 @@ main {
 
 @media (max-width: 768px) {
 
+    .popular-slot-card:hover {
+        transform: translateY(0);
+    }
+
     .popular-slots-list {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -195,7 +199,7 @@ main {
     height: 194px;
 }
 
-.popular-slot-card::before {
+.popular-slot-card.selected::before {
     content: "";
     position: absolute;
     left: 0;
@@ -204,11 +208,8 @@ main {
     width: 4px;
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
+    background-color: var(--primary-light-blue);
 }
-
-.popular-slot-card.green::before { background-color: #22c55e; }
-.popular-slot-card.blue::before { background-color: #3b82f6; }
-.popular-slot-card.yellow::before { background-color: #f59e0b; }
 
 .popular-slot-date {
     font-size: 1.5rem;
@@ -247,9 +248,9 @@ main {
 .view-votes-button {
     width: 100%;
     padding: 8px;
-    background-color: var(--primary-dark-blue);
-    color: var(--text);
-    border: none;
+    background-color: var(--text);
+    color: var(--primary-blue);
+    border: 1px solid var(--primary-blue);
     border-radius: 8px;
     font-weight: 500;
     cursor: pointer;
@@ -258,6 +259,7 @@ main {
 
 .view-votes-button:hover {
     background-color: var(--primary-blue);
+    color: var(--text);
 }
 
 .modal {
@@ -336,18 +338,19 @@ main {
 
 .controls button {
     padding: 8px 14px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--primary-blue);
     border-radius: 6px;
-    background-color: #f9f9f9;
+    background-color: var(--text);
+    color: var(--primary-blue);
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
     transition: background-color 0.2s;
-    color: black;
 }
 
 .controls button:hover {
-    background-color: #e6e6e6;
+    background-color: var(--primary-blue);
+    color: var(--text);
 }
 
 .meeting-details {
@@ -410,4 +413,41 @@ main {
     background-color: #f0f0f0 !important;
     color: #999 !important;
     border-color: #ddd !important;
+}
+
+.popular-slot-card {
+    cursor: pointer;
+    transition: border-color 0.3s, transform 0.2s;
+}
+
+.popular-slot-card:hover {
+    transform: translateY(-2px);
+}
+
+.popular-slot-card.selected {
+    border: 2px solid var(--primary-light-blue);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.confirm-date-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.confirm-date-btn {
+    background-color: var(--text);
+    color: var(--primary-blue);
+    border: 1px solid var(--primary-blue);
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.confirm-date-btn:hover {
+    background-color: var(--primary-blue);
+    color: var(--text);
 }

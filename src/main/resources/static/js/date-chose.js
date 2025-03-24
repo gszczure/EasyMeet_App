@@ -12,26 +12,25 @@ const SelectionState = {
     IF_NEEDED: "if_needed",
 };
 
-function disableButtonsIfGuest(guest) {
-    const participantsBtn = document.getElementById("participants-btn");
+function disableButtonIfGuest(buttonSelector, guest, message) {
+    const buttons = document.querySelectorAll(buttonSelector);
 
-    if (guest) {
-        participantsBtn.classList.add("disabled-button");
-
+    buttons.forEach((button) => {
         function blockClick(e) {
             e.preventDefault();
             e.stopImmediatePropagation();
-            showAlert("The meeting participants list can only be viewed by registered users.");
+            showAlert(message);
         }
 
-        // Najpierw usuwamy stare eventy, żeby nie dodawać wielu
-        participantsBtn.replaceWith(participantsBtn.cloneNode(true));
-        const newBtn = document.getElementById("participants-btn");
-        newBtn.classList.add("disabled-button");
-        newBtn.addEventListener("click", blockClick);
-    } else {
-        participantsBtn.classList.remove("disabled-button");
-    }
+        if (guest) {
+            const newButton = button.cloneNode(true);
+            button.replaceWith(newButton);
+            newButton.classList.add("disabled-button");
+            newButton.addEventListener("click", blockClick);
+        } else {
+            button.classList.remove("disabled-button");
+        }
+    });
 }
 
 function getMeetingCode() {
@@ -65,9 +64,11 @@ async function fetchAllData() {
 
     try {
         const response = await fetch(
-            `/api/meeting-details/details/${meetingCode}`, {
-            headers: { "Authorization": `Bearer ${token}` }
-        });
+            `/api/meeting-details/details/${meetingCode}`,
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}` }
+            });
 
         if (!response.ok) {
             throw new Error("Nie znaleziono spotkania");
@@ -82,8 +83,6 @@ async function fetchAllData() {
         const userSelections = await fetchUserSelections();
 
         guest = meetingDetails.guest;
-
-        disableButtonsIfGuest(guest);
 
         return {
             meetingDetails,
@@ -212,6 +211,47 @@ async function fetchVotesForDate(dateRangeId) {
         }
     } catch (error) {
         console.error("Błąd podczas pobierania głosów:", error);
+    }
+}
+
+async function saveMeetingDate(dateRangeId) {
+    const token = getToken()
+    if (!token) {
+        console.error("Invalid token.")
+        return false
+    }
+
+    try {
+        const selectedDate = cachedMeetingDates.find((date) => date.id === Number(dateRangeId))
+        if (!selectedDate) {
+            console.error("Selected date not found")
+            return false
+        }
+
+        const meetingDate = `${selectedDate.startDate}`
+
+        const response = await fetch(`/api/meeting-details/${meetingId}/save-date`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ meetingDate }),
+        })
+
+        if (response.ok) {
+            showNotification("Meeting date saved successfully!");
+            return true;
+        } else if (response.status === 403) {
+            showAlert("Tylko wlasciceil spotkania moze zapisywac date")
+            return false;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error("Error saving meeting date:", error);
+        showAlert("An error occurred while saving the meeting date");
+        return false;
     }
 }
 
@@ -418,13 +458,16 @@ async function renderPopularTimeSlots() {
             document.querySelector("main").appendChild(popularSlotsSection);
         }
 
+        const selectedDateId = document.querySelector(".popular-slot-card.selected")?.dataset.dateRangeId
+
         popularSlotsSection.innerHTML = `
             <h2>Most Popular Time Slots</h2>
             <div class="popular-slots-list">
                 ${popularSlots
             .map(
                 (slot, index) => `
-                        <div class="popular-slot-card ${["green", "blue", "yellow"][index]}">
+                        <div class="popular-slot-card ${["first", "second", "third"][index]} ${selectedDateId == slot.id ? "selected" : ""}" 
+                             data-date-range-id="${slot.id}">
                             <div class="popular-slot-date">${formatDateForDisplay(slot.startDate)}</div>
                             <div class="popular-slot-time">
                                 ${slot.startTime} (${slot.duration}h)
@@ -441,29 +484,62 @@ async function renderPopularTimeSlots() {
             )
             .join("")}
             </div>
-        `;
+            ${
+            selectedDateId
+                ? `
+                <div class="confirm-date-container">
+                    <button id="confirm-date-btn" class="confirm-date-btn">Confirm Selected Date</button>
+                </div>
+            `
+                : ""
+        }
+        `
+
+        // TODO naprawic  t oze tylko owner moze to robic
+        const slotCards = document.querySelectorAll(".popular-slot-card")
+
+        slotCards.forEach((card) => {
+            card.addEventListener("click", (e) => {
+
+                if (e.target.classList.contains("view-votes-button") || e.target.closest(".view-votes-button")) {
+                    return
+                }
+
+                document.querySelectorAll(".popular-slot-card").forEach((c) => {
+                    c.classList.remove("selected")
+                })
+
+                card.classList.add("selected")
+
+                renderPopularTimeSlots()
+            })
+        })
+
+        const confirmBtn = document.getElementById("confirm-date-btn")
+        if (confirmBtn) {
+            confirmBtn.addEventListener("click", async (e) => {
+
+                if (isProcessing) return
+
+                isProcessing = true
+                const selectedCard = document.querySelector(".popular-slot-card.selected")
+
+                if (selectedCard) {
+                    const dateRangeId = selectedCard.dataset.dateRangeId
+                    await saveMeetingDate(dateRangeId)
+                    }
+                isProcessing = false
+            })
+        }
 
         const viewVotesButtons = document.querySelectorAll(".view-votes-button");
 
         viewVotesButtons.forEach((button) => {
             if (guest) {
-                button.classList.add("disabled-button");
-
-                function blockClick(e) {
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-                    showAlert("The view votes list can only be viewed by registered users.");
-                }
-
-                // Zamieniamy guzik na klon, żeby usunąć stare eventy
-                const newButton = button.cloneNode(true);
-                button.replaceWith(newButton);
-                newButton.classList.add("disabled-button");
-                newButton.addEventListener("click", blockClick);
+                disableButtonIfGuest(".view-votes-button", guest, "The view votes list can only be viewed by registered users.");
             } else {
                 button.classList.remove("disabled-button");
 
-                // Normalny event dla zalogowanych użytkowników
                 button.addEventListener("click", async (event) => {
                     const dateRangeId = event.target.getAttribute("data-date-range-id");
                     await fetchVotesForDate(dateRangeId);
@@ -580,7 +656,7 @@ async function renderAll() {
     const commentElement = document.querySelector(".comment");
     commentElement.textContent = meetingDetails.comment || null;
 
-    disableButtonsIfGuest(guest);
+    disableButtonIfGuest("#participants-btn", guest, "The meeting participants list can only be viewed by registered users.");
 
     await renderDates(meetingDates, userSelections, voteCounts);
 
