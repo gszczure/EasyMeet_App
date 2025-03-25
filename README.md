@@ -16,7 +16,7 @@
 
 ### 🚀 About EasyMeetApp
 
-[EasyMeetApp](https://easymeetapp.onrender.com/) is an application that simplifies scheduling group meetings by helping participants easily find a convenient time. It eliminates the need for excessive messaging, making event planning (such as social gatherings or trips) much more efficient.
+[EasyMeetApp](https://meetme-web-q5ol.onrender.com/) is an application that simplifies scheduling group meetings by helping participants easily find a convenient time. It eliminates the need for excessive messaging, making event planning (such as social gatherings or trips) much more efficient.
 
 Below, you’ll find details about the features and technologies used in EasyMeetApp.
 
@@ -74,7 +74,7 @@ Here are some screenshots of the application in action:
 
 !...
 
-📌 [Visit EasyMeetApp](https://easymeetapp.onrender.com/) and try it out!
+📌 [Visit EasyMeetApp](https://meetme-web-q5ol.onrender.com/) and try it out!
 
 ---
 
@@ -82,7 +82,7 @@ Here are some screenshots of the application in action:
 
 ### 🚀 O EasyMeetApp
 
-[EasyMeetApp](https://easymeetapp.onrender.com/) to aplikacja, która upraszcza organizowanie spotkań w grupie, umożliwiając łatwe ustalanie dogodnego terminu dla wszystkich uczestników. Dzięki niej organizowanie wydarzeń, takich jak spotkania towarzyskie czy wyjazdy, staje się prostsze i bardziej efektywne, eliminując konieczność wymiany wielu wiadomości.
+[EasyMeetApp](https://meetme-web-q5ol.onrender.com/) to aplikacja, która upraszcza organizowanie spotkań w grupie, umożliwiając łatwe ustalanie dogodnego terminu dla wszystkich uczestników. Dzięki niej organizowanie wydarzeń, takich jak spotkania towarzyskie czy wyjazdy, staje się prostsze i bardziej efektywne, eliminując konieczność wymiany wielu wiadomości.
 
 Poniżej znajdziesz szczegóły dotyczące funkcji oraz technologii, które wykorzystuje EasyMeetApp.
 
@@ -135,4 +135,4 @@ Poniżej znajdziesz szczegóły dotyczące funkcji oraz technologii, które wyko
 
 Aplikacja jest w fazie rozwoju. Wszelkie opinie, sugestie dotyczące ulepszeń lub raporty o błędach są mile widziane! 🚀🎉
 
-📌 [Sprawdź EasyMeetApp](https://easymeetapp.onrender.com/)!
+📌 [Sprawdź EasyMeetApp](https://meetme-web-q5ol.onrender.com/)!
