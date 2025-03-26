@@ -32,7 +32,7 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/icon/**", "/header.html", "/images/**").permitAll()
+                        .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/html/**", "/icon/**", "/header.html", "/images/**").permitAll()
                         .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/guest-login", "/api/meetings/join/{code}" ).permitAll()
                         .anyRequest().authenticated()
                 )
