@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.ok) {
-                    window.location.href = 'html/login.html';
+                    window.location.href = '../../templates/login.html';
                 } else {
                     document.getElementById('message').textContent = 'Registration failed.';
                 }

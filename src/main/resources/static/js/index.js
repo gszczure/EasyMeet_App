@@ -77,7 +77,7 @@ async function loadMeetings() {
         const loginMessage = document.createElement("div");
         loginMessage.classList.add("empty-state");
         loginMessage.innerHTML = `The list of meetings is available only for logged-in users. <br> 
-                          I encourage you to <a href="/html/login.html">Log in</a>!`;
+                          I encourage you to <a href="/templates/login.html">Log in</a>!`;
         meetingContainer.appendChild(loginMessage);
         return;
     }
@@ -108,7 +108,7 @@ async function loadMeetings() {
             const emptyState = document.createElement("div")
             emptyState.classList.add("empty-state")
             emptyState.innerHTML = `The list of meetings is available only for logged-in users. <br> 
-                          I encourage you to <a href="/html/login.html">Log in</a>!`;
+                          I encourage you to <a href="/templates/login.html">Log in</a>!`;
             meetingContainer.appendChild(emptyState)
         } else {
             showAlert("Failed to load meetings.")
@@ -120,7 +120,7 @@ async function loadMeetings() {
 }
 
 createMeetingButton.addEventListener('click', () => {
-    window.location.href = '/html/create-meeting.html';
+    window.location.href = '/templates/create-meeting.html';
 });
 
 // Załaduj spotkania po załadowaniu strony
