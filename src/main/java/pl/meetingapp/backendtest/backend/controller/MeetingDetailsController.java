@@ -16,6 +16,7 @@ import pl.meetingapp.backendtest.backend.service.UserService;
 import pl.meetingapp.backendtest.backend.service.VoteService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 public class MeetingDetailsController {
 
     //TODO ZMIENIC NAZWE POL
-    private final MeetingDetailsService dateRangeService;
+    private final MeetingDetailsService meetingDetailsService;
 
     private final MeetingsService meetingService;
 
@@ -34,15 +35,6 @@ public class MeetingDetailsController {
     private final UserService userService;
 
     private final JwtTokenUtil jwtTokenUtil;
-
-
-//    //Endpoint do usuwania wybranych przedzialow dat (musi miec id przedzialu daty by je usunac)
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteDateRange(@PathVariable Long id) {
-//        dateRangeService.deleteById(id);
-//        return ResponseEntity.noContent().build();
-//    }
-
 
     //ZROBIONE
     // Endpoit do pobierania wszystkich potrzebnych informacji po wejsciu na strone gdzie uzytkownicy wybieraja daty
@@ -66,7 +58,7 @@ public class MeetingDetailsController {
         detailsDTO.setComment(meeting.getComment());
 
         // Pobieramy listę dat spotkań
-        List<MeetingDateRangeDTO> dateRanges = dateRangeService.findByMeetingId(meeting.getId()).stream()
+        List<MeetingDateRangeDTO> dateRanges = meetingDetailsService.findDateRangesByMeetingId(meeting.getId()).stream()
                 .map(dateRange -> new MeetingDateRangeDTO(
                         dateRange.getId(),
                         dateRange.getStartDate(),
@@ -85,6 +77,7 @@ public class MeetingDetailsController {
         return ResponseEntity.ok(detailsDTO);
     }
 
+    // ZROBIONE
     // Endpoit do pobieranai jak ludzie glosowali na dane spotkanie (Sprawdzicz to )
     @GetMapping("/getVotes/{dateRangeId}")
     public ResponseEntity<?> getVotes(@PathVariable Long dateRangeId,
@@ -101,4 +94,47 @@ public class MeetingDetailsController {
         return ResponseEntity.ok(votes);
     }
 
+    // ZROBONE
+    // Endpoit do zapisywania final dat dla spotkan
+    @PostMapping("/{meetingId}/save-date")
+    public ResponseEntity<?> saveMeetingDate(
+            @PathVariable Long meetingId,
+            @RequestBody Map<String, String> payload,
+            @RequestHeader(value = "Authorization") String authHeader) {
+
+        try {
+
+            String token = jwtTokenUtil.removeBearerPrefix(authHeader);
+            String currentUsername = jwtTokenUtil.extractUsername(token);
+
+            Optional<Meeting> meetingOptional = meetingDetailsService.findMeetingById(meetingId);
+            if (meetingOptional.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Meeting meeting = meetingOptional.get();
+
+            if (!meetingDetailsService.isUserOwner(currentUsername, meeting)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("Only the meeting owner can save the meeting date");
+            }
+
+            String meetingDate = payload.get("meetingDate");
+
+            if (meetingDetailsService.isInvalidDate(meetingDate)) {
+                return ResponseEntity.badRequest().body("Meeting date cannot be empty");
+            }
+
+            Meeting savedMeetingDate = meetingDetailsService.saveMeetingDate(meetingId, meetingDate);
+            if (savedMeetingDate == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Failed to save meeting date");
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error processing request: " + e.getMessage());
+        }
+    }
 }
