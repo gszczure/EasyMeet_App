@@ -61,12 +61,12 @@ public class MeetingDetailsServiceTest {
     }
 
     @Test
-    void findByMeetingId_Success() {
+    void findDateRangesByMeetingId_Success() {
         // Arrange
         when(dateRangeRepository.findByMeetingId(anyLong())).thenReturn(testDateRanges);
 
         // Act
-        List<DateRange> result = meetingDetailsService.findByMeetingId(1L);
+        List<DateRange> result = meetingDetailsService.findDateRangesByMeetingId(1L);
 
         // Assert
         assertNotNull(result);

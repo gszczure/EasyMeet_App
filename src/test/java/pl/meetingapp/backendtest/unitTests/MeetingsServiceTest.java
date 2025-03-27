@@ -277,7 +277,7 @@ public class MeetingsServiceTest {
         // Arrange
         when(meetingRepository.findById(anyLong())).thenReturn(Optional.of(testMeeting));
         when(dateSelectionRepository.findByMeetingId(anyLong())).thenReturn(testSelections);
-        when(meetingDetailsService.findByMeetingId(anyLong())).thenReturn(testDateRanges);
+        when(meetingDetailsService.findDateRangesByMeetingId(anyLong())).thenReturn(testDateRanges);
         doNothing().when(dateSelectionRepository).deleteAll(anyList());
         doNothing().when(meetingDetailsService).deleteAll(anyList());
         doNothing().when(meetingRepository).delete(any(Meeting.class));

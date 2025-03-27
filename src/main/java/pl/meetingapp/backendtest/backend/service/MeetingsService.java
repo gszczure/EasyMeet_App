@@ -197,7 +197,7 @@ public class MeetingsService {
         List<Selection> selections = dateSelectionRepository.findByMeetingId(meetingId);
         dateSelectionRepository.deleteAll(selections);
 
-        List<DateRange> dateRanges = dateRangeService.findByMeetingId(meetingId);
+        List<DateRange> dateRanges = dateRangeService.findDateRangesByMeetingId(meetingId);
         dateRangeService.deleteAll(dateRanges);
 
         meetingRepository.delete(meeting);
