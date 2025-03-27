@@ -152,7 +152,7 @@ main {
 .popular-slots h2 {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #2c3e50;
+    color: var(--primary-blue);
     margin-bottom: 8px;
 }
 
@@ -164,6 +164,15 @@ main {
 }
 
 @media (max-width: 768px) {
+
+    .date-item {
+        width: auto;
+        height: auto;
+    }
+
+    .modal-content {
+        margin: 45% auto !important;
+    }
 
     .popular-slot-card:hover {
         transform: translateY(0);
@@ -314,13 +323,13 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 30px;
+    margin-left: 30px;
 }
 
 .organizer-info {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #2c3e50;
+    color: #000000;
     margin-bottom: 8px;
 }
 
@@ -360,11 +369,11 @@ main {
 .meeting-details h1 {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #2c3e50;
+    color: var(--primary-blue);
     margin-bottom: 8px;
 }
 
-.meeting-details p {
+p {
     font-size: 0.95rem;
     color: #7f8c8d;
     line-height: 1.4;

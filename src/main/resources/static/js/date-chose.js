@@ -83,13 +83,15 @@ async function fetchAllData() {
         const userSelections = await fetchUserSelections();
 
         guest = meetingDetails.guest;
+        const isOwner = meetingDetails.ownerId === Number(userId)
 
         return {
             meetingDetails,
             meetingDates: cachedMeetingDates,
             voteCounts: cachedVoteCounts,
             userSelections,
-            guest
+            guest,
+            isOwner
         };
     } catch (error) {
         console.error("Błąd podczas pobierania danych spotkania:", error);
@@ -458,77 +460,101 @@ async function renderPopularTimeSlots() {
             document.querySelector("main").appendChild(popularSlotsSection);
         }
 
-        const selectedDateId = document.querySelector(".popular-slot-card.selected")?.dataset.dateRangeId
+        let popularSlotsList = document.getElementById("popular-slots-list");
+        if (!popularSlotsList) {
+            popularSlotsList = document.createElement("div");
+            popularSlotsList.id = "popular-slots-list";
+            popularSlotsList.className = "popular-slots-list";
+            popularSlotsSection.appendChild(popularSlotsList);
+        }
 
-        popularSlotsSection.innerHTML = `
-            <h2>Most Popular Time Slots</h2>
-            <div class="popular-slots-list">
-                ${popularSlots
+        const selectedDateId = document.querySelector(".popular-slot-card.selected")?.dataset.dateRangeId;
+
+        popularSlotsList.innerHTML = popularSlots
             .map(
                 (slot, index) => `
-                        <div class="popular-slot-card ${["first", "second", "third"][index]} ${selectedDateId == slot.id ? "selected" : ""}" 
-                             data-date-range-id="${slot.id}">
-                            <div class="popular-slot-date">${formatDateForDisplay(slot.startDate)}</div>
-                            <div class="popular-slot-time">
-                                ${slot.startTime} (${slot.duration}h)
-                            </div>
-                            <div class="vote-circles">
-                                <div class="vote-circle yes">${slot.votes.yes || 0}</div>
-                                <div class="vote-circle if-needed">${slot.votes.if_needed || 0}</div>
-                            </div>
-                            <button class="view-votes-button" data-date-range-id="${slot.id}">
-                                View Votes (${slot.totalVotes})
-                            </button>
+                    <div class="popular-slot-card ${["first", "second", "third"][index]} ${selectedDateId == slot.id ? "selected" : ""}" 
+                         data-date-range-id="${slot.id}">
+                        <div class="popular-slot-date">${formatDateForDisplay(slot.startDate)}</div>
+                        <div class="popular-slot-time">
+                            ${slot.startTime} (${slot.duration}h)
                         </div>
-                    `,
+                        <div class="vote-circles">
+                            <div class="vote-circle yes">${slot.votes.yes || 0} Yes</div>
+                            <div class="vote-circle if-needed">${slot.votes.if_needed || 0} If Needed</div>
+                        </div>
+                        <button class="view-votes-button" data-date-range-id="${slot.id}">
+                            View Votes (${slot.totalVotes})
+                        </button>
+                    </div>
+                `,
             )
-            .join("")}
-            </div>
-            ${
-            selectedDateId
-                ? `
-                <div class="confirm-date-container">
-                    <button id="confirm-date-btn" class="confirm-date-btn">Confirm Selected Date</button>
-                </div>
-            `
-                : ""
-        }
-        `
+            .join("")
 
-        // TODO naprawic  t oze tylko owner moze to robic
+        if (selectedDateId) {
+            let confirmContainer = document.querySelector(".confirm-date-container");
+            if (!confirmContainer) {
+                confirmContainer = document.createElement("div");
+                confirmContainer.className = "confirm-date-container";
+                popularSlotsSection.appendChild(confirmContainer);
+            }
+            confirmContainer.innerHTML = `
+        <button id="confirm-date-btn" class="confirm-date-btn">Confirm Selected Date</button>
+    `;
+        } else {
+            document.querySelector(".confirm-date-container")?.remove();
+        }
+
+
         const slotCards = document.querySelectorAll(".popular-slot-card")
 
         slotCards.forEach((card) => {
             card.addEventListener("click", (e) => {
 
                 if (e.target.classList.contains("view-votes-button") || e.target.closest(".view-votes-button")) {
-                    return
+                    return;
+                }
+
+                if (!window.isOwner) {
+                    showAlert("Only the meeting owner can select dates.");
+                    return;
                 }
 
                 document.querySelectorAll(".popular-slot-card").forEach((c) => {
-                    c.classList.remove("selected")
+                    c.classList.remove("selected");
                 })
 
-                card.classList.add("selected")
+                card.classList.add("selected");
 
-                renderPopularTimeSlots()
+                renderPopularTimeSlots();
             })
         })
 
         const confirmBtn = document.getElementById("confirm-date-btn")
         if (confirmBtn) {
+            if (!window.isOwner) {
+                confirmBtn.classList.add("disabled");
+                confirmBtn.setAttribute("disabled", "disabled");
+                confirmBtn.title = "Only the meeting owner can confirm dates";
+            }
+
             confirmBtn.addEventListener("click", async (e) => {
+                if (isProcessing) return;
 
-                if (isProcessing) return
+                if (!window.isOwner) {
+                    showAlert("Only the meeting owner can confirm dates.");
+                    return;
+                }
 
-                isProcessing = true
-                const selectedCard = document.querySelector(".popular-slot-card.selected")
+                isProcessing = true;
+                const selectedCard = document.querySelector(".popular-slot-card.selected");
 
                 if (selectedCard) {
-                    const dateRangeId = selectedCard.dataset.dateRangeId
-                    await saveMeetingDate(dateRangeId)
-                    }
-                isProcessing = false
+                    const dateRangeId = selectedCard.dataset.dateRangeId;
+                    await saveMeetingDate(dateRangeId);
+                }
+
+                isProcessing = false;
             })
         }
 
@@ -648,7 +674,9 @@ async function renderAll() {
     const data = await fetchAllData();
     if (!data) return;
 
-    const { meetingDetails, meetingDates, voteCounts, userSelections } = data;
+    const { meetingDetails, meetingDates, voteCounts, userSelections, isOwner } = data;
+
+    window.isOwner = isOwner;
 
     const organizerInfoElement = document.getElementById("organizer-info");
     organizerInfoElement.innerHTML = `<div class="organizer-name">${meetingDetails.name}</div>`;
@@ -771,7 +799,7 @@ if (shareButton) {
     shareButton.addEventListener("click", async () => {
         const meetingCode = getMeetingCode()
         if (meetingCode && meetingCode !== "null") {
-            const meetingLink = `http://localhost:8080/api/meetings/join/${meetingCode}`
+            const meetingLink = `https://easymeetapp.onrender.com//api/meetings/join/${meetingCode}`
             try {
                 await navigator.clipboard.writeText(meetingLink)
                 showNotification("Meeting link has been copied to your clipboard!")
