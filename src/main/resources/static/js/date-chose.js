@@ -245,7 +245,7 @@ async function saveMeetingDate(dateRangeId) {
             showNotification("Meeting date saved successfully!");
             return true;
         } else if (response.status === 403) {
-            showAlert("Tylko wlasciceil spotkania moze zapisywac date")
+            showAlert("Only the meeting owner can save the meeting date")
             return false;
         } else {
             return false;
@@ -625,6 +625,7 @@ async function showParticipantsModal() {
     ownerLi.innerHTML = `${owner.firstName} ${owner.lastName} <strong>(Owner)</strong>`;
     participantsList.appendChild(ownerLi);
 
+    //TODO isOwner sprawdzic moze mozna wykorzystac window.isOwner
     // TODO zrobic potwierdzenie przy usuwaniu (czy na pewno chcesz usunac... )
     participants.forEach((participant) => {
         const li = document.createElement("li");
@@ -799,7 +800,7 @@ if (shareButton) {
     shareButton.addEventListener("click", async () => {
         const meetingCode = getMeetingCode()
         if (meetingCode && meetingCode !== "null") {
-            const meetingLink = `https://easymeetapp.onrender.com//api/meetings/join/${meetingCode}`
+            const meetingLink = `https://easymeetapp.onrender.com/api/meetings/join/${meetingCode}`
             try {
                 await navigator.clipboard.writeText(meetingLink)
                 showNotification("Meeting link has been copied to your clipboard!")
