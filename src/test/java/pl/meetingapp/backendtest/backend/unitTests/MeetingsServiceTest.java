@@ -1,4 +1,4 @@
-package pl.meetingapp.backendtest.unitTests;
+package pl.meetingapp.backendtest.backend.unitTests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
