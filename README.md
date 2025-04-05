@@ -78,11 +78,27 @@ Tests will be added continuously.
 
 EasyMeetApp is still in development. Any feedback, suggestions for improvements, or bug reports are highly appreciated! 🚀🎉
 
+---
+
 ### 👀 Application Preview
 
 Here are some screenshots of the application in action:
-
+- How it works
 ![How_It_works.png](src/main/resources/static/images/How_It_works.png)
+
+
+- User meetings
+![main_scene.png](src/main/resources/static/images/main_scene.png)
+
+
+- Creating a new meeting
+![Create_Game_Night.png](src/main/resources/static/images/Create_Game_Night.png)
+
+
+- "Game Night" meeting
+![Game_Night_Meeting.png](src/main/resources/static/images/Game_Night_Meeting.png)
+
+---
 
 📌 [Visit EasyMeetApp](https://easymeetapp.onrender.com/) and try it out!
 
@@ -153,5 +169,28 @@ Testy są dodawane na bieżąco.
 ### 💡 Opinie i wsparcie
 
 Aplikacja jest w fazie rozwoju. Wszelkie opinie, sugestie dotyczące ulepszeń lub raporty o błędach są mile widziane! 🚀🎉
+
+---
+
+### 👀 Podgląd aplikacji
+
+Oto kilka zrzutów ekranu z aplikacji w akcji:
+
+- Jak to działa
+  ![How_It_works.png](src/main/resources/static/images/How_It_works.png)
+
+
+- Spotkania urzytkownika
+  ![main_scene.png](src/main/resources/static/images/main_scene.png)
+
+
+- Tworzenie nowego spotkania
+  ![Create_Game_Night.png](src/main/resources/static/images/Create_Game_Night.png)
+
+
+- Spotkanie "Wieczór Gier"
+  ![Game_Night_Meeting.png](src/main/resources/static/images/Game_Night_Meeting.png)
+
+---
 
 📌 [Sprawdź EasyMeetApp](https://easymeetapp.onrender.com/)!
