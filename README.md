@@ -52,7 +52,17 @@ Below, you’ll find details about the features and technologies used in EasyMee
 ---
 
 ### 🧪 Testing
-- The application uses **JUnit 5** and **Mockito** for testing. Tests are regularly added as development progresses.
+
+The application uses **JUnit 5** and **Mockito** for unit testing. Currently, there are **35 unit tests** implemented, and **controller tests** are being added regularly as development progresses.
+
+### Test Structure
+
+- **Unit Tests:** These tests cover the core components of the application, such as services and utilities, and are located in the **unitTests package**.
+
+
+- **Controller Tests:** These tests focus on verifying the behavior of HTTP endpoints and are implemented using **WebMvcTest**. They are located in the **controllerTests package** and are added continuously.
+
+Tests will be added continuously.
 
 ---
 
@@ -118,7 +128,16 @@ Poniżej znajdziesz szczegóły dotyczące funkcji oraz technologii, które wyko
 ---
 
 ### 🧪 Testy
-- Testowanie przy użyciu **JUnit 5** i **Mockito**. Testy będą regularnie dodawane.
+Aplikacja wykorzystuje **JUnit 5** oraz **Mockito** do testowania jednostkowego. Obecnie zaimplementowanych jest **35 testów jednostkowych**, a **testy kontrolerów** są regularnie dodawane.
+
+### Struktura Testów
+
+- **Testy jednostkowe:** Te testy obejmują główne komponenty aplikacji, takie jak usługi i narzędzia, i znajdują się w **pakiecie unitTests**.
+
+
+- **Testy kontrolerów:** Te testy koncentrują się na weryfikowaniu zachowania punktów końcowych HTTP i są zaimplementowane przy użyciu **WebMvcTest**. Znajdują się w **pakiecie controllerTests** i są regularnie dodawane.
+
+Testy są dodawane na bieżąco.
 
 ---
 
