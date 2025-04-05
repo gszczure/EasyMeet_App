@@ -82,7 +82,7 @@ EasyMeetApp is still in development. Any feedback, suggestions for improvements,
 
 Here are some screenshots of the application in action:
 
-!...
+![How_It_works.png](src/main/resources/static/images/How_It_works.png)
 
 📌 [Visit EasyMeetApp](https://easymeetapp.onrender.com/) and try it out!
 
