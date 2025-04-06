@@ -3,6 +3,7 @@ package pl.meetingapp.backendtest.backend.controllerTests;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.meetingapp.backendtest.backend.config.TestSecurityConfig;
 import pl.meetingapp.backendtest.backend.controller.AuthController;
+import pl.meetingapp.backendtest.backend.dto.GuestLoginRequest;
 import pl.meetingapp.backendtest.backend.model.User;
 import pl.meetingapp.backendtest.backend.security.JwtTokenUtil;
 import pl.meetingapp.backendtest.backend.service.UserService;
@@ -22,6 +24,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Import(TestSecurityConfig.class)
 @WebMvcTest(AuthController.class)
@@ -102,6 +105,50 @@ public class AuthControllerTest {
         verify(userService).getUserIdByUsername("testuser");
     }
 
-    //TODO zrobic guestLogin_ShouldRegisterGuestAndReturnToken TEST
+    @Test
+    void guestLogin_ShouldRegisterGuestAndReturnToken() throws Exception {
+        // Arrange
+        GuestLoginRequest guestRequest = new GuestLoginRequest();
+        guestRequest.setFirstName("Guest");
+        guestRequest.setLastName("User");
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+
+        User guestUser = new User();
+        guestUser.setFirstName("Guest");
+        guestUser.setLastName("User");
+        guestUser.setGuest(true);
+        guestUser.setUsername("Guest_12345678");
+        guestUser.setPassword("1233455");
+        guestUser.setEmail("guest@guest.com");
+        guestUser.setPhoneNumber("123456789");
+
+        when(userService.registerUser(userCaptor.capture())).thenReturn(guestUser);
+        // I use anyString() instead of a specific username since I can't predict the exact value becouse it's generated with UUID
+        when(userService.getUserIdByUsername(anyString())).thenReturn(2L);
+        when(jwtTokenUtil.generateToken(anyString(), eq(true))).thenReturn("guest_token");
+
+        // Act & Assert
+        mockMvc.perform(post("/api/auth/guest-login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(guestRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").value("guest_token"))
+                .andExpect(jsonPath("$.userId").value(2L))
+                .andExpect(jsonPath("$.guest").value(true));
+
+        User capturedUser = userCaptor.getValue();
+        assertEquals("Guest", capturedUser.getFirstName());
+        assertEquals("User", capturedUser.getLastName());
+        assertTrue(capturedUser.isGuest());
+        assertTrue(capturedUser.getUsername().startsWith("Guest_"));
+        assertEquals("1233455", capturedUser.getPassword());
+        assertEquals("guest@guest.com", capturedUser.getEmail());
+        assertEquals("123456789", capturedUser.getPhoneNumber());
+
+        verify(userService).registerUser(any(User.class));
+        verify(userService).getUserIdByUsername(anyString());
+        verify(jwtTokenUtil).generateToken(anyString(), eq(true));
+    }
 }
 
