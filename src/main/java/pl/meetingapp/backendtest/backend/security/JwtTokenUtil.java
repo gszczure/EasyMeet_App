@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-//TODO poprawic ta kalse
 @Component
 public class JwtTokenUtil {
 

@@ -854,4 +854,3 @@ if (token) {
 // TODO pomysles nad priorytetem kolejnosci wysweitlania most popular date np (3.YES 1.IfNeeded > 3.IfNeeded 1.YES)
 // TODO zrobic is processing w kazdym guziku (viev votes i participants) bo w tych brakuje
 // TODO zrobi w participants X czerwonego jak przy usuwaniu ludzi
-//TODO naprawic blad ze jak spamie participants to sie wysweitli po wczytaniu wszystkiego (zrobic zeby te guziki byly disabled na poczatku albo zeby funckjie odpowiadajace endpoitom dobrym byly dopiero mozliwe zeby wysylac dane po jakims czasie)

@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * Test security configuration used to disable CSRF
+ * Test security configuration used to disable CSRF because csrf in WebMvcTest is default enabled
  */
 @TestConfiguration
 @EnableWebSecurity

@@ -26,7 +26,6 @@ public class WebSecurityConfig {
         this.customUserDetailsService = customUserDetailsService;
     }
 
-    // TODO naprawic to permitall (zeby bylo na authenticated)
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
