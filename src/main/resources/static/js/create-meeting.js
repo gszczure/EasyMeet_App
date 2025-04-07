@@ -1,7 +1,6 @@
 let token = localStorage.getItem("token");
 let isProcessing = false;
 
-// TODO sprawdzic blad jak w[isze start time a potem duration na none ustawie i stworze spotkanie
 class Calendar {
     constructor() {
         this.currentDate = new Date();
