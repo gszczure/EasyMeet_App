@@ -264,7 +264,8 @@ async function removeParticipant(userId) {
         return;
     }
     try {
-        const response = await fetch(`/api/meetings/${meetingId}/participants/${userId}`, {
+        const response = await fetch(`/api/meeting-details/${meetingId}/participants/${userId}`,
+            {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -290,7 +291,8 @@ async function fetchParticipants() {
         return;
     }
     try {
-        const response = await fetch(`/api/meetings/${meetingId}/participants`, {
+        const response = await fetch(`/api/meeting-details/${meetingId}/participants`,
+            {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

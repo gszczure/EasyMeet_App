@@ -90,50 +90,6 @@ public class MeetingsController {
         return ResponseEntity.ok(meetings);
     }
 
-    // TODO przeniesc te endpoity dwa do MeetingDatailsController
-    //ZROBIONE
-    // Endpoit do pobierania ludzi dla jakiesgos spotkania
-    @GetMapping("/{meetingId}/participants")
-    public ResponseEntity<?> getMeetingParticipants(
-            @PathVariable Long meetingId,
-            @RequestHeader(value = "Authorization") String authHeader) {
-
-        String token = jwtTokenUtil.removeBearerPrefix(authHeader);
-
-        if (jwtTokenUtil.isGuest(token)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Guest users cannot access this endpoint.");
-        }
-
-        try {
-            MeetingParticipantsDTO participantsDTO = meetingService.getParticipants(meetingId);
-            return ResponseEntity.ok(participantsDTO);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Meeting not found");
-        }
-    }
-
-    // TODO zrobic testy usuwanajace ludzi czyli czy jak sie usuwa spotkanie lu ludzi to czy wszystko powiazane z nim leci
-    //ZROBIONE
-    // Endpoit do usuwania uzytkownik z spotkania (tylkko wlasciceil)
-    @DeleteMapping("/{meetingId}/participants/{userId}")
-    public ResponseEntity<String> removeParticipant(@PathVariable Long meetingId, @PathVariable Long userId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loggedInUsername = authentication.getName();
-        User loggedInUser = userService.findByUsername(loggedInUsername);
-        Meeting meeting = meetingService.findById(meetingId);
-
-        if (meeting == null || !meeting.getOwner().equals(loggedInUser)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-
-        boolean removed = meetingService.removeUserFromMeeting(meetingId, userId);
-        if (removed) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
 //
 //    @DeleteMapping("/{meetingId}/leave") // Endpoint do opuszczania spotkania przez uczestnika
 //    public ResponseEntity<String> leaveMeeting(@PathVariable Long meetingId) {

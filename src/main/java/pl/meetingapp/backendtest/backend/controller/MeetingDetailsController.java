@@ -3,9 +3,12 @@ package pl.meetingapp.backendtest.backend.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.meetingapp.backendtest.backend.dto.MeetingDateRangeDTO;
 import pl.meetingapp.backendtest.backend.dto.MeetingDetailsDTO;
+import pl.meetingapp.backendtest.backend.dto.MeetingParticipantsDTO;
 import pl.meetingapp.backendtest.backend.dto.VoteInfo;
 import pl.meetingapp.backendtest.backend.model.Meeting;
 import pl.meetingapp.backendtest.backend.model.User;
@@ -135,6 +138,48 @@ public class MeetingDetailsController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error processing request: " + e.getMessage());
+        }
+    }
+
+    //ZROBIONE
+    // Endpoit do pobierania ludzi dla jakiesgos spotkania
+    @GetMapping("/{meetingId}/participants")
+    public ResponseEntity<?> getMeetingParticipants(
+            @PathVariable Long meetingId,
+            @RequestHeader(value = "Authorization") String authHeader) {
+
+        String token = jwtTokenUtil.removeBearerPrefix(authHeader);
+
+        if (jwtTokenUtil.isGuest(token)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Guest users cannot access this endpoint.");
+        }
+
+        try {
+            MeetingParticipantsDTO participantsDTO = meetingService.getParticipants(meetingId);
+            return ResponseEntity.ok(participantsDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Meeting not found");
+        }
+    }
+
+    //ZROBIONE
+    // Endpoit do usuwania uzytkownik z spotkania (tylkko wlasciceil)
+    @DeleteMapping("/{meetingId}/participants/{userId}")
+    public ResponseEntity<String> removeParticipant(@PathVariable Long meetingId, @PathVariable Long userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUsername = authentication.getName();
+        User loggedInUser = userService.findByUsername(loggedInUsername);
+        Meeting meeting = meetingService.findById(meetingId);
+
+        if (meeting == null || !meeting.getOwner().equals(loggedInUser)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        boolean removed = meetingService.removeUserFromMeeting(meetingId, userId);
+        if (removed) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }
