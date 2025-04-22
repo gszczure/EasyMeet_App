@@ -16,7 +16,7 @@
 
 ### 🚀 About EasyMeetApp
 
-[EasyMeetApp](https://easymeetapp.onrender.com/) is an application that simplifies scheduling group meetings by helping participants easily find a convenient time. It eliminates the need for excessive messaging, making event planning (such as social gatherings or trips) much more efficient.
+[EasyMeetApp](https://easymeetapp.up.railway.app) is an application that simplifies scheduling group meetings by helping participants easily find a convenient time. It eliminates the need for excessive messaging, making event planning (such as social gatherings or trips) much more efficient.
 
 Below, you’ll find details about the features and technologies used in EasyMeetApp.
 
@@ -100,7 +100,7 @@ Here are some screenshots of the application in action:
 
 ---
 
-📌 [Visit EasyMeetApp](https://easymeetapp.onrender.com/) and try it out!
+📌 [Visit EasyMeetApp](https://easymeetapp.up.railway.app) and try it out!
 
 ---
 
