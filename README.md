@@ -53,7 +53,7 @@ Below, you’ll find details about the features and technologies used in EasyMee
 
 ### 🧪 Testing
 
-The application uses **JUnit 5** and **Mockito** for unit testing. Currently, there are **35 unit tests** implemented, and **controller tests** are being added regularly as development progresses.
+The application uses **JUnit 5** and **Mockito** for unit testing. Currently, there are **54 tests** implemented, and **controller and integration tests** are being added regularly as development progresses.
 
 ### Test Structure
 
