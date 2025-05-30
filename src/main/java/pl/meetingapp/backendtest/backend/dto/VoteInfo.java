@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class VoteInfo {
-
     private String firstName;
     private String lastName;
     private String state;

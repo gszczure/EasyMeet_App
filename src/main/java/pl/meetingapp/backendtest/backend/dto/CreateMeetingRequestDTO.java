@@ -11,8 +11,6 @@ import java.util.List;
 public class CreateMeetingRequestDTO {
     @NotBlank(message = "Meeting name cannot be empty")
     private String name;
-
     private String comment;
-
     private List<CreateDateRangeDTO> dateRanges;
 }

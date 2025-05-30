@@ -7,9 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MeetingRequestDTO {
-
-    // Klasa DTO ktora z JSON wybiera tylko name po to by potem zapisac je w tabeli meetings
-    // oraz do pobierania code i uzywania go w /join
+//TODO sprawdzic czy ta kalsas jest potrzebna moze w endpoicei samo getmeeting pobrac z meeting jak w endpociie do tworzenai spotkania
     private String name;
     @NotBlank
     private String code;
