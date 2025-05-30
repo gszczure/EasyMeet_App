@@ -46,11 +46,51 @@ function addMeetingToUI(meeting) {
     const meetingCard = document.createElement('div');
     meetingCard.classList.add('meeting-card');
 
+    const dateContainer = document.createElement('div');
+    dateContainer.classList.add('date-container');
+
+    const dayDiv = document.createElement('div');
+    dayDiv.classList.add('day');
+
+    const monthDiv = document.createElement('div');
+    monthDiv.classList.add('month');
+
+    if (meeting.meetingDate) {
+        const parsedDate = new Date(meeting.meetingDate);
+
+        if (!isNaN(parsedDate.getTime())) {
+            const day = String(parsedDate.getDate()).padStart(2, '0');
+            const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            const month = monthNames[parsedDate.getMonth()];
+
+            dayDiv.textContent = day;
+
+            monthDiv.innerHTML = month.split('').join('<br>');
+
+            dateContainer.appendChild(dayDiv);
+            dateContainer.appendChild(monthDiv);
+        }
+    } else {
+        const notSelectedDiv = document.createElement('div');
+        notSelectedDiv.classList.add('not-selected');
+        notSelectedDiv.innerHTML = 'Not<br>Selected';
+        dateContainer.appendChild(notSelectedDiv);
+    }
+
+    const separator = document.createElement('hr');
+    separator.classList.add('kreska');
+
+    const nameContainer = document.createElement('div');
+    nameContainer.classList.add('name-container');
     const nameDiv = document.createElement('div');
     nameDiv.classList.add('meeting-name');
     nameDiv.textContent = meeting.name;
+    nameContainer.appendChild(nameDiv);
 
-    meetingCard.appendChild(nameDiv);
+    meetingCard.appendChild(dateContainer);
+    meetingCard.appendChild(separator);
+    meetingCard.appendChild(nameContainer);
+
 
     if (isOwner(meeting.owner.id)) {
         // TODO &times zrobic zamiast x
