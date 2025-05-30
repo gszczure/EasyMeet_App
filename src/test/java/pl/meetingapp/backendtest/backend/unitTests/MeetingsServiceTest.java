@@ -123,7 +123,7 @@ public class MeetingsServiceTest {
             when(dateRangeRepository.saveAll(anyList())).thenReturn(testDateRanges);
 
             // Act
-            MeetingDTO result = meetingsService.createMeeting(createMeetingRequest);
+            Meeting result = meetingsService.createMeeting(createMeetingRequest);
 
             // Assert
             assertNotNull(result);
