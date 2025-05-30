@@ -110,14 +110,13 @@ public class MeetingsService {
                     meeting.getOwner().getFirstName(),
                     meeting.getOwner().getLastName()
             );
-            String code = meeting.getCode();
-
             // tworzeymy obiekt MeetingDTO zawierajacy informacje ktore nas interesuja
             MeetingDTO meetingDTO = new MeetingDTO(
                     meeting.getId(),
                     meeting.getName(),
-                    code,
-                    ownerDTO
+                    meeting.getCode(),
+                    ownerDTO,
+                    meeting.getMeetingDate()
             );
 
             // Dodajemy MeetingDTO do listy MeetingDTOs
