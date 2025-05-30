@@ -33,9 +33,13 @@ public class MeetingsController {
     //Zrobione
     //Endpoit do tworzenia spotkania (znajduje sie tu juz zapisywanie koomentarza oraz zapisywanie dat)
     @PostMapping("/create")
-    public ResponseEntity<MeetingDTO> createMeeting(@RequestBody CreateMeetingRequestDTO createMeetingRequest) throws Exception {
-        MeetingDTO meetingDTO = meetingService.createMeeting(createMeetingRequest);
-        return ResponseEntity.ok(meetingDTO);
+    public ResponseEntity<Map<String, String>> createMeeting(@RequestBody CreateMeetingRequestDTO createMeetingRequest) {
+        Meeting meeting = meetingService.createMeeting(createMeetingRequest);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("code", meeting.getCode());
+
+        return ResponseEntity.ok(response);
     }
 
     //Zrobione

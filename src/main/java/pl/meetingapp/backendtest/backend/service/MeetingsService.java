@@ -41,7 +41,7 @@ public class MeetingsService {
     private final MeetingDetailsService dateRangeService;
 
     @Transactional
-    public MeetingDTO createMeeting(CreateMeetingRequestDTO createMeetingRequest) throws Exception {
+    public Meeting createMeeting(CreateMeetingRequestDTO createMeetingRequest) {
         // Pobranie użytkownika na podstawie kontekstu bezpieczeństwa
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -73,17 +73,7 @@ public class MeetingsService {
 
             dateRangeRepository.saveAll(dateRanges);
         }
-
-        return new MeetingDTO(
-                meeting.getId(),
-                meeting.getName(),
-                meeting.getCode(),
-                new ParticipantDTO(
-                        owner.getId(),
-                        owner.getFirstName(),
-                        owner.getLastName()
-                )
-        );
+        return meeting;
     }
 
 
