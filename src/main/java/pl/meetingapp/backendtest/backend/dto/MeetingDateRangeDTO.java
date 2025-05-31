@@ -1,5 +1,7 @@
 package pl.meetingapp.backendtest.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,16 +9,10 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MeetingDateRangeDTO {
     private long id;
     private LocalDate startDate;
-    private String startTime;
-    private String duration;
-
-    public MeetingDateRangeDTO(long id, LocalDate startDate, String startTime, String duration) {
-        this.id = id;
-        this.startDate = startDate;
-        this.startTime = startTime;
-        this.duration = duration;
-    }
+    private String timeRange;
 }

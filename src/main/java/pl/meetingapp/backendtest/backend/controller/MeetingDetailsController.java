@@ -23,12 +23,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static pl.meetingapp.backendtest.backend.service.MeetingDetailsService.calculateTimeRange;
+
 @RestController
 @RequestMapping("/api/meeting-details")
 @RequiredArgsConstructor
 public class MeetingDetailsController {
 
-    //TODO ZMIENIC NAZWE POL
     private final MeetingDetailsService meetingDetailsService;
 
     private final MeetingsService meetingService;
@@ -46,12 +47,12 @@ public class MeetingDetailsController {
             @PathVariable String code,
             @RequestHeader("Authorization") String token) {
 
+        //TODO przeniesc to do service a nie w controllerze robic
         Optional<Meeting> meetingOptional = meetingService.getMeetingByCode(code);
         if (meetingOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        // Pobieramy dane spotkania
         Meeting meeting = meetingOptional.get();
         MeetingDetailsDTO detailsDTO = new MeetingDetailsDTO();
         detailsDTO.setMeetingId(meeting.getId());
@@ -60,14 +61,20 @@ public class MeetingDetailsController {
         detailsDTO.setOwnerId(meeting.getOwner().getId());
         detailsDTO.setComment(meeting.getComment());
 
-        // Pobieramy listę dat spotkań
         List<MeetingDateRangeDTO> dateRanges = meetingDetailsService.findDateRangesByMeetingId(meeting.getId()).stream()
-                .map(dateRange -> new MeetingDateRangeDTO(
-                        dateRange.getId(),
-                        dateRange.getStartDate(),
-                        dateRange.getStartTime(),
-                        dateRange.getDuration()
-                ))
+                .map(dateRange -> {
+                    String timeRange = calculateTimeRange(
+                            dateRange.getStartDate(),
+                            dateRange.getStartTime(),
+                            dateRange.getDuration()
+                    );
+
+                    return new MeetingDateRangeDTO(
+                            dateRange.getId(),
+                            dateRange.getStartDate(),
+                            timeRange
+                    );
+                })
                 .collect(Collectors.toList());
 
         detailsDTO.setDateRanges(dateRanges);
