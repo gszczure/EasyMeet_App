@@ -200,4 +200,5 @@ public class MeetingDetailsServiceTest {
         assertFalse(result);
     }
 
+    //TODO dodac test dla calculateTimeRange
 }

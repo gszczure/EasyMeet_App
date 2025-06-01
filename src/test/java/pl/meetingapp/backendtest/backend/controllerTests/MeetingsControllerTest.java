@@ -85,7 +85,7 @@ public class MeetingsControllerTest {
         createMeetingRequest.setDateRanges(dateRanges);
 
         ParticipantDTO ownerDTO = new ParticipantDTO(1L, "testuser", "Test User");
-        meetingDTO = new MeetingDTO(1L, "Test Meeting", "ABC123", ownerDTO);
+        meetingDTO = new MeetingDTO(1L, "Test Meeting", "ABC123", ownerDTO, null, null, null);
 
         meetingRequestDTO = new MeetingRequestDTO();
         meetingRequestDTO.setCode("ABC123");
