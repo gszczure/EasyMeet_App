@@ -85,11 +85,10 @@ main {
     margin-bottom: 5px;
 }
 
-.time,
-.duration {
+.time-range {
     font-size: 0.9em;
-    color: #7f8c8d;
-    margin-bottom: 3px;
+    color: #374151;
+    min-height: 23px;
 }
 
 .options {
@@ -152,7 +151,7 @@ main {
 .popular-slots h2 {
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--primary-blue);
+    color: var(--primary-dark-blue);
     margin-bottom: 8px;
 }
 
@@ -227,8 +226,11 @@ main {
 }
 
 .popular-slot-time {
-    color: #666;
+    color: #374151;
     margin-bottom: 16px;
+    min-height: 20px;
+    display: inline-flex;
+    align-items: center;
 }
 
 .vote-circles {
@@ -369,13 +371,13 @@ main {
 .meeting-details h1 {
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--primary-blue);
+    color: var(--primary-dark-blue);
     margin-bottom: 8px;
 }
 
 p {
     font-size: 0.95rem;
-    color: #7f8c8d;
+    color: #6b7280;
     line-height: 1.4;
 }
 
@@ -459,4 +461,25 @@ p {
 .confirm-date-btn:hover {
     background-color: var(--primary-blue);
     color: var(--text);
+}
+
+.clock-icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.icon {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    flex-shrink: 0;
+}
+
+.time-container {
+    display: flex;
+    align-items: center;
+    color: #374151;
 }

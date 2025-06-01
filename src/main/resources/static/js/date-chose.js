@@ -318,13 +318,19 @@ function createDateItem(dateObj, userSelections, voteCounts) {
     dateSpan.className = "date";
     dateSpan.textContent = formatDateForDisplay(dateObj.startDate);
 
-    const timeSpan = document.createElement("span");
-    timeSpan.className = "time";
-    timeSpan.textContent = dateObj.startTime ? `Start Time: ${dateObj.startTime}` : "";
+    const timeContainer = document.createElement("div");
+    timeContainer.className = "time-container";
 
-    const durationSpan = document.createElement("span");
-    durationSpan.className = "duration";
-    durationSpan.textContent = dateObj.duration ? `Duration: ${dateObj.duration}h` : "";
+    if (dateObj.timeRange && dateObj.timeRange.trim() !== '') {
+        const clockSvg = createClockIcon();
+
+        const timeRange = document.createElement("span");
+        timeRange.className = "time-range";
+        timeRange.textContent = dateObj.timeRange;
+
+        timeContainer.appendChild(clockSvg);
+        timeContainer.appendChild(timeRange);
+    }
 
     const votesContainer = document.createElement("div");
     votesContainer.className = "votes-container";
@@ -401,8 +407,7 @@ function createDateItem(dateObj, userSelections, voteCounts) {
     dateItem.addEventListener("click", handleClick);
 
     dateItem.appendChild(dateSpan);
-    dateItem.appendChild(timeSpan);
-    dateItem.appendChild(durationSpan);
+    dateItem.appendChild(timeContainer);
     dateItem.appendChild(votesContainer);
     dateItem.appendChild(checkboxContainer);
 
@@ -472,14 +477,22 @@ async function renderPopularTimeSlots() {
 
         const selectedDateId = document.querySelector(".popular-slot-card.selected")?.dataset.dateRangeId;
 
+        //Zegar svg (Mozna zmienic sposob generowania elementow zamaist .innerHTML z temple stringiem zrobic na czysto DOM ja w lini 312 tego pliku
+        const clockIconSvgString = `
+        <svg class="icon clock-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; margin-right:6px; flex-shrink:0;">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>`;
+
         popularSlotsList.innerHTML = popularSlots
-            .map(
-                (slot, index) => `
+            .map((slot, index) => {
+                const clockSvg = slot.timeRange && slot.timeRange.trim() !== '' ? clockIconSvgString : '';
+                return `
                     <div class="popular-slot-card ${["first", "second", "third"][index]} ${selectedDateId == slot.id ? "selected" : ""}" 
                          data-date-range-id="${slot.id}">
                         <div class="popular-slot-date">${formatDateForDisplay(slot.startDate)}</div>
                         <div class="popular-slot-time">
-                            ${slot.startTime} (${slot.duration}h)
+                            ${clockSvg} <span>${slot.timeRange || ''}</span>
                         </div>
                         <div class="vote-circles">
                             <div class="vote-circle yes">${slot.votes.yes || 0} Yes</div>
@@ -488,9 +501,9 @@ async function renderPopularTimeSlots() {
                         <button class="view-votes-button" data-date-range-id="${slot.id}">
                             View Votes (${slot.totalVotes})
                         </button>
-                    </div>
-                `,
-            )
+                    </div>`;
+
+            })
             .join("")
 
         if (selectedDateId) {
