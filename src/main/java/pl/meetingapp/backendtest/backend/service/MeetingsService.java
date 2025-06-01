@@ -97,35 +97,53 @@ public class MeetingsService {
         return ResponseEntity.ok().build();
     }
 
-
     public List<MeetingDTO> getMeetingsForUser(User user) {
         List<Meeting> meetings = meetingRepository.findByOwnerOrParticipantsContaining(user, user);
-
-        // Tworzymi liste nowa, przechodzimy po kazdym spotkaniu gdzie uzytkownik jest wlasciceilem lub po prostu nalezy do spotkania
         List<MeetingDTO> meetingDTOs = new ArrayList<>();
+
         for (Meeting meeting : meetings) {
-            // Mapujemy wlasciciela
             ParticipantDTO ownerDTO = new ParticipantDTO(
                     meeting.getOwner().getId(),
                     meeting.getOwner().getFirstName(),
                     meeting.getOwner().getLastName()
             );
-            // tworzeymy obiekt MeetingDTO zawierajacy informacje ktore nas interesuja
+
+            String timeRange = null;
+
+            if (meeting.getMeetingDate() != null) {
+                List<DateRange> ranges = dateRangeRepository.findByMeetingId(meeting.getId());
+
+                Optional<DateRange> selectedRangeOpt = ranges.stream()
+                        .filter(r -> r.getStartDate()
+                                .toString()
+                                .equals(meeting.getMeetingDate()))
+                        .findFirst();
+
+                if (selectedRangeOpt.isPresent()) {
+                    DateRange range = selectedRangeOpt.get();
+                    timeRange = MeetingDetailsService.calculateTimeRange(
+                            range.getStartDate(),
+                            range.getStartTime(),
+                            range.getDuration()
+                    );
+                }
+            }
+
             MeetingDTO meetingDTO = new MeetingDTO(
                     meeting.getId(),
                     meeting.getName(),
                     meeting.getCode(),
                     ownerDTO,
-                    meeting.getMeetingDate()
+                    meeting.getMeetingDate(),
+                    meeting.getComment(),
+                    timeRange
             );
 
-            // Dodajemy MeetingDTO do listy MeetingDTOs
             meetingDTOs.add(meetingDTO);
         }
-        // Zwracamy liste
+
         return meetingDTOs;
     }
-
 
     public Meeting findById(Long id) {
         Optional<Meeting> meeting = meetingRepository.findById(id);

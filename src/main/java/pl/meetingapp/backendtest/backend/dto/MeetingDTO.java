@@ -15,5 +15,7 @@ public class MeetingDTO {
     private String code;
     private ParticipantDTO owner;
     private String meetingDate;
+    private String comment;
+    private String timeRange;
 }
 
