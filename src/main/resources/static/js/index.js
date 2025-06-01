@@ -65,7 +65,7 @@ function addMeetingToUI(meeting) {
 
             dayDiv.textContent = day;
 
-            monthDiv.innerHTML = month.split('').join('<br>');
+            monthDiv.innerHTML = month.split('').map(letter => `<span>${letter}</span>`).join('');
 
             dateContainer.appendChild(dayDiv);
             dateContainer.appendChild(monthDiv);
@@ -73,23 +73,57 @@ function addMeetingToUI(meeting) {
     } else {
         const notSelectedDiv = document.createElement('div');
         notSelectedDiv.classList.add('not-selected');
-        notSelectedDiv.innerHTML = 'Not<br>Selected';
+        notSelectedDiv.innerHTML = 'No<br>Date<br>Selected';
         dateContainer.appendChild(notSelectedDiv);
     }
 
-    const separator = document.createElement('hr');
-    separator.classList.add('kreska');
+    const content = document.createElement('div');
+    content.classList.add('content');
 
-    const nameContainer = document.createElement('div');
-    nameContainer.classList.add('name-container');
     const nameDiv = document.createElement('div');
     nameDiv.classList.add('meeting-name');
     nameDiv.textContent = meeting.name;
-    nameContainer.appendChild(nameDiv);
+    content.appendChild(nameDiv);
+
+    //Pokazanie svg tylko kiedy komentarz jest w JSON
+    if (meeting.comment && meeting.comment.trim() !== '') {
+        const commentDiv = document.createElement('div');
+        commentDiv.classList.add('info-row', 'comment-row');
+
+        const commentIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        commentIcon.setAttribute("class", "icon comment-icon");
+        commentIcon.setAttribute("viewBox", "0 0 24 24");
+
+        const commentPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        commentPath.setAttribute("d", "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z");
+
+        commentIcon.appendChild(commentPath);
+
+        const commentText = document.createElement('span');
+        commentText.textContent = meeting.comment;
+
+        commentDiv.appendChild(commentIcon);
+        commentDiv.appendChild(commentText);
+        content.appendChild(commentDiv);
+    }
+
+    if (meeting.timeRange && meeting.timeRange.trim() !== '') {
+        // Pokazanie svg z godziną
+        const timeDiv = document.createElement('div');
+        timeDiv.classList.add('info-row', 'time-row');
+
+        const timeIcon = createClockIcon();
+
+        const timeText = document.createElement('span');
+        timeText.textContent = meeting.timeRange;
+
+        timeDiv.appendChild(timeIcon);
+        timeDiv.appendChild(timeText);
+        content.appendChild(timeDiv);
+    }
 
     meetingCard.appendChild(dateContainer);
-    meetingCard.appendChild(separator);
-    meetingCard.appendChild(nameContainer);
+    meetingCard.appendChild(content);
 
 
     if (isOwner(meeting.owner.id)) {

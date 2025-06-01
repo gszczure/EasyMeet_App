@@ -36,6 +36,27 @@ function initializeNotification() {
         notification.classList.remove("show")
     })
 }
+//TODO zrobic to samo dal chmurki komentarza oraz przenisc do osobnego pliku js a nie w notifications to trzymac
+
+// Zegar svg osobna funckja by nie pisac za kazdym razem tego samego podczas tworzenia zegara
+function createClockIcon() {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.classList.add("clock-icon", "icon");
+
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", "12");
+    circle.setAttribute("cy", "12");
+    circle.setAttribute("r", "10");
+
+    const pointer = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+    pointer.setAttribute("points", "12 6 12 12 16 14");
+
+    svg.appendChild(circle);
+    svg.appendChild(pointer);
+
+    return svg;
+}
 
 initializeNotification();
 
