@@ -85,19 +85,20 @@ EasyMeetApp is still in development. Any feedback, suggestions for improvements,
 
 Here are some screenshots of the application in action:
 - **How it works**
-![How_It_works.png](src/main/resources/static/images/How_It_works.png)
+  ![How_It_works_Final.png](src/main/resources/static/images/How_It_works_Final.png)
 
 
 - **User meetings**
-![main_scene.png](src/main/resources/static/images/main_scene.png)
+  ![main_scene.png](src/main/resources/static/images/main_scene.png)
 
 
 - **Creating a new meeting**
-![Create_Game_Night.png](src/main/resources/static/images/Create_Game_Night.png)
+  ![Create_Game_Night.png](src/main/resources/static/images/Create_Game_Night.png)
 
 
 - **"Game Night" meeting**
-![Game_Night_Meeting.png](src/main/resources/static/images/Game_Night_Meeting.png)
+  ![Game_Night_Meeting_VoteTimes.png](src/main/resources/static/images/Game_Night_Meeting_VoteTimes.png)
+  ![Game_Night_Meeting_MostPopular.png](src/main/resources/static/images/Game_Night_Meeting_MostPopular.png)
 
 ---
 
@@ -178,9 +179,9 @@ Aplikacja jest w fazie rozwoju. Wszelkie opinie, sugestie dotyczące ulepszeń l
 Oto kilka zrzutów ekranu z aplikacji w akcji:
 
 - **Jak to działa**
-  ![How_It_works.png](src/main/resources/static/images/How_It_works.png)
+  ![How_It_works_Final.png](src/main/resources/static/images/How_It_works_Final.png)
 
-
+  
 - **Spotkania urzytkownika**
   ![main_scene.png](src/main/resources/static/images/main_scene.png)
 
@@ -190,7 +191,8 @@ Oto kilka zrzutów ekranu z aplikacji w akcji:
 
 
 - **Spotkanie "Wieczór Gier"**
-  ![Game_Night_Meeting.png](src/main/resources/static/images/Game_Night_Meeting.png)
+  ![Game_Night_Meeting_VoteTimes.png](src/main/resources/static/images/Game_Night_Meeting_VoteTimes.png)
+  ![Game_Night_Meeting_MostPopular.png](src/main/resources/static/images/Game_Night_Meeting_MostPopular.png)
 
 ---
 
