@@ -11,5 +11,4 @@ public class ParticipantDTO {
     private Long id;
     private String firstName;
     private String lastName;
-
 }
