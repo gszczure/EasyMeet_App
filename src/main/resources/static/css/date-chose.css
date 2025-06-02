@@ -3,16 +3,121 @@
     padding: 0;
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    text-align: center;
+}
+
+body {
+    background-color: #f5f5f7;
 }
 
 main {
-    padding: 20px;
-    max-width: 1200px;
+    max-width: 950px;
     margin: auto;
-    background: var(--meeting-bg);
+    background: transparent;
+    padding-bottom: 20px;
+}
+
+.tab-navigation-container {
+    background: white;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.tab-navigation {
+    display: flex;
+    border-bottom: 1px solid #e5e7eb;
+    width: 100%;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+    color: #374151;
+    background-color: #f9fafb;
+}
+
+.tab-button.active {
+    color: #3b82f6;
+    background-color: #eff6ff;
+    border-bottom-color: #3b82f6;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+}
+
+.content-section {
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.section-description {
+    color: #6b7280;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.options-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.option-legend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.option-indicator {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.yes-indicator {
+    background-color: #22c55e;
+}
+
+.if-needed-indicator {
+    background-color: #f59e0b;
 }
 
 .date-list {
@@ -20,18 +125,17 @@ main {
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
-    margin-bottom: 40px;
 }
 
 .date-item {
-    background-color: #f0f0f0;
+    background-color: white;
     border-radius: 8px;
     padding: 15px;
     width: 220px;
     height: 180px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     position: relative;
-    border: 2px solid transparent;
+    border: 2px solid #ddd;
     transition: background-color 0.3s, border-color 0.3s;
     cursor: pointer;
     display: flex;
@@ -64,7 +168,7 @@ main {
     border-radius: 4px;
     line-height: 20px;
     text-align: center;
-    color: var(--text);
+    color: white;
     font-size: 12px;
     transition: width 0.3s;
 }
@@ -89,36 +193,6 @@ main {
     font-size: 0.9em;
     color: #374151;
     min-height: 23px;
-}
-
-.options {
-    display: flex;
-    gap: 12px;
-    margin: 15px 0 30px;
-    justify-content: center;
-}
-
-.option-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    background: none;
-    font-size: 14px;
-    transition: background-color 0.2s, border-color 0.2s;
-    color: black;
-}
-
-.option-btn.yes {
-    background-color: #f0f9f0;
-    border-color: #c2e6c2;
-}
-
-.option-btn.if-needed {
-    background-color: #fff9e6;
-    border-color: #ffe0b2;
 }
 
 .checkbox-container {
@@ -148,129 +222,140 @@ main {
     visibility: visible;
 }
 
-.popular-slots h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-dark-blue);
-    margin-bottom: 8px;
-}
-
+/* Updated Popular Slots Styling */
 .popular-slots-list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 50px;
-    margin: 20px;
-}
-
-@media (max-width: 768px) {
-
-    .date-item {
-        width: auto;
-        height: auto;
-    }
-
-    .modal-content {
-        margin: 45% auto !important;
-    }
-
-    .popular-slot-card:hover {
-        transform: translateY(0);
-    }
-
-    .popular-slots-list {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .controls {
-        display: flex;
-        gap: 12px;
-        flex-direction: column;
-    }
-
-    .controls button span {
-        display: none;
-    }
-}
-
-@media (max-width: 480px) {
-    .popular-slots-list {
-        grid-template-columns: repeat(1, 1fr);
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 20px 0;
 }
 
 .popular-slot-card {
-    background: var(--text);
+    background: white;
     border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-    height: 194px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 80px;
 }
 
-.popular-slot-card.selected::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-    background-color: var(--primary-light-blue);
+.popular-slot-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: #d1d5db;
+}
+
+.popular-slot-card.selected {
+    border: 2px solid #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.popular-slot-card-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.popular-slot-card .rank-indicator {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.popular-slot-card.first .rank-indicator {
+    background-color: #eab308;
+}
+
+.popular-slot-card.second .rank-indicator {
+    background-color: #94a3b8;
+}
+
+.popular-slot-card.third .rank-indicator {
+    background-color: #c2410c;
+}
+
+.popular-slot-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
 }
 
 .popular-slot-date {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 4px;
+    color: #111827;
+    margin: 0;
 }
 
 .popular-slot-time {
-    color: #374151;
-    margin-bottom: 16px;
-    min-height: 20px;
-    display: inline-flex;
+    color: #6b7280;
+    font-size: 0.9rem;
+    display: flex;
     align-items: center;
+    margin: 0;
 }
 
-.vote-circles {
-    gap: 8px;
-    margin-bottom: 16px;
+.popular-slot-card-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-.vote-circle {
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 14px;
-    display: inline-block;
-    margin-right: 5px;
+.vote-summary {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
-.vote-circle.yes {
-    background-color: #dcfce7;
+.vote-counts {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #111827;
+}
+
+.vote-counts .yes-count {
     color: #16a34a;
 }
 
-.vote-circle.if-needed {
-    background-color: #fef3c7;
+.vote-counts .if-needed-count {
     color: #d97706;
 }
 
+.total-votes {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
 .view-votes-button {
-    width: 100%;
-    padding: 8px;
-    background-color: var(--text);
-    color: var(--primary-blue);
-    border: 1px solid var(--primary-blue);
-    border-radius: 8px;
+    padding: 8px 16px;
+    background-color: white;
+    color: #3b82f6;
+    border: 1px solid #3b82f6;
+    border-radius: 6px;
     font-weight: 500;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
+    white-space: nowrap;
 }
 
 .view-votes-button:hover {
-    background-color: var(--primary-blue);
-    color: var(--text);
+    background-color: #3b82f6;
+    color: white;
 }
 
 .modal {
@@ -319,27 +404,46 @@ main {
     flex-direction: column;
     gap: 10px;
     margin-bottom: 15px;
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .title-section {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-left: 30px;
+    align-items: flex-start;
 }
 
 .organizer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.meeting-name {
     font-size: 1.5rem;
     font-weight: bold;
     color: #000000;
-    margin-bottom: 8px;
+    margin: 0;
+    text-align: left;
+}
+
+.meeting-owner {
+    font-size: 0.9rem;
+    color: #6b7280;
+    text-align: left;
 }
 
 .comment {
     font-size: 1rem;
     color: #666;
     text-align: left;
-    margin-left: 30px;
+    padding-top: 8px;
+    border-top: 1px solid #f0f0f0;
+    margin-top: 8px;
 }
 
 .controls {
@@ -349,10 +453,10 @@ main {
 
 .controls button {
     padding: 8px 14px;
-    border: 1px solid var(--primary-blue);
+    border: 1px solid #3b82f6;
     border-radius: 6px;
-    background-color: var(--text);
-    color: var(--primary-blue);
+    background-color: white;
+    color: #3b82f6;
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
@@ -360,19 +464,8 @@ main {
 }
 
 .controls button:hover {
-    background-color: var(--primary-blue);
-    color: var(--text);
-}
-
-.meeting-details {
-    margin-bottom: 20px;
-}
-
-.meeting-details h1 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-dark-blue);
-    margin-bottom: 8px;
+    background-color: #3b82f6;
+    color: white;
 }
 
 p {
@@ -409,13 +502,13 @@ p {
 .remove-participant {
     background: none;
     border: none;
-    color: var(--delete-button-bg);
+    color: #ef4444;
     cursor: pointer;
     font-size: 18px;
 }
 
 .remove-participant:hover {
-    color: var(--delete-button-hover);
+    color: #dc2626;
     transform: scale(1.2);
 }
 
@@ -426,30 +519,17 @@ p {
     border-color: #ddd !important;
 }
 
-.popular-slot-card {
-    cursor: pointer;
-    transition: border-color 0.3s, transform 0.2s;
-}
-
-.popular-slot-card:hover {
-    transform: translateY(-2px);
-}
-
-.popular-slot-card.selected {
-    border: 2px solid var(--primary-light-blue);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
-}
-
 .confirm-date-container {
     margin-top: 20px;
+    margin-bottom: 20px;
     display: flex;
     justify-content: center;
 }
 
 .confirm-date-btn {
-    background-color: var(--text);
-    color: var(--primary-blue);
-    border: 1px solid var(--primary-blue);
+    background-color: white;
+    color: #3b82f6;
+    border: 1px solid #3b82f6;
     border-radius: 8px;
     padding: 12px 24px;
     font-size: 16px;
@@ -459,8 +539,8 @@ p {
 }
 
 .confirm-date-btn:hover {
-    background-color: var(--primary-blue);
-    color: var(--text);
+    background-color: #3b82f6;
+    color: white;
 }
 
 .clock-icon {
@@ -482,4 +562,215 @@ p {
     display: flex;
     align-items: center;
     color: #374151;
+    min-height: 23px;
+}
+
+/* MOBILE RESPONSIVE STYLES */
+@media (max-width: 768px) {
+    main {
+        padding: 12px;
+    }
+
+    .tab-button {
+        padding: 14px 16px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .title-section {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column-reverse;
+        align-items: unset;
+    }
+
+    .date-list {
+        gap: 12px;
+    }
+
+    .date-item {
+        width: calc(50% - 6px);
+        height: 140px;
+        padding: 12px;
+        min-width: 140px;
+    }
+
+    .date {
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+    }
+
+    .time-range {
+        font-size: 0.8rem;
+    }
+
+    .controls {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+    }
+
+    .controls button {
+        padding: 6px 10px;
+        font-size: 12px;
+        flex: 1;
+        min-width: 80px;
+    }
+
+    .controls button span {
+        display: none;
+    }
+
+    .card {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        margin-bottom: 6px;
+    }
+
+    .section-description {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+
+    .organizer-header {
+        padding: 16px;
+        margin-bottom: 12px;
+    }
+
+    .meeting-name {
+        font-size: 1.25rem;
+    }
+
+    .meeting-owner {
+        font-size: 0.8rem;
+    }
+
+    .comment {
+        font-size: 0.9rem;
+        padding-top: 6px;
+        margin-top: 6px;
+    }
+
+    .options-legend {
+        gap: 12px;
+        margin-top: 12px;
+        flex-wrap: wrap;
+    }
+
+    .option-legend {
+        font-size: 13px;
+    }
+
+    .option-indicator {
+        width: 20px;
+        height: 20px;
+    }
+
+    .popular-slot-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+        min-height: auto;
+    }
+
+    .popular-slot-card-left {
+        width: 100%;
+        gap: 12px;
+    }
+
+    .popular-slot-card .rank-indicator {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+
+    .popular-slot-date {
+        font-size: 1rem;
+    }
+
+    .popular-slot-time {
+        font-size: 0.8rem;
+    }
+
+    .popular-slot-card-right {
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .vote-summary {
+        text-align: left;
+    }
+
+    .vote-counts {
+        font-size: 0.85rem;
+    }
+
+    .total-votes {
+        font-size: 0.75rem;
+    }
+
+    .view-votes-button {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .modal-content {
+        margin: 20% auto;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .date-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .date-item {
+        padding: 10px;
+    }
+
+    .date {
+        font-size: 0.85rem;
+    }
+
+    .time-range {
+        font-size: 0.75rem;
+    }
+
+    .popular-slot-card-left {
+        gap: 10px;
+    }
+
+    .popular-slot-card .rank-indicator {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+
+    .meeting-name {
+        font-size: 1.1rem;
+    }
+
+    .section-title {
+        font-size: 1rem;
+    }
+
+    .controls button {
+        font-size: 11px;
+        padding: 5px 8px;
+    }
+
+    .modal-content {
+        margin: 37% auto;
+        padding: 16px;
+    }
 }

@@ -79,7 +79,10 @@
 <main>
   <div class="organizer-header">
     <div class="title-section">
-      <div class="organizer-info" id="organizer-info"></div>
+      <div class="organizer-info">
+        <h1 id="meeting-name" class="meeting-name"></h1>
+        <div id="meeting-owner" class="meeting-owner"></div>
+      </div>
       <div class="controls">
         <button>Edit</button>
         <button id="share-btn">
@@ -103,40 +106,63 @@
         </button>
       </div>
     </div>
-    <div class="comment"></div>
+    <div class="comment" id="meeting-comment"></div>
   </div>
 
-  <div class="separator"></div>
-
-  <div class="meeting-details">
-    <h1>Vote for the best times to meet</h1>
-    <p>Select all the times when you are available to help the organizer find the best time for this event.</p>
+  <div class="tab-navigation-container">
+    <div class="tab-navigation">
+      <button class="tab-button active" onclick="switchTab('voting')" data-tab="voting">
+        Vote for Times
+      </button>
+      <button class="tab-button" onclick="switchTab('popular')" data-tab="popular">
+        Most Popular Times
+      </button>
+    </div>
   </div>
 
-  <div class="options">
-    <button class="option-btn yes">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Yes
-    </button>
-    <button class="option-btn if-needed">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M8 3.33325V12.6666M12.6667 7.99992L3.33333 7.99992" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      If Needed (2 clicks)
-    </button>
+  <!-- Voting Tab Content -->
+  <div id="voting-tab" class="tab-content active">
+    <div class="content-section">
+      <div class="card">
+        <h2 class="section-title">Vote for the best times to meet</h2>
+        <p class="section-description">Select all the times when you are available to help the organizer find the best time for this event.</p>
+
+        <div class="options-legend">
+          <div class="option-legend">
+            <div class="option-indicator yes-indicator">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>Yes</span>
+          </div>
+          <div class="option-legend">
+            <div class="option-indicator if-needed-indicator">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="M8 3.33325V12.6666M12.6667 7.99992L3.33333 7.99992" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span>If Needed (2 clicks)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="card">
+    <div id="date-list" class="date-list"></div>
+      </div>
   </div>
 
-  <div id="date-list" class="date-list"></div>
+  <!-- Popular Times Tab Content -->
+  <div id="popular-tab" class="tab-content">
+    <div class="content-section">
+      <div class="card">
+        <h2 class="section-title">Most Popular Time Slots</h2>
+        <p class="section-description">The meeting owner has exclusive rights to select and confirm the final meeting date by clicking on one of the time slots below.</p>
+      </div>
+    </div>
 
-  <div class="separator"></div>
-
-  <section class="popular-slots">
-    <h2>Most Popular Time Slots</h2>
-    <p>The meeting owner has exclusive rights to select and confirm the final meeting date by clicking on one of the time slots below.</p>
     <div id="popular-slots-list" class="popular-slots-list"></div>
-  </section>
+  </div>
 
   <div id="modal1" class="modal">
     <div class="modal-content">

@@ -45,8 +45,21 @@ function getToken() {
 
 function formatDateForDisplay(dateString) {
     const date = new Date(dateString);
-    const options = { day: "numeric", month: "long", year: "numeric" };
-    return new Intl.DateTimeFormat("en-GB", options).format(date);
+
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dayOfWeek = daysOfWeek[date.getDay()];
+
+    const day = date.getDate();
+
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = months[date.getMonth()];
+
+    const year = date.getFullYear();
+    const currentYear = new Date().getFullYear();
+
+    const yearDisplay = year !== currentYear ? ` ${year}` : '';
+
+    return `${dayOfWeek}, ${day} ${month}${yearDisplay}`;
 }
 
 async function fetchAllData() {
@@ -460,24 +473,17 @@ async function renderPopularTimeSlots() {
         combinedData.sort((a, b) => b.totalVotes - a.totalVotes);
         const popularSlots = combinedData.slice(0, 3);
 
-        let popularSlotsSection = document.querySelector(".popular-slots");
-        if (!popularSlotsSection) {
-            popularSlotsSection = document.createElement("section");
-            popularSlotsSection.className = "popular-slots";
-            document.querySelector("main").appendChild(popularSlotsSection);
-        }
-
         let popularSlotsList = document.getElementById("popular-slots-list");
         if (!popularSlotsList) {
             popularSlotsList = document.createElement("div");
             popularSlotsList.id = "popular-slots-list";
             popularSlotsList.className = "popular-slots-list";
-            popularSlotsSection.appendChild(popularSlotsList);
+            document.getElementById("popular-tab").appendChild(popularSlotsList);
         }
 
         const selectedDateId = document.querySelector(".popular-slot-card.selected")?.dataset.dateRangeId;
 
-        //Zegar svg (Mozna zmienic sposob generowania elementow zamaist .innerHTML z temple stringiem zrobic na czysto DOM ja w lini 312 tego pliku
+        //Zegar svg
         const clockIconSvgString = `
         <svg class="icon clock-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; margin-right:6px; flex-shrink:0;">
             <circle cx="12" cy="12" r="10"></circle>
@@ -487,45 +493,57 @@ async function renderPopularTimeSlots() {
         popularSlotsList.innerHTML = popularSlots
             .map((slot, index) => {
                 const clockSvg = slot.timeRange && slot.timeRange.trim() !== '' ? clockIconSvgString : '';
-                return `
-                    <div class="popular-slot-card ${["first", "second", "third"][index]} ${selectedDateId == slot.id ? "selected" : ""}" 
-                         data-date-range-id="${slot.id}">
-                        <div class="popular-slot-date">${formatDateForDisplay(slot.startDate)}</div>
-                        <div class="popular-slot-time">
-                            ${clockSvg} <span>${slot.timeRange || ''}</span>
-                        </div>
-                        <div class="vote-circles">
-                            <div class="vote-circle yes">${slot.votes.yes || 0} Yes</div>
-                            <div class="vote-circle if-needed">${slot.votes.if_needed || 0} If Needed</div>
-                        </div>
-                        <button class="view-votes-button" data-date-range-id="${slot.id}">
-                            View Votes (${slot.totalVotes})
-                        </button>
-                    </div>`;
+                const rankClass = ["first", "second", "third"][index];
+                const yesCount = slot.votes.yes || 0;
+                const ifNeededCount = slot.votes.if_needed || 0;
 
+                return `
+                    <div class="popular-slot-card ${rankClass} ${selectedDateId == slot.id ? "selected" : ""}" 
+                         data-date-range-id="${slot.id}">
+                        <div class="popular-slot-card-left">
+                            <div class="rank-indicator">${index + 1}</div>
+                            <div class="popular-slot-info">
+                                <div class="popular-slot-date">${formatDateForDisplay(slot.startDate)}</div>
+                                <div class="popular-slot-time">
+                                    ${clockSvg} <span>${slot.timeRange || ''}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popular-slot-card-right">
+                            <div class="vote-summary">
+                                <div class="vote-counts">
+                                    <span class="yes-count">${yesCount > 0 ? `<span class="yes-count">${yesCount} Yes</span>` : ''}
+                                    ${yesCount > 0 && ifNeededCount > 0 ? ', ' : ''}
+                                    ${ifNeededCount > 0 ? `<span class="if-needed-count">${ifNeededCount} If Needed</span>` : ''}
+                                </div>
+                                <div class="total-votes">${slot.totalVotes} total votes</div>
+                            </div>
+                            <button class="view-votes-button" data-date-range-id="${slot.id}">
+                                View Votes
+                            </button>
+                        </div>
+                    </div>`;
             })
-            .join("")
+            .join("");
 
         if (selectedDateId) {
             let confirmContainer = document.querySelector(".confirm-date-container");
             if (!confirmContainer) {
                 confirmContainer = document.createElement("div");
                 confirmContainer.className = "confirm-date-container";
-                popularSlotsSection.appendChild(confirmContainer);
+                document.getElementById("popular-tab").appendChild(confirmContainer);
             }
             confirmContainer.innerHTML = `
-        <button id="confirm-date-btn" class="confirm-date-btn">Confirm Selected Date</button>
-    `;
+                <button id="confirm-date-btn" class="confirm-date-btn">Confirm Selected Date</button>
+            `;
         } else {
             document.querySelector(".confirm-date-container")?.remove();
         }
 
-
-        const slotCards = document.querySelectorAll(".popular-slot-card")
+        const slotCards = document.querySelectorAll(".popular-slot-card");
 
         slotCards.forEach((card) => {
             card.addEventListener("click", (e) => {
-
                 if (e.target.classList.contains("view-votes-button") || e.target.closest(".view-votes-button")) {
                     return;
                 }
@@ -537,15 +555,15 @@ async function renderPopularTimeSlots() {
 
                 document.querySelectorAll(".popular-slot-card").forEach((c) => {
                     c.classList.remove("selected");
-                })
+                });
 
                 card.classList.add("selected");
 
                 renderPopularTimeSlots();
-            })
-        })
+            });
+        });
 
-        const confirmBtn = document.getElementById("confirm-date-btn")
+        const confirmBtn = document.getElementById("confirm-date-btn");
         if (confirmBtn) {
             if (!window.isOwner) {
                 confirmBtn.classList.add("disabled");
@@ -570,13 +588,13 @@ async function renderPopularTimeSlots() {
                 }
 
                 isProcessing = false;
-            })
+            });
         }
 
         const viewVotesButtons = document.querySelectorAll(".view-votes-button");
 
         viewVotesButtons.forEach((button) => {
-            if (guest) {
+            if (typeof guest !== 'undefined' && guest) {
                 disableButtonIfGuest(".view-votes-button", guest, "The view votes list can only be viewed by registered users.");
             } else {
                 button.classList.remove("disabled-button");
@@ -591,7 +609,6 @@ async function renderPopularTimeSlots() {
         console.error("Błąd podczas renderowania popularnych terminów:", error);
     }
 }
-
 
 function displayVotesInModal(votes, dateRangeId) {
     const modal = document.getElementById("modal1");
@@ -694,11 +711,14 @@ async function renderAll() {
 
     window.isOwner = isOwner;
 
-    const organizerInfoElement = document.getElementById("organizer-info");
-    organizerInfoElement.innerHTML = `<div class="organizer-name">${meetingDetails.name}</div>`;
+    const meetingNameElement = document.getElementById("meeting-name");
+    meetingNameElement.textContent = meetingDetails.name;
 
-    const commentElement = document.querySelector(".comment");
-    commentElement.textContent = meetingDetails.comment || null;
+    const meetingOwnerElement = document.getElementById("meeting-owner");
+    meetingOwnerElement.textContent = `Organized by ${meetingDetails.owner}`;
+
+    const commentElement = document.getElementById("meeting-comment");
+    commentElement.textContent = meetingDetails.comment || "";
 
     disableButtonIfGuest("#participants-btn", guest, "The meeting participants list can only be viewed by registered users.");
 
@@ -869,3 +889,27 @@ if (token) {
 // TODO pomysles nad priorytetem kolejnosci wysweitlania most popular date np (3.YES 1.IfNeeded > 3.IfNeeded 1.YES)
 // TODO zrobic is processing w kazdym guziku (viev votes i participants) bo w tych brakuje
 // TODO zrobi w participants X czerwonego jak przy usuwaniu ludzi
+
+//Funckaj do przechodzenia miedzy Vote for Times a Most Popular Times
+function switchTab(tabName) {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(button => {
+        button.classList.remove('active');
+    });
+
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabContents.forEach(content => {
+        content.classList.remove('active');
+    });
+
+    const activeButton = document.querySelector(`[data-tab="${tabName}"]`);
+    if (activeButton) {
+        activeButton.classList.add('active');
+    }
+
+    const activeContent = document.getElementById(`${tabName}-tab`);
+    if (activeContent) {
+        activeContent.classList.add('active');
+    }
+}
+window.switchTab = switchTab;
