@@ -6,7 +6,6 @@
 >
 > In the `main` branch, you will also find a video demonstrating the first version of the desktop application.
 >
-> 🚀 The application **may be slow on first startup**, as the server needs to wake up. This may take up to **4 minutes**.
 >
 > > Polska wersja README znajduje się na dole.
 
