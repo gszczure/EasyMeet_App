@@ -59,6 +59,13 @@ span:last-child {
     border-radius: 8px;
 }
 
+.step-image3 img {
+    object-fit: contain;
+    border-radius: 8px;
+    width: 550px;
+    height: auto;
+}
+
 .step-title {
     font-size: 1.8rem;
     margin-bottom: 15px;
@@ -108,7 +115,7 @@ span:last-child {
         width: 100%;
     }
 
-    .step-image img {
+    .step-image img, .step-image3 img {
         width: 100%;
         max-width: 450px;
     }

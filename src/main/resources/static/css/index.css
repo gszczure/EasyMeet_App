@@ -1,6 +1,6 @@
 main {
     padding: 20px;
-    max-width: 900px;
+    max-width: 950px;
     margin: auto;
     background: var(--meeting-bg);
     border-radius: 8px;
@@ -17,7 +17,6 @@ section h2 {
     color: var(--text-color);
 }
 
-/* Meeting List Styles */
 .meetings-list {
     padding-top: 20px;
 }
@@ -89,6 +88,7 @@ section h2 {
     font-size: 12px;
     color: var(--primary-dark-blue);
     font-weight: 600;
+    align-items: center;
 }
 
 .month span {
