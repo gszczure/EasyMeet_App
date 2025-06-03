@@ -9,12 +9,11 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    display: none;
 }
 
 .login-form {
     background-color: var(--bg-color);
-    padding: 40px;
+    padding: 10px 40px 40px;
     border-radius: 12px;
     width: 450px;
     max-width: 90%;
@@ -120,15 +119,17 @@
 
 .close {
     color: #FF0000FF;
-    float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    width: 105%;
 }
 
 @media (max-width: 768px) {
     .login-form {
         width: 100%;
-        padding: 30px;
+        padding: 10px 30px 30px;
     }
 }
