@@ -835,7 +835,7 @@ if (shareButton) {
     shareButton.addEventListener("click", async () => {
         const meetingCode = getMeetingCode()
         if (meetingCode && meetingCode !== "null") {
-            const meetingLink = `https://easymeetapp.onrender.com/api/meetings/join/${meetingCode}`
+            const meetingLink = `https://easymeetapp.up.railway.app/api/meetings/join/${meetingCode}`
             try {
                 await navigator.clipboard.writeText(meetingLink)
                 showNotification("Meeting link has been copied to your clipboard!")
