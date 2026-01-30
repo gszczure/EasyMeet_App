@@ -6,7 +6,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.meetingapp.backendtest.backend.dto.CreateDateRangeDTO;
 import pl.meetingapp.backendtest.backend.dto.CreateMeetingRequestDTO;
 import pl.meetingapp.backendtest.backend.dto.MeetingDTO;
 import pl.meetingapp.backendtest.backend.dto.MeetingParticipantsDTO;
@@ -20,7 +19,6 @@ import pl.meetingapp.backendtest.backend.repository.DateSelectionRepository;
 import pl.meetingapp.backendtest.backend.repository.MeetingRepository;
 import pl.meetingapp.backendtest.backend.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,7 +26,6 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-//TODO ANALIZA
 @Service
 @RequiredArgsConstructor
 public class MeetingsService {

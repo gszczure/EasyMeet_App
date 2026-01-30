@@ -2,6 +2,7 @@ package pl.meetingapp.backendtest.backend.controllerTests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -70,6 +71,7 @@ public class DateSelectionControllerTest {
     }
 
     @Test
+    @DisplayName("Should return user selections for a given meeting")
     void getUserSelections_ShouldReturnUserSelections() throws Exception {
         // Arrange
         when(selectionService.getUserSelections(meetingId, userId)).thenReturn(userSelections);
@@ -86,6 +88,7 @@ public class DateSelectionControllerTest {
     }
 
     @Test
+    @DisplayName("Should update user selection for a given meeting and date range")
     void updateUserSelection_ShouldUpdateSelection() throws Exception {
         // Arrange
         doNothing().when(selectionService).updateUserSelection(
@@ -102,6 +105,7 @@ public class DateSelectionControllerTest {
     }
 
     @Test
+    @DisplayName("Should return vote counts for all date ranges of the meeting")
     void getVoteCounts_ShouldReturnVoteCounts() throws Exception {
         // Arrange
         when(selectionService.getVoteCounts(meetingId)).thenReturn(voteCounts);
@@ -120,6 +124,7 @@ public class DateSelectionControllerTest {
     }
 
     @Test
+    @DisplayName("Should delete user selection for a given meeting and date range")
     void deleteUserSelection_ShouldDeleteSelection() throws Exception {
         // Arrange
         doNothing().when(selectionService).deleteUserSelection(meetingId, userId, dateRangeId);
@@ -133,4 +138,3 @@ public class DateSelectionControllerTest {
         verify(selectionService).deleteUserSelection(meetingId, userId, dateRangeId);
     }
 }
-
