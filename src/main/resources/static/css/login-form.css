@@ -125,7 +125,7 @@
     cursor: pointer;
     display: flex;
     justify-content: flex-end;
-    width: 105%;
+    /*width: 105%;*/
 }
 
 @media (max-width: 768px) {
