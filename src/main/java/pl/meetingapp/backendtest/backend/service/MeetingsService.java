@@ -103,46 +103,32 @@ public class MeetingsService {
     public List<MeetingDTO> getMeetingsForUser(User user) {
         List<Meeting> meetings = meetingRepository.findByOwnerOrParticipantsContaining(user, user);
 
-       return meetings.stream().map(meeting -> {
-           ParticipantDTO ownerDTO = getParticipantDTO(meeting.getOwner());
+        return meetings.stream()
+                .map(meeting -> {
+                    ParticipantDTO ownerDTO = getParticipantDTO(meeting.getOwner());
 
-            List<DateRange> ranges = dateRangeRepository.findByMeetingId(meeting.getId());
+                    Optional<String> timeRangeOpt =
+                            dateRangeRepository.findByMeetingId(meeting.getId()).stream()
+                                    .filter(r -> r.getStartDate()
+                                            .toString()
+                                            .equals(meeting.getMeetingDate()))
+                                    .findFirst()
+                                    .map(range -> MeetingDetailsService.calculateTimeRange(
+                                            range.getStartDate(),
+                                            range.getStartTime(),
+                                            range.getDuration()
+                                    ));
 
-            return ranges.stream()
-                    .filter(r -> r.getStartDate()
-                            .toString()
-                            .equals(meeting.getMeetingDate()))
-                    .findFirst()
-                    .map(range -> MeetingDetailsService.calculateTimeRange(
-                            range.getStartDate(),
-                            range.getStartTime(),
-                            range.getDuration()
-                    ))
-                    .map(timeRange -> getMeetingDTO(meeting, ownerDTO, timeRange));
-        }).flatMap(Optional::stream).toList();
-
-//        for (Meeting meeting : meetings) {
-//            ParticipantDTO ownerDTO = new ParticipantDTO(
-//                    meeting.getOwner().getId(),
-//                    meeting.getOwner().getFirstName(),
-//                    meeting.getOwner().getLastName()
-//            );
-//
-//            List<DateRange> ranges = dateRangeRepository.findByMeetingId(meeting.getId());
-//
-//             ranges.stream()
-//                    .filter(r -> r.getStartDate()
-//                            .toString()
-//                            .equals(meeting.getMeetingDate()))
-//                    .findFirst()
-//                    .map(range -> MeetingDetailsService.calculateTimeRange(
-//                            range.getStartDate(),
-//                            range.getStartTime(),
-//                            range.getDuration()
-//                    ))
-//                    .map(timeRange -> getMeetingDTO(meeting, ownerDTO, timeRange))
-//                     .ifPresent(meetingDTOs::add);
-//            }
+                    return Optional.of(
+                            getMeetingDTO(
+                                    meeting,
+                                    ownerDTO,
+                                    timeRangeOpt.orElse(null)
+                            )
+                    );
+                })
+                .flatMap(Optional::stream)
+                .toList();
     }
 
     private static @NotNull MeetingDTO getMeetingDTO(Meeting meeting, ParticipantDTO ownerDTO, String timeRange) {

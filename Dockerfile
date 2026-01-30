@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk
+FROM eclipse-temurin:17-jdk
 
 #ARG JAR_FILE=target/BACKENDTEST-0.0.1-SNAPSHOT.jar
 #

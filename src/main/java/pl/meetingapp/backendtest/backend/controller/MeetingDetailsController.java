@@ -41,54 +41,54 @@ public class MeetingDetailsController {
 
     private final JwtTokenUtil jwtTokenUtil;
 
-    //ZROBIONE
-    // Endpoit do pobierania wszystkich potrzebnych informacji po wejsciu na strone gdzie uzytkownicy wybieraja daty
+//    //ZROBIONE
+//    // Endpoit do pobierania wszystkich potrzebnych informacji po wejsciu na strone gdzie uzytkownicy wybieraja daty
+//    @GetMapping("/details/{code}")
+//    public ResponseEntity<MeetingDetailsDTO> getMeetingDetails(
+//            @PathVariable String code,
+//            @RequestHeader("Authorization") String token) {
+//
+//        Optional<Meeting> meetingOptional = meetingService.getMeetingByCode(code);
+//        if (meetingOptional.isEmpty()) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        Meeting meeting = meetingOptional.get();
+//        MeetingDetailsDTO detailsDTO = new MeetingDetailsDTO();
+//        detailsDTO.setMeetingId(meeting.getId());
+//        detailsDTO.setName(meeting.getName());
+//        detailsDTO.setOwner(meeting.getOwner().getFirstName() + " " + meeting.getOwner().getLastName());
+//        detailsDTO.setOwnerId(meeting.getOwner().getId());
+//        detailsDTO.setComment(meeting.getComment());
+//
+//        List<MeetingDateRangeDTO> dateRanges = meetingDetailsService.findDateRangesByMeetingId(meeting.getId()).stream()
+//                .map(dateRange -> {
+//                    String timeRange = calculateTimeRange(
+//                            dateRange.getStartDate(),
+//                            dateRange.getStartTime(),
+//                            dateRange.getDuration()
+//                    );
+//
+//                    return new MeetingDateRangeDTO(
+//                            dateRange.getId(),
+//                            dateRange.getStartDate(),
+//                            timeRange
+//                    );
+//                })
+//                .collect(Collectors.toList());
+//
+//        detailsDTO.setDateRanges(dateRanges);
+//
+//        String username = jwtTokenUtil.extractUsername(token.replace("Bearer ", ""));
+//        User user = userService.findByUsername(username);
+//
+//        detailsDTO.setGuest(user.isGuest());
+//
+//        return ResponseEntity.ok(detailsDTO);
+//    }
+
     @GetMapping("/details/{code}")
     public ResponseEntity<MeetingDetailsDTO> getMeetingDetails(
-            @PathVariable String code,
-            @RequestHeader("Authorization") String token) {
-
-        Optional<Meeting> meetingOptional = meetingService.getMeetingByCode(code);
-        if (meetingOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Meeting meeting = meetingOptional.get();
-        MeetingDetailsDTO detailsDTO = new MeetingDetailsDTO();
-        detailsDTO.setMeetingId(meeting.getId());
-        detailsDTO.setName(meeting.getName());
-        detailsDTO.setOwner(meeting.getOwner().getFirstName() + " " + meeting.getOwner().getLastName());
-        detailsDTO.setOwnerId(meeting.getOwner().getId());
-        detailsDTO.setComment(meeting.getComment());
-
-        List<MeetingDateRangeDTO> dateRanges = meetingDetailsService.findDateRangesByMeetingId(meeting.getId()).stream()
-                .map(dateRange -> {
-                    String timeRange = calculateTimeRange(
-                            dateRange.getStartDate(),
-                            dateRange.getStartTime(),
-                            dateRange.getDuration()
-                    );
-
-                    return new MeetingDateRangeDTO(
-                            dateRange.getId(),
-                            dateRange.getStartDate(),
-                            timeRange
-                    );
-                })
-                .collect(Collectors.toList());
-
-        detailsDTO.setDateRanges(dateRanges);
-
-        String username = jwtTokenUtil.extractUsername(token.replace("Bearer ", ""));
-        User user = userService.findByUsername(username);
-
-        detailsDTO.setGuest(user.isGuest());
-
-        return ResponseEntity.ok(detailsDTO);
-    }
-
-    @GetMapping("/details/{code}")
-    public ResponseEntity<MeetingDetailsDTO> getMeetingDetails2(
             @PathVariable String code,
             @RequestHeader("Authorization") String token) {
 

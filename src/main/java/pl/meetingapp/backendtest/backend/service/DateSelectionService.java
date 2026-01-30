@@ -34,26 +34,26 @@ public class DateSelectionService {
         selectionRepository.save(selection);
     }
 
-    public Map<Long, Map<String, Long>> getVoteCounts(Long meetingId) {
-        List<Object[]> results = selectionRepository.countVotesByDateRange(meetingId);
-        Map<Long, Map<String, Long>> voteCounts = new HashMap<>();
+//    public Map<Long, Map<String, Long>> getVoteCounts(Long meetingId) {
+//        List<Object[]> results = selectionRepository.countVotesByDateRange(meetingId);
+//        Map<Long, Map<String, Long>> voteCounts = new HashMap<>();
+//
+//        for (Object[] result : results) {
+//            Long dateRangeId = (Long) result[0];
+//            Long yesCount = (Long) result[1];
+//            Long ifNeededCount = (Long) result[2];
+//
+//            Map<String, Long> counts = new HashMap<>();
+//            counts.put("yes", yesCount);
+//            counts.put("if_needed", ifNeededCount);
+//
+//            voteCounts.put(dateRangeId, counts);
+//        }
+//
+//        return voteCounts;
+//    }
 
-        for (Object[] result : results) {
-            Long dateRangeId = (Long) result[0];
-            Long yesCount = (Long) result[1];
-            Long ifNeededCount = (Long) result[2];
-
-            Map<String, Long> counts = new HashMap<>();
-            counts.put("yes", yesCount);
-            counts.put("if_needed", ifNeededCount);
-
-            voteCounts.put(dateRangeId, counts);
-        }
-
-        return voteCounts;
-    }
-
-    public Map<Long, Map<String, Long>> getVoteCounts2 (Long meetingId) {
+    public Map<Long, Map<String, Long>> getVoteCounts (Long meetingId) {
         return selectionRepository.countVotesByDateRange(meetingId).stream()
                 .collect(Collectors.toMap(
                         result -> (Long) result[0],

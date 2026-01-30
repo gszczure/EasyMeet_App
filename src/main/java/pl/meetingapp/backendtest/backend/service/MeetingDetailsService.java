@@ -30,17 +30,17 @@ public class MeetingDetailsService {
         dateRangeRepository.deleteAll(dateRanges);
     }
 
-    public Meeting saveMeetingDate(Long meetingId, String meetingDate) {
-        Optional<Meeting> meetingOptional = meetingRepository.findById(meetingId);
-        if (meetingOptional.isPresent()) {
-            Meeting meeting = meetingOptional.get();
-            meeting.setMeetingDate(meetingDate);
-            return meetingRepository.save(meeting);
-        }
-        return null;
-    }
+//    public Meeting saveMeetingDate(Long meetingId, String meetingDate) {
+//        Optional<Meeting> meetingOptional = meetingRepository.findById(meetingId);
+//        if (meetingOptional.isPresent()) {
+//            Meeting meeting = meetingOptional.get();
+//            meeting.setMeetingDate(meetingDate);
+//            return meetingRepository.save(meeting);
+//        }
+//        return null;
+//    }
 
-    public Meeting saveMeetingDate2(Long meetingId, String meetingDate) {
+    public Meeting saveMeetingDate(Long meetingId, String meetingDate) {
         return meetingRepository.findById(meetingId)
                 .map(meeting -> {
                     meeting.setMeetingDate(meetingDate);
