@@ -40,6 +40,15 @@ public class MeetingDetailsService {
         return null;
     }
 
+    public Meeting saveMeetingDate2(Long meetingId, String meetingDate) {
+        return meetingRepository.findById(meetingId)
+                .map(meeting -> {
+                    meeting.setMeetingDate(meetingDate);
+                    return meetingRepository.save(meeting);
+                })
+                .orElse(null);
+    }
+
     public Optional<Meeting> findMeetingById(Long meetingId) {
         return meetingRepository.findById(meetingId);
     }

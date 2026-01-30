@@ -1,10 +1,12 @@
 package pl.meetingapp.backendtest.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.meetingapp.backendtest.backend.dto.CreateDateRangeDTO;
 import pl.meetingapp.backendtest.backend.dto.CreateMeetingRequestDTO;
 import pl.meetingapp.backendtest.backend.dto.MeetingDTO;
 import pl.meetingapp.backendtest.backend.dto.MeetingParticipantsDTO;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+//TODO ANALIZA
 @Service
 @RequiredArgsConstructor
 public class MeetingsService {
@@ -99,50 +102,65 @@ public class MeetingsService {
 
     public List<MeetingDTO> getMeetingsForUser(User user) {
         List<Meeting> meetings = meetingRepository.findByOwnerOrParticipantsContaining(user, user);
-        List<MeetingDTO> meetingDTOs = new ArrayList<>();
 
-        for (Meeting meeting : meetings) {
-            ParticipantDTO ownerDTO = new ParticipantDTO(
-                    meeting.getOwner().getId(),
-                    meeting.getOwner().getFirstName(),
-                    meeting.getOwner().getLastName()
-            );
+       return meetings.stream().map(meeting -> {
+           ParticipantDTO ownerDTO = getParticipantDTO(meeting.getOwner());
 
-            String timeRange = null;
+            List<DateRange> ranges = dateRangeRepository.findByMeetingId(meeting.getId());
 
-            if (meeting.getMeetingDate() != null) {
-                List<DateRange> ranges = dateRangeRepository.findByMeetingId(meeting.getId());
-
-                Optional<DateRange> selectedRangeOpt = ranges.stream()
-                        .filter(r -> r.getStartDate()
-                                .toString()
-                                .equals(meeting.getMeetingDate()))
-                        .findFirst();
-
-                if (selectedRangeOpt.isPresent()) {
-                    DateRange range = selectedRangeOpt.get();
-                    timeRange = MeetingDetailsService.calculateTimeRange(
+            return ranges.stream()
+                    .filter(r -> r.getStartDate()
+                            .toString()
+                            .equals(meeting.getMeetingDate()))
+                    .findFirst()
+                    .map(range -> MeetingDetailsService.calculateTimeRange(
                             range.getStartDate(),
                             range.getStartTime(),
                             range.getDuration()
-                    );
-                }
-            }
+                    ))
+                    .map(timeRange -> getMeetingDTO(meeting, ownerDTO, timeRange));
+        }).flatMap(Optional::stream).toList();
 
-            MeetingDTO meetingDTO = new MeetingDTO(
-                    meeting.getId(),
-                    meeting.getName(),
-                    meeting.getCode(),
-                    ownerDTO,
-                    meeting.getMeetingDate(),
-                    meeting.getComment(),
-                    timeRange
-            );
+//        for (Meeting meeting : meetings) {
+//            ParticipantDTO ownerDTO = new ParticipantDTO(
+//                    meeting.getOwner().getId(),
+//                    meeting.getOwner().getFirstName(),
+//                    meeting.getOwner().getLastName()
+//            );
+//
+//            List<DateRange> ranges = dateRangeRepository.findByMeetingId(meeting.getId());
+//
+//             ranges.stream()
+//                    .filter(r -> r.getStartDate()
+//                            .toString()
+//                            .equals(meeting.getMeetingDate()))
+//                    .findFirst()
+//                    .map(range -> MeetingDetailsService.calculateTimeRange(
+//                            range.getStartDate(),
+//                            range.getStartTime(),
+//                            range.getDuration()
+//                    ))
+//                    .map(timeRange -> getMeetingDTO(meeting, ownerDTO, timeRange))
+//                     .ifPresent(meetingDTOs::add);
+//            }
+    }
 
-            meetingDTOs.add(meetingDTO);
-        }
+    private static @NotNull MeetingDTO getMeetingDTO(Meeting meeting, ParticipantDTO ownerDTO, String timeRange) {
+        return new MeetingDTO(
+                meeting.getId(),
+                meeting.getName(),
+                meeting.getCode(),
+                ownerDTO,
+                meeting.getMeetingDate(),
+                meeting.getComment(),
+                timeRange
+        );
+    }
 
-        return meetingDTOs;
+    private static ParticipantDTO getParticipantDTO(User user) {
+        return new ParticipantDTO(
+                user.getId(), user.getFirstName(), user.getLastName()
+        );
     }
 
     public Meeting findById(Long id) {
@@ -155,20 +173,13 @@ public class MeetingsService {
                 .orElseThrow(() -> new RuntimeException("Meeting with id: " + meetingId + " not found"));
 
         // Mapowanie ownera
-        ParticipantDTO ownerDTO = new ParticipantDTO(
-                meeting.getOwner().getId(),
-                meeting.getOwner().getFirstName(),
-                meeting.getOwner().getLastName()
-        );
+        // TODO new PArticipantDTO jest w wielu miejscach
+        ParticipantDTO ownerDTO = getParticipantDTO(meeting.getOwner());
 
         // Mapowanie uczestników
         List<ParticipantDTO> participantDTOs = meeting.getParticipants()
                 .stream()
-                .map(participant -> new ParticipantDTO(
-                        participant.getId(),
-                        participant.getFirstName(),
-                        participant.getLastName()
-                ))
+                .map(participant -> getParticipantDTO(meeting.getOwner()))
                 .collect(Collectors.toList());
 
         return new MeetingParticipantsDTO(ownerDTO, participantDTOs);
@@ -176,10 +187,10 @@ public class MeetingsService {
 
     @Transactional
     public boolean removeUserFromMeeting(Long meetingId, Long userId) {
-        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
-        User user = userRepository.findById(userId).orElse(null);
+        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(IllegalStateException::new);
+        // TODO o cholibka null tu jest to nie jest za dobre lepiej dac orelsethrow i jakis blad (powtarza sie)
+        User user = userRepository.findById(userId).orElseThrow(IllegalStateException::new);
 
-        if (meeting != null && user != null) {
             boolean removed = meeting.getParticipants().removeIf(participant -> participant.getId().equals(userId));
             if (removed) {
                 meetingRepository.save(meeting);
@@ -192,7 +203,6 @@ public class MeetingsService {
 
                 return true;
             }
-        }
         return false;
     }
 

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pl.meetingapp.backendtest.backend.dto.MeetingDateRangeDTO;
 import pl.meetingapp.backendtest.backend.dto.MeetingDetailsDTO;
@@ -47,7 +48,6 @@ public class MeetingDetailsController {
             @PathVariable String code,
             @RequestHeader("Authorization") String token) {
 
-        //TODO przeniesc to do service a nie w controllerze robic
         Optional<Meeting> meetingOptional = meetingService.getMeetingByCode(code);
         if (meetingOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -87,14 +87,48 @@ public class MeetingDetailsController {
         return ResponseEntity.ok(detailsDTO);
     }
 
+    @GetMapping("/details/{code}")
+    public ResponseEntity<MeetingDetailsDTO> getMeetingDetails2(
+            @PathVariable String code,
+            @RequestHeader("Authorization") String token) {
+
+        String username = jwtTokenUtil.extractUsername(token.replace("Bearer ", ""));
+        User user = userService.findByUsername(username);
+
+        return meetingService.getMeetingByCode(code)
+                .map(meeting -> ResponseEntity.ok(mapToDetailsDTO(meeting, user)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    private MeetingDetailsDTO mapToDetailsDTO(Meeting meeting, User user) {
+        List<MeetingDateRangeDTO> dateRanges = meetingDetailsService.findDateRangesByMeetingId(meeting.getId()).stream()
+                .map(dateRange -> new MeetingDateRangeDTO(
+                        dateRange.getId(),
+                        dateRange.getStartDate(),
+                        calculateTimeRange(dateRange.getStartDate(), dateRange.getStartTime(), dateRange.getDuration())
+                ))
+                .collect(Collectors.toList());
+
+        return new MeetingDetailsDTO(
+                meeting.getId(),
+                meeting.getName(),
+                meeting.getOwner().getFirstName() + " " + meeting.getOwner().getLastName(),
+                meeting.getOwner().getId(),
+                meeting.getComment(),
+                dateRanges,
+                user.isGuest()
+                );
+    }
+
     // ZROBIONE
     // Endpoit do pobieranai jak ludzie glosowali na dane spotkanie (Sprawdzicz to )
-    @GetMapping("/getVotes/{dateRangeId}")
+    @GetMapping("/getVotes/{dateRangeId}") //TODO czasownik a powinien byc rzeczownik
     public ResponseEntity<?> getVotes(@PathVariable Long dateRangeId,
                                       @RequestHeader(value = "Authorization") String authHeader) {
 
         String token = jwtTokenUtil.removeBearerPrefix(authHeader);
 
+        //TODO kontrola dostapu przez token chyba nie powinna byc w kontrolerze
         if (jwtTokenUtil.isGuest(token)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Guest users cannot access vote data.");
         }
@@ -106,14 +140,13 @@ public class MeetingDetailsController {
 
     // ZROBONE
     // Endpoit do zapisywania final dat dla spotkan
-    @PostMapping("/{meetingId}/save-date")
+    @PostMapping("/{meetingId}/save-date") //TODO znowu czasownik
     public ResponseEntity<?> saveMeetingDate(
             @PathVariable Long meetingId,
             @RequestBody Map<String, String> payload,
             @RequestHeader(value = "Authorization") String authHeader) {
 
-        try {
-
+//        try {
             String token = jwtTokenUtil.removeBearerPrefix(authHeader);
             String currentUsername = jwtTokenUtil.extractUsername(token);
 
@@ -142,16 +175,17 @@ public class MeetingDetailsController {
             }
 
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error processing request: " + e.getMessage());
-        }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Error processing request: " + e.getMessage());
+//        }
     }
 
     //ZROBIONE
     // Endpoit do pobierania ludzi dla jakiesgos spotkania
     @GetMapping("/{meetingId}/participants")
     public ResponseEntity<?> getMeetingParticipants(
+            //TODO dziki typ "?" czli wszystko jak by mozna dac MeetingParticipantsDTO (powtarza sie)
             @PathVariable Long meetingId,
             @RequestHeader(value = "Authorization") String authHeader) {
 

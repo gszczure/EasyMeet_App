@@ -53,6 +53,17 @@ public class DateSelectionService {
         return voteCounts;
     }
 
+    public Map<Long, Map<String, Long>> getVoteCounts2 (Long meetingId) {
+        return selectionRepository.countVotesByDateRange(meetingId).stream()
+                .collect(Collectors.toMap(
+                        result -> (Long) result[0],
+                        result -> Map.of(
+                                "yes", (Long) result[1],
+                                "if_needed", (Long) result[2]
+                        )
+                ));
+    }
+
     @Transactional
     public void deleteUserSelection(Long meetingId, Long userId, Long dateRangeId) {
         selectionRepository.deleteByMeetingIdAndUserIdAndDateRangeId(meetingId, userId, dateRangeId);
