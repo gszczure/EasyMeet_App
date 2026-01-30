@@ -143,7 +143,7 @@ public class MeetingsService {
         );
     }
 
-    private static ParticipantDTO getParticipantDTO(User user) {
+    private ParticipantDTO getParticipantDTO(User user) {
         return new ParticipantDTO(
                 user.getId(), user.getFirstName(), user.getLastName()
         );
@@ -165,7 +165,7 @@ public class MeetingsService {
         // Mapowanie uczestników
         List<ParticipantDTO> participantDTOs = meeting.getParticipants()
                 .stream()
-                .map(participant -> getParticipantDTO(meeting.getOwner()))
+                .map(this::getParticipantDTO)
                 .collect(Collectors.toList());
 
         return new MeetingParticipantsDTO(ownerDTO, participantDTOs);
